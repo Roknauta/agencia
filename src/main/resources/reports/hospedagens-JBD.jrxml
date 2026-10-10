@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="hospedagens_jbd" language="java" pageWidth="523" pageHeight="730" columnWidth="523" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+<property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+<style name="Base" default="true" forecolor="#003366" fontName="DejaVu Sans" fontSize="10"/>
+<dataset name="FotosHospedagem" uuid="c715b53b-c518-4c0b-aba5-7f68d08eeaf7">
+        <field name="esquerda" class="java.io.InputStream"/>
+        <field name="direita" class="java.io.InputStream"/>
+    </dataset><field name="hospedagem" class="com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field><detail><band height="309" splitType="Stretch">
+			
+			<element kind="staticText" uuid="fa123da0-e193-464a-931c-6db9d0a292f5" key="TITULO_HOSPEDAGEM" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[HOSPEDAGEM]]></text>
+			</element>
+			<element kind="textField" uuid="045a0081-d462-4a9f-a363-3b737a6ac25b" positionType="Float" x="0" y="34" width="523" height="28" forecolor="#003366" fontSize="13.0" textAdjust="StretchHeight" blankWhenNull="true" bold="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{hospedagem}.getNome() + " • " + $F{hospedagem}.getCidade()]]></expression>
+			</element>
+			<element kind="textField" uuid="91f3d5da-de39-4796-a2ac-3e44fc25b300" positionType="Float" x="0" y="66" width="523" height="25" forecolor="#003366" fontSize="10.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{hospedagem}.getEndereco()]]></expression>
+			</element>
+			<element kind="textField" uuid="3fb0fcec-13d7-4510-9a6a-893facf27bbf" positionType="Float" x="0" y="96" width="523" height="26" forecolor="#003366" fontSize="10.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Check-in: " + $F{hospedagem}.getCheckIn().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "  |  Check-out: " + $F{hospedagem}.getCheckOut().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + "  |  " + $F{hospedagem}.getNoites() + " noites"]]></expression>
+			</element>
+			<element kind="textField" uuid="47b2d926-3a4f-47f2-88a7-38ce9c6bfacb" positionType="Float" x="0" y="127" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Acomodação: " + $F{hospedagem}.getAcomodacao() + " • Quartos: " + $F{hospedagem}.getQuartos()]]></expression>
+			</element>
+			<element kind="textField" uuid="9aee194e-bfa4-40ef-b90a-7b1959d7258e" positionType="Float" x="0" y="157" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Regime: " + $F{hospedagem}.getRegime()]]></expression>
+			</element>
+			<element kind="textField" uuid="24b889b8-3c00-4deb-a19f-848a79603515" positionType="Float" x="0" y="187" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Incluído: " + $F{hospedagem}.getIncluidos()]]></expression>
+			</element>
+			<element kind="textField" uuid="8231bcab-4767-4d9c-b1fd-2de0ad5d6bff" positionType="Float" x="0" y="216" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Não incluído: " + $F{hospedagem}.getNaoIncluidos()]]></expression>
+			</element>
+			<element kind="textField" uuid="5617c287-ba13-485c-8e23-b1ff625d8093" positionType="Float" x="0" y="244" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Cancelamento: " + $F{hospedagem}.getCancelamento()]]></expression>
+			</element>
+			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="285" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
+		</band><band height="216" splitType="Stretch">
+            <printWhenExpression><![CDATA[!$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression>
+            <element kind="staticText" uuid="c5fc03ae-a80e-4c04-8339-3da348fa72f8" x="0" y="0" width="523" height="22" forecolor="#003366" fontSize="12" bold="true">
+                <text><![CDATA[Fotos da hospedagem]]></text>
+            </element>
+            <element kind="component" uuid="f5ece180-af95-4afd-8525-5d161ac50a02" x="0" y="28" width="523" height="176">
+                <component kind="list" printOrder="Vertical">
+                    <datasetRun uuid="c265136b-a595-4c16-bd28-a2bd3574c1fe" subDataset="FotosHospedagem">
+                        <dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagem}.getParesFotos())]]></dataSourceExpression>
+                    </datasetRun>
+                    <contents height="176" width="523">
+                        <element kind="image" uuid="f8695383-56db-451b-9a8e-b1891937c1e4" x="0" y="0" width="255" height="160" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle">
+                            <expression><![CDATA[$F{esquerda}]]></expression>
+                        </element>
+                        <element kind="image" uuid="1751c527-092d-4193-9534-a73becc5b98a" x="268" y="0" width="255" height="160" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle">
+                            <printWhenExpression><![CDATA[$F{direita} != null]]></printWhenExpression>
+                            <expression><![CDATA[$F{direita}]]></expression>
+                        </element>
+                    </contents>
+                </component>
+            </element>
+            <element kind="break" uuid="45fd4a43-b760-4d52-922e-e755bae9c4e6" positionType="Float" x="0" y="210" width="100" height="1"/>
+        </band></detail></jasperReport>

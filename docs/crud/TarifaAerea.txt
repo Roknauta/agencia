@@ -1,0 +1,42 @@
+Criar um CRUD para a entidade TarifaAerea.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Tarifa Aérea
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- companhiaAerea: CompanhiaAerea
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete para CompanhiaAerea
+- dataReferencia: LocalDate
+  - Obrigatório: sim
+  - Interface: datePicker
+- bagagensInclusas: BagagemCompanhiaAerea (lista)
+  - Obrigatório: não
+  - Tamanho máximo: 50 caracteres
+  - Interface: autoComplete para BagagemCompanhiaAerea, exibindo companhia, tipo e data de referência da versão
+- regraCancelamento: String
+  - Obrigatório: sim
+  - Tamanho máximo: max
+  - Interface: inputTextArea    
+- regraAlteracao: String
+  - Obrigatório: sim
+  - Tamanho máximo: max
+  - Interface: inputTextArea
+- outrasInformacoes: String
+  - Obrigatório: não
+  - Tamanho máximo: max
+  - Interface: inputTextArea        
+Pesquisa:
+- Filtros: nome,companhiaAerea,dataReferencia
+Tabela de resultados:
+- Colunas: nome,companhiaAerea,dataReferencia
+- Ações: somente consulta; versões não podem ser editadas nem excluídas
+Regras de negócio:
+- Unique conjunta em nome,companhiaAerea,dataReferencia
+- Cada alteração da tarifa deve ser cadastrada como nova versão, informando sua data de referência; versões existentes são imutáveis e não podem ser excluídas.
+- Cada bagagem inclusa deve apontar para uma versão imutável específica de BagagemCompanhiaAerea.
+- Cada Voo deve referenciar a versão exata de TarifaAerea selecionada para ele; a companhia da tarifa deve ser a mesma do voo.

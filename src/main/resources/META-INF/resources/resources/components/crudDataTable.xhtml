@@ -1,0 +1,34 @@
+<ui:component xmlns:ui="jakarta.faces.facelets" xmlns:cc="jakarta.faces.composite" xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="id" default="registros"/>
+        <cc:attribute name="emptyMessage" default="#{msg['nenhum.registro.encontrado']}"/>
+        <cc:attribute name="showGridlines" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="reflow" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="paginator" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="rows" type="java.lang.Integer"/>
+        <cc:attribute name="paginatorPosition" default="bottom"/>
+        <cc:attribute name="rowsPerPageTemplate"/>
+        <cc:attribute name="disabled" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="readOnly" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="confirmHeader" default="#{msg['interface.excluir.registro']}"/>
+        <cc:attribute name="confirmMessage" default="#{msg['interface.confirma.esta.acao']}"/>
+    </cc:interface>
+    <cc:implementation>
+        <!--@elvariable id="crudController" type="com.roknauta.agencia.web.crud.CrudControllerBase"-->
+        <p:dataTable id="#{cc.attrs.id}" rendered="#{crudController.pesquisaRealizada}" showGridlines="#{cc.attrs.showGridlines}"
+                     value="#{crudController.result}" emptyMessage="#{cc.attrs.emptyMessage}"
+                     reflow="#{cc.attrs.reflow}" var="item" paginator="#{cc.attrs.paginator}"
+                     rows="#{cc.attrs.rows}" paginatorPosition="#{cc.attrs.paginatorPosition}" rowsPerPageTemplate="#{cc.attrs.rowsPerPageTemplate}">
+            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes"
+                      rendered="#{not cc.attrs.readOnly}">
+                <p:menuButton id="options" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}" ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
+                    <p:menuitem id="edit" value="#{msg['editar']}" icon="pi pi-pencil" action="#{crudController.edit(item.id)}" disabled="#{cc.attrs.disabled}" process="@this" update=":crudContent" resetValues="true"/>
+                    <p:menuitem id="remove" value="#{msg['excluir']}" icon="pi pi-trash" action="#{crudController.delete(item.id)}" disabled="#{cc.attrs.disabled}" process="@this" update=":crudContent">
+                        <p:confirm header="#{cc.attrs.confirmHeader}" message="#{cc.attrs.confirmMessage}"/>
+                    </p:menuitem>
+                </p:menuButton>
+            </p:column>
+            <cc:insertChildren/>
+        </p:dataTable>
+    </cc:implementation>
+</ui:component>

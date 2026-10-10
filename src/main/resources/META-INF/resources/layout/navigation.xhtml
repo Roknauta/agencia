@@ -1,0 +1,38 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="jakarta.faces.passthrough">
+<!--    <p:panel id="navigation" header="#{msg['interface.menu.principal']}">-->
+        <p:panelMenu multiple="true">
+            <p:submenu label="#{msg['cadastro.menu']}" expanded="true">
+                <p:menuitem value="#{msg['pais']}" outcome="/crud/pais" icon="pi pi-globe"
+                            styleClass="#{view.viewId eq '/crud/pais.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/pais.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['companhia.aerea']}" outcome="/crud/companhia-aerea" icon="pi pi-send"
+                            styleClass="#{view.viewId eq '/crud/companhia-aerea.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/companhia-aerea.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['hotel']}" outcome="/crud/hotel" icon="pi pi-building"
+                            styleClass="#{view.viewId eq '/crud/hotel.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/hotel.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['aeroporto']}" outcome="/crud/aeroporto" icon="pi pi-send"
+                            styleClass="#{view.viewId eq '/crud/aeroporto.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/aeroporto.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['bagagem.de.companhia.aerea']}" outcome="/crud/bagagem-companhia-aerea" icon="pi pi-briefcase"
+                            styleClass="#{view.viewId eq '/crud/bagagem-companhia-aerea.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/bagagem-companhia-aerea.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['tarifa.aerea']}" outcome="/crud/tarifa-aerea" icon="pi pi-tags"
+                            styleClass="#{view.viewId eq '/crud/tarifa-aerea.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/tarifa-aerea.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['voo']}" outcome="/crud/voo" icon="pi pi-send"
+                            styleClass="#{view.viewId eq '/crud/voo.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/voo.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['cidade']}" outcome="/crud/cidade" icon="pi pi-map"
+                            styleClass="#{view.viewId eq '/crud/cidade.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/cidade.xhtml' ? 'page' : null}"/>
+            </p:submenu>
+            <p:submenu label="#{msg['agencia']}" expanded="true">
+                <p:menuitem value="#{msg['agencia.configuracao']}" outcome="/crud/agencia" icon="pi pi-building"
+                            styleClass="#{view.viewId eq '/crud/agencia.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/agencia.xhtml' ? 'page' : null}"/>
+            </p:submenu>
+        </p:panelMenu>
+<!--    </p:panel>-->
+</ui:composition>

@@ -1,0 +1,37 @@
+Criar um CRUD para a entidade BagagemCompanhiaAerea.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Bagagem de Companhia Aérea
+Campos:
+- companhiaAerea: CompanhiaAerea
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete para CompanhiaAerea
+- tipoBagagem: TipoBagagem (Enum)
+  - Obrigatório: sim
+  - Tamanho máximo: 50 caracteres
+  - Interface: selectOneMenu para TipoBagagem
+- dataReferencia: LocalDate
+  - Obrigatório: sim
+  - Interface: datePicker
+- alturaCm: Double
+  - Obrigatório: sim
+  - Interface: inputNumber com 2 casas decimais
+- larguraCm: Double
+  - Obrigatório: sim
+  - Interface: inputNumber com 2 casas decimais
+- profundidadeCm: Double
+  - Obrigatório: sim
+  - Interface: inputNumber com 2 casas decimais
+- pesoMaximo: Double
+  - Obrigatório: sim
+  - Interface: inputNumber com 2 casas decimais        
+Pesquisa:
+- Filtros: companhiaAerea,tipoBagagem,dataReferencia
+Tabela de resultados:
+- Colunas: companhiaAerea,tipoBagagem,dataReferencia,alturaCm,larguraCm,profundidadeCm,pesoMaximo
+- Ações: somente inclusão de nova versão; não permitir edição ou exclusão
+Regras de negócio:
+- Unique conjunta em companhiaAerea,tipoBagagem,dataReferencia
+- Versões são imutáveis. Qualquer mudança deve ser cadastrada como novo registro com nova data de referência.
+- Não excluir versões; reservas mantêm a referência à versão de franquia selecionada.

@@ -1,0 +1,38 @@
+Criar um CRUD para a entidade Voo.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Voo
+Campos:
+- numero: String
+  - Obrigatório: sim
+  - Tamanho máximo: 10 caracteres
+  - Interface: inputText
+- dataReferencia: LocalDate
+  - Obrigatório: sim
+  - Interface: datePicker
+  - Uso: data de referência da versão do cadastro; não é a data da viagem
+- companhiaAerea: CompanhiaAerea
+  - Obrigatório: sim
+  - Interface: autoComplete para CompanhiaAerea
+- origem: Aeroporto
+  - Obrigatório: sim
+  - Interface: autoComplete para Aeroporto, exibindo código IATA e nome
+- destino: Aeroporto
+  - Obrigatório: sim
+  - Interface: autoComplete para Aeroporto, exibindo código IATA e nome
+- partida: LocalTime
+  - Obrigatório: sim
+  - Interface: datePicker somente com hora local do aeroporto de origem
+- chegada: LocalTime
+  - Obrigatório: sim
+  - Interface: datePicker somente com hora local do aeroporto de destino
+Pesquisa:
+- Filtros: numero,companhiaAerea,origem,destino,dataReferencia
+Tabela de resultados:
+- Colunas: numero,companhiaAerea,origem,destino,partida,chegada,dataReferencia
+- Ações: somente consulta; versões não podem ser editadas nem excluídas
+Regras de negócio:
+- Unique conjunta em numero,companhiaAerea,dataReferencia
+- Voo é imutável; qualquer alteração deve ser cadastrada como uma nova versão.
+- Voo guarda horários locais, sem data, tarifa ou cabine.
+- A Reserva agrupa cada Voo em um TrechoReserva, onde ficam as datas de partida/chegada e tarifa/cabine escolhidas.

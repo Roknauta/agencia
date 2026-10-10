@@ -1,0 +1,54 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{bagagemCompanhiaAereaController}"/>
+    <ui:param name="formId" value="bagagemCompanhiaAerea"/>
+    <ui:define name="searchField">
+        <m:autoComplete id="companhiaAerea" label="#{msg['companhia.aerea']}"
+                        value="#{bagagemCompanhiaAereaController.searchForm.companhiaAerea}"
+                        completeMethod="#{companhiaAereaController.completeCompanhiaAerea}"
+                        var="companhia" itemLabel="#{companhia.nome}" itemValue="#{companhia}"
+                        converter="#{companhiaAereaConverter}" required="false" minQueryLength="1"/>
+        <m:selectOneMenu id="tipoBagagem" label="#{msg['tipo.bagagem']}"
+                         value="#{bagagemCompanhiaAereaController.searchForm.tipoBagagem}">
+            <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+            <f:selectItems value="#{bagagemCompanhiaAereaController.tiposBagagem}"
+                           var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.label}"/>
+        </m:selectOneMenu>
+        <m:datePicker id="dataReferencia" label="#{msg['data.referencia']}"
+                      value="#{bagagemCompanhiaAereaController.searchForm.dataReferencia}"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable readOnly="true">
+            <t:column headerText="#{msg['companhia.aerea']}" value="#{item.companhiaAerea.nome}" sortBy="#{item.companhiaAerea.nome}"/>
+            <t:column headerText="#{msg['tipo.bagagem']}" value="#{item.tipoBagagem.label}" sortBy="#{item.tipoBagagem}"/>
+            <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}" sortBy="#{item.dataReferencia}"/>
+            <t:column headerText="#{msg['altura.cm']}" value="#{item.alturaCm}" sortBy="#{item.alturaCm}"/>
+            <t:column headerText="#{msg['largura.cm']}" value="#{item.larguraCm}" sortBy="#{item.larguraCm}"/>
+            <t:column headerText="#{msg['profundidade.cm']}" value="#{item.profundidadeCm}" sortBy="#{item.profundidadeCm}"/>
+            <t:column headerText="#{msg['peso.maximo']}" value="#{item.pesoMaximo}" sortBy="#{item.pesoMaximo}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="companhiaAerea" label="#{msg['companhia.aerea']}"
+                            value="#{bagagemCompanhiaAereaController.editForm.companhiaAerea}"
+                            completeMethod="#{companhiaAereaController.completeCompanhiaAerea}"
+                            var="companhia" itemLabel="#{companhia.nome}" itemValue="#{companhia}"
+                            converter="#{companhiaAereaConverter}" required="true" minQueryLength="1"/>
+            <m:selectOneMenu id="tipoBagagem" label="#{msg['tipo.bagagem']}"
+                             value="#{bagagemCompanhiaAereaController.editForm.tipoBagagem}" required="true">
+                <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                <f:selectItems value="#{bagagemCompanhiaAereaController.tiposBagagem}"
+                               var="tipo" itemValue="#{tipo}" itemLabel="#{tipo.label}"/>
+            </m:selectOneMenu>
+            <m:datePicker id="dataReferencia" label="#{msg['data.referencia']}"
+                          value="#{bagagemCompanhiaAereaController.editForm.dataReferencia}"
+                          required="true"/>
+            <m:inputNumber id="alturaCm" label="#{msg['altura.cm']}" value="#{bagagemCompanhiaAereaController.editForm.alturaCm}" required="true" decimalPlaces="2"/>
+            <m:inputNumber id="larguraCm" label="#{msg['largura.cm']}" value="#{bagagemCompanhiaAereaController.editForm.larguraCm}" required="true" decimalPlaces="2"/>
+            <m:inputNumber id="profundidadeCm" label="#{msg['profundidade.cm']}" value="#{bagagemCompanhiaAereaController.editForm.profundidadeCm}" required="true" decimalPlaces="2"/>
+            <m:inputNumber id="pesoMaximo" label="#{msg['peso.maximo']}" value="#{bagagemCompanhiaAereaController.editForm.pesoMaximo}" required="true" decimalPlaces="2"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

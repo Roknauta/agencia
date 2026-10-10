@@ -1,0 +1,151 @@
+/* Estrutura e espaçamento. As cores são fornecidas pelo tema PrimeFaces. */
+body.agencia-app {
+    margin: 0;
+    font-family: var(--font-family, Arial, sans-serif);
+    line-height: 1.5;
+}
+
+.agencia-app *, .agencia-app *::before, .agencia-app *::after {
+    box-sizing: border-box;
+}
+
+.app-sidebar, .app-workspace {
+    min-width: 0;
+}
+
+.app-sidebar {
+    position: sticky;
+    top: 0;
+    padding: 1rem .75rem;
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.app-workspace {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    padding: 1rem 1.25rem;
+}
+
+.app-footer {
+    padding: .75rem 0;
+    font-size: .8rem;
+}
+
+
+
+.crud-actions {
+    margin-bottom: 1rem;
+}
+
+.crud-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.5rem;
+}
+
+.crud-search {
+    margin-bottom: 1.5rem;
+}
+
+.metric-label {
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+.metric-value {
+    margin: .75rem 0;
+    font-size: clamp(1.3rem, 1.8vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.metric-note {
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 800px) {
+    .app-sidebar {
+        position: static;
+        max-height: none;
+    }
+
+    .app-workspace {
+        padding: 1rem;
+    }
+}
+
+/* Resumos: valores próximos aos rótulos, sem distribuir a linha por toda a tela. */
+.resumo-item {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .25rem .75rem;
+    padding: .45rem 0;
+}
+
+.resumo-label {
+    line-height: 1.4;
+}
+
+.resumo-valor {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.resumo-nota {
+    font-size: .85rem;
+    line-height: 1.5;
+    margin: .25rem 0 .75rem;
+}
+
+.dashboard-consolidado,
+.importacao-painel {
+    margin-top: 1.25rem;
+}
+
+.importacao-painel:first-child {
+    margin-top: 0;
+}
+
+.importacao-introducao {
+    margin-bottom: 1.25rem;
+}
+
+.importacao-modelo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75rem;
+}
+
+.importacao-colunas {
+    border-spacing: 0;
+}
+
+.importacao-colunas td {
+    padding: .4rem 1.25rem .4rem 0;
+}
+
+.importacao-coluna {
+    font-weight: 600;
+}
+
+.importacao-resultado {
+    margin-top: 1rem;
+}
+
+.importacao-orientacoes {
+    margin-top: 1.25rem;
+}
+
+.centered{
+    text-align: center;
+}

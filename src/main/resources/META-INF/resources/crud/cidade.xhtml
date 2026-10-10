@@ -1,0 +1,33 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml" xmlns:p="http://primefaces.org/ui">
+    <ui:param name="crudController" value="#{cidadeController}"/>
+    <ui:param name="formId" value="cidade"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{cidadeController.searchForm.nome}" maxlength="100"/>
+        <m:inputText id="estado" label="#{msg['estado']}" value="#{cidadeController.searchForm.estado}" maxlength="50"/>
+        <m:autoComplete id="pais" label="#{msg['pais']}"
+                        value="#{cidadeController.searchForm.pais}"
+                        completeMethod="#{paisController.completePais}"
+                        var="pais" itemLabel="#{pais.nome}" itemValue="#{pais}"
+                        converter="#{paisConverter}" required="false" minQueryLength="1"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['estado']}" value="#{item.estado}" sortBy="#{item.estado}"/>
+            <t:column headerText="#{msg['pais']}" value="#{item.pais.nome}" sortBy="#{item.pais.nome}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{cidadeController.editForm.nome}" required="true" maxlength="100"/>
+            <m:inputText id="estado" label="#{msg['estado']}" value="#{cidadeController.editForm.estado}" maxlength="50"/>
+            <m:autoComplete id="pais" label="#{msg['pais']}"
+                            value="#{cidadeController.editForm.pais}"
+                            completeMethod="#{paisController.completePais}"
+                            var="pais" itemLabel="#{pais.nome}" itemValue="#{pais}"
+                            converter="#{paisConverter}" required="false" minQueryLength="1"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

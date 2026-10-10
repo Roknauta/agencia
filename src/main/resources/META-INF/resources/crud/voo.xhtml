@@ -1,0 +1,70 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{vooController}"/>
+    <ui:param name="formId" value="voo"/>
+    <ui:define name="searchField">
+        <m:inputText id="numero" label="#{msg['numero.voo']}" value="#{vooController.searchForm.numero}" maxlength="10"/>
+        <m:autoComplete id="companhiaAerea" label="#{msg['companhia.aerea']}"
+                        value="#{vooController.searchForm.companhiaAerea}"
+                        completeMethod="#{companhiaAereaController.completeCompanhiaAerea}"
+                        var="companhia" itemLabel="#{companhia.nome}" itemValue="#{companhia}"
+                        converter="#{companhiaAereaConverter}" required="false" minQueryLength="1"/>
+        <m:autoComplete id="origem" label="#{msg['campo.origem']}"
+                        value="#{vooController.searchForm.origem}"
+                        completeMethod="#{aeroportoController.completeAeroporto}"
+                        var="aeroporto" itemLabel="#{aeroporto.getCidadeAndIata()}"
+                        itemValue="#{aeroporto}" converter="#{aeroportoConverter}"
+                        required="false" minQueryLength="1"/>
+        <m:autoComplete id="destino" label="#{msg['campo.destino']}"
+                        value="#{vooController.searchForm.destino}"
+                        completeMethod="#{aeroportoController.completeAeroporto}"
+                        var="aeroporto" itemLabel="#{aeroporto.getCidadeAndIata()}"
+                        itemValue="#{aeroporto}" converter="#{aeroportoConverter}"
+                        required="false" minQueryLength="1"/>
+        <m:datePicker id="dataReferencia" label="#{msg['data.referencia']}"
+                      value="#{vooController.searchForm.dataReferencia}"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable readOnly="true">
+            <t:column headerText="#{msg['numero.voo']}" value="#{item.numero}" sortBy="#{item.numero}"/>
+            <t:column headerText="#{msg['companhia.aerea']}" value="#{item.companhiaAerea.nome}" sortBy="#{item.companhiaAerea.nome}"/>
+            <t:column headerText="#{msg['campo.origem']}" value="#{item.origem.codigoIata}" sortBy="#{item.origem.codigoIata}"/>
+            <t:column headerText="#{msg['campo.destino']}" value="#{item.destino.codigoIata}" sortBy="#{item.destino.codigoIata}"/>
+            <t:column headerText="#{msg['campo.partida']}" value="#{item.partida}" sortBy="#{item.partida}"/>
+            <t:column headerText="#{msg['campo.chegada']}" value="#{item.chegada}" sortBy="#{item.chegada}"/>
+            <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}" sortBy="#{item.dataReferencia}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="numero" label="#{msg['numero.voo']}" value="#{vooController.editForm.numero}"
+                         required="true" maxlength="10"/>
+            <m:datePicker id="dataReferencia" label="#{msg['data.referencia']}"
+                          value="#{vooController.editForm.dataReferencia}" required="true"/>
+            <m:autoComplete id="companhiaAerea" label="#{msg['companhia.aerea']}"
+                            value="#{vooController.editForm.companhiaAerea}"
+                            completeMethod="#{companhiaAereaController.completeCompanhiaAerea}"
+                            var="companhia" itemLabel="#{companhia.nome}" itemValue="#{companhia}"
+                            converter="#{companhiaAereaConverter}" required="true" minQueryLength="1"/>
+            <m:autoComplete id="origem" label="#{msg['campo.origem']}"
+                            value="#{vooController.editForm.origem}"
+                            completeMethod="#{aeroportoController.completeAeroporto}"
+                            var="aeroporto" itemLabel="#{aeroporto.getCidadeAndIata()}"
+                            itemValue="#{aeroporto}" converter="#{aeroportoConverter}"
+                            required="true" minQueryLength="1"/>
+            <m:autoComplete id="destino" label="#{msg['campo.destino']}"
+                            value="#{vooController.editForm.destino}"
+                            completeMethod="#{aeroportoController.completeAeroporto}"
+                            var="aeroporto" itemLabel="#{aeroporto.getCidadeAndIata()}"
+                            itemValue="#{aeroporto}" converter="#{aeroportoConverter}"
+                            required="true" minQueryLength="1"/>
+            <m:datePicker id="partida" label="#{msg['campo.partida']}"
+                          value="#{vooController.editForm.partida}" required="true"
+                          timeOnly="true" pattern="HH:mm"/>
+            <m:datePicker id="chegada" label="#{msg['campo.chegada']}"
+                          value="#{vooController.editForm.chegada}" required="true"
+                          timeOnly="true" pattern="HH:mm"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

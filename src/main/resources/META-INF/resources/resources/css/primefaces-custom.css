@@ -1,0 +1,272 @@
+/* Ajustes de dimensões e alinhamento, sem sobrescrever cores ou estados do tema. */
+body.agencia-app .app-shell > .ui-panelgrid-content {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    align-items: start;
+}
+
+body.agencia-app .app-shell > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell,
+body.agencia-app .form-grid > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell {
+    float: none;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+}
+
+body.agencia-app .app-shell > .ui-panelgrid-content::before,
+body.agencia-app .app-shell > .ui-panelgrid-content::after,
+body.agencia-app .form-grid > .ui-panelgrid-content::before,
+body.agencia-app .form-grid > .ui-panelgrid-content::after,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content::before,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content::after,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content::before,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content::after {
+    display: none;
+}
+
+body.agencia-app .page-panel > .ui-panel-titlebar {
+    padding: 1rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+body.agencia-app .page-panel > .ui-panel-content {
+    padding: 1.25rem;
+}
+
+body.agencia-app .app-sidebar .ui-panelmenu .ui-menuitem-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+
+body.agencia-app .form-grid > .ui-panelgrid-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+    padding: 0;
+    margin-bottom: 1.25rem;
+}
+
+body.agencia-app .form-field {
+    width: 100%;
+    border-spacing: 0;
+}
+
+body.agencia-app .form-field > tbody > tr > td {
+    padding: .2rem 0;
+}
+
+body.agencia-app .form-field .ui-outputlabel {
+    display: block;
+    font-weight: 600;
+}
+
+body.agencia-app .form-field .ui-inputfield,
+body.agencia-app .form-field .ui-inputnumber,
+body.agencia-app .form-field .ui-datepicker,
+body.agencia-app .form-field .ui-autocomplete,
+body.agencia-app .form-field .ui-selectonemenu {
+    width: 100%;
+    min-width: 0;
+}
+
+body.agencia-app .form-field .ui-autocomplete.ui-autocomplete-dd {
+    display: inline-flex;
+}
+
+body.agencia-app .form-field .ui-autocomplete.ui-autocomplete-dd .ui-autocomplete-input {
+    flex: 1;
+    width: 0;
+}
+
+body.agencia-app .form-field .ui-autocomplete-dropdown {
+    flex-shrink: 0;
+}
+
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+body.agencia-app .metric-card {
+    height: auto;
+}
+
+body.agencia-app .metric-card > .ui-panel-content {
+    padding: 1.25rem;
+}
+
+body.agencia-app .dashboard-charts > .ui-panelgrid-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    padding: 0;
+}
+
+body.agencia-app .chart-card {
+    height: auto;
+}
+
+body.agencia-app .chart-card .ui-chart {
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+body.agencia-app .ui-datatable .ui-datatable-data > tr > td {
+    padding-top: .85rem;
+    padding-bottom: .85rem;
+    vertical-align: middle;
+}
+
+@media (max-width: 1200px) {
+    body.agencia-app .dashboard-metrics > .ui-panelgrid-content {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    body.agencia-app .app-shell > .ui-panelgrid-content {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    body.agencia-app .dashboard-charts > .ui-panelgrid-content {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    body.agencia-app .page-panel > .ui-panel-content {
+        padding: .75rem;
+    }
+}
+
+/* O panelGrid gera uma linha intermediária; seus campos participam da grade externa. */
+body.agencia-app .app-shell > .ui-panelgrid-content > .ui-g,
+body.agencia-app .form-grid > .ui-panelgrid-content > .ui-g,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content > .ui-g,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content > .ui-g {
+    display: contents;
+}
+
+body.agencia-app .app-shell > .ui-panelgrid-content > .ui-g::before,
+body.agencia-app .app-shell > .ui-panelgrid-content > .ui-g::after,
+body.agencia-app .form-grid > .ui-panelgrid-content > .ui-g::before,
+body.agencia-app .form-grid > .ui-panelgrid-content > .ui-g::after,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content > .ui-g::before,
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content > .ui-g::after,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content > .ui-g::before,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content > .ui-g::after {
+    display: none;
+}
+
+body.agencia-app .form-field .p-datepicker {
+    display: inline-flex;
+    width: 100%;
+}
+
+body.agencia-app .form-field .p-datepicker > .ui-inputfield {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+}
+
+body.agencia-app .form-field .p-datepicker > .ui-datepicker-trigger {
+    flex-shrink: 0;
+}
+
+body.agencia-app .dashboard-metrics > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell,
+body.agencia-app .dashboard-charts > .ui-panelgrid-content > .ui-g > .ui-panelgrid-cell {
+    display: flex;
+}
+
+body.agencia-app .metric-card,
+body.agencia-app .chart-card {
+    width: 100%;
+}
+
+@media (max-width: 560px) {
+    body.agencia-app .form-grid > .ui-panelgrid-content,
+    body.agencia-app .dashboard-metrics > .ui-panelgrid-content {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+body.agencia-app .importacao-orientacoes > .ui-panel-content > div {
+    margin-bottom: .75rem;
+    line-height: 1.6;
+}
+
+/* Confirmação ancorada no centro da janela, independente do layout da página. */
+body.agencia-app .ui-confirm-dialog.confirmacao-centralizada {
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    max-width: calc(100vw - 2rem);
+}
+
+body.agencia-app .ui-datatable th.coluna-opcoes,
+body.agencia-app .ui-datatable td.coluna-opcoes {
+    width: 6rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    body.agencia-app .ui-datatable-reflow td.coluna-opcoes {
+        width: auto;
+        text-align: left;
+    }
+}
+
+/* Mantém o ícone ao lado do texto, inclusive quando o rótulo quebra de linha. */
+body.agencia-app .app-sidebar .ui-panelmenu .ui-menuitem-link {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+body.agencia-app .app-sidebar .ui-panelmenu .ui-menuitem-link > .ui-menuitem-icon {
+    flex: 0 0 auto;
+    float: none;
+    margin: 0;
+}
+
+body.agencia-app .app-sidebar .ui-panelmenu .ui-menuitem-link > .ui-menuitem-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    float: none;
+    white-space: normal;
+}
+
+/* Destaque persistente da página corrente, com as cores do tema configurado. */
+body.agencia-app .app-sidebar .ui-panelmenu .menu-atual,
+body.agencia-app .app-sidebar .ui-panelmenu .menu-atual > a {
+    background: var(--primary-color);
+    color: var(--primary-color-text);
+    font-weight: 600;
+}
+
+body.agencia-app .app-sidebar .ui-panelmenu .menu-atual .ui-menuitem-text,
+body.agencia-app .app-sidebar .ui-panelmenu .menu-atual .ui-icon {
+    color: var(--primary-color-text);
+}
+
+body .ui-datatable .ui-datatable-header {
+    text-align: center;
+}
+
+body .ui-datatable .ui-datatable-footer{
+    text-align: center;
+}

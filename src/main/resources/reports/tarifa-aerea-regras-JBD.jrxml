@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="tarifa_aerea_regras_jbd" language="java" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="42" rightMargin="42" topMargin="36" bottomMargin="36">
+ <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+ <style name="Base" default="true" fontName="DejaVu Sans" fontSize="11" forecolor="#243246"/>
+ <field name="titulo" class="java.lang.String"/><field name="texto" class="java.lang.String"/><field name="destaque" class="java.lang.Boolean"/>
+ <title height="66">
+  <element kind="staticText" x="0" y="0" width="511" height="26" fontSize="20" bold="true" forecolor="#24588C"><text><![CDATA[JBD Viagens]]></text></element>
+  <element kind="staticText" x="0" y="32" width="511" height="26" fontSize="16" bold="true"><text><![CDATA[Regras das tarifas aéreas]]></text></element>
+ </title>
+ <detail><band height="76" splitType="Stretch">
+  <element kind="textField" positionType="Float" x="0" y="0" width="511" height="22" bold="true" fontSize="13" forecolor="#24588C" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{titulo}]]></expression></element>
+  <element kind="textField" positionType="Float" x="0" y="26" width="511" height="44" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{texto}]]></expression><paragraph lineSpacing="Proportional" lineSpacingSize="1.2"/></element>
+ </band></detail>
+ <pageFooter height="22">
+  <element kind="textField" x="0" y="5" width="430" height="14" fontSize="8" forecolor="#63758A"><expression><![CDATA["JBD Viagens | Regras das tarifas aéreas"]]></expression></element>
+  <element kind="textField" x="450" y="5" width="61" height="14" fontSize="8" hTextAlign="Right"><expression><![CDATA["Página " + $V{PAGE_NUMBER}]]></expression></element>
+ </pageFooter>
+</jasperReport>

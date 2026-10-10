@@ -1,0 +1,23 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="jakarta.faces.html"
+                xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{paisController}"/>
+    <ui:param name="formId" value="pais"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{paisController.searchForm.nome}" maxlength="100"/>
+        <m:inputText id="sigla" label="#{msg['campo.sigla']}" value="#{paisController.searchForm.sigla}" maxlength="5"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['campo.sigla']}" value="#{item.sigla}" sortBy="#{item.sigla}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{paisController.editForm.nome}" required="true" maxlength="100"/>
+            <m:inputText id="sigla" label="#{msg['campo.sigla']}" value="#{paisController.editForm.sigla}" maxlength="5"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

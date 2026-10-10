@@ -1,0 +1,28 @@
+<ui:component xmlns:ui="jakarta.faces.facelets" xmlns:cc="jakarta.faces.composite" xmlns:p="http://primefaces.org/ui" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:m="jakarta.faces.composite/resources/components" xmlns:t="http://agencia.com/jsf" xmlns:pt="jakarta.faces.passthrough">
+    <cc:interface>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="label" default=""/>
+        <cc:attribute name="required" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="disabled" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="readonly" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="requiredMessage" default="#{msg['componente.obrigatorio']}"/>
+        <cc:attribute name="pattern" default="dd/MM/yyyy"/>
+        <cc:attribute name="timeOnly" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="showTime" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="showIcon" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="monthNavigator" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="yearNavigator" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="showButtonBar" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="readonlyInput" type="java.lang.Boolean" default="false"/>
+        <cc:editableValueHolder name="input" targets="input"/>
+        <cc:clientBehavior name="dateSelect" event="dateSelect" targets="input" default="true"/>
+        <cc:clientBehavior name="change" event="change" targets="input"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGrid columns="1" styleClass="form-field">
+            <p:outputLabel for="input" value="#{cc.attrs.label}" rendered="#{not empty cc.attrs.label}"/>
+            <p:datePicker id="input" value="#{cc.attrs.value}" label="#{cc.attrs.label}" required="#{cc.attrs.required}" disabled="#{cc.attrs.disabled}" readonly="#{cc.attrs.readonly}" requiredMessage="#{cc.attrs.requiredMessage}" pattern="#{cc.attrs.pattern}" timeOnly="#{cc.attrs.timeOnly}" showTime="#{cc.attrs.showTime}" showIcon="#{cc.attrs.showIcon}" showOnFocus="true" monthNavigator="#{cc.attrs.monthNavigator}" yearNavigator="#{cc.attrs.yearNavigator}" showButtonBar="#{cc.attrs.showButtonBar}" readonlyInput="#{cc.attrs.readonlyInput}" appendTo="@(body)"/>
+            <p:message for="input"/>
+        </h:panelGrid>
+    </cc:implementation>
+</ui:component>

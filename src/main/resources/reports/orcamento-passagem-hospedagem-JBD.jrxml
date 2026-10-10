@@ -1,0 +1,684 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Jaspersoft Studio version 7.0.6.final using JasperReports Library version 7.0.0  -->
+<jasperReport name="orcamento_passagem_hospedagem_jbd" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="24" bottomMargin="24" uuid="7c22445d-37ee-4cb5-a291-f4031d8df539" summaryWithPageHeaderAndFooter="true" titleNewPage="true">
+	<property name="net.sf.jasperreports.export.pdf.metadata.title" value="Orçamento de viagem - JBD Viagens"/>
+	<property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+	<style name="Base" default="true" forecolor="#003366" fontName="DejaVu Sans" fontSize="10.0"/>
+	<dataset name="Voos" uuid="a783b1db-b5a2-4be0-90aa-d4d6ccc96a9a">
+		<parameter name="VOO_DIRETO" class="java.lang.Boolean"/>
+		<field name="origem" class="java.lang.String"/>
+		<field name="saida" class="java.time.LocalDateTime"/>
+		<field name="numero" class="java.lang.String"/>
+		<field name="chegada" class="java.time.LocalDateTime"/>
+		<field name="destino" class="java.lang.String"/>
+		<field name="companhia" class="com.roknauta.agencia.web.jasper.documento.comum.CompanhiaAereaRelatorioDTO"/>
+		<field name="duracaoFormatada" class="java.lang.String"/>
+		<field name="conexaoFormatada" class="java.lang.String"/>
+	</dataset>
+	<dataset name="Bagagens" uuid="3b05ec7d-2a26-4717-8710-6cd449f38afe">
+		<field name="descricaoRelatorio" class="java.lang.String"/>
+		<field name="dimensoes" class="java.lang.String"/>
+		<field name="pesoMaximo" class="java.lang.Double"/>
+		<field name="quantidade" class="java.lang.Integer"/>
+	</dataset>
+	<dataset name="FotosHospedagem" uuid="c715b53b-c518-4c0b-aba5-7f68d08eeaf7">
+        <field name="esquerda" class="java.io.InputStream"/>
+        <field name="direita" class="java.io.InputStream"/>
+    </dataset>
+	<parameter name="RELATORIO_HOSPEDAGENS" class="net.sf.jasperreports.engine.JasperReport"/>
+<parameter name="LOGO" class="java.awt.Image"/>
+	<field name="origem" class="java.lang.String"/>
+	<field name="destino" class="java.lang.String"/>
+	<field name="regras" class="java.lang.String"/>
+	<field name="aviso" class="java.lang.String"/>
+	<field name="consultaPrecosEm" class="java.lang.String"/>
+	<field name="valorSeguros" class="java.math.BigDecimal"/>
+	<field name="valorESims" class="java.math.BigDecimal"/>
+	<field name="orientacoes" class="java.lang.String"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="consultor" class="java.lang.String"/>
+	<field name="elaboradoEm" class="java.lang.String"/>
+	<field name="validade" class="java.lang.String"/>
+	<field name="perfilPassageiros" class="java.lang.String"/>
+	<field name="pagamento" class="java.lang.String"/>
+	<field name="tarifa" class="java.lang.String"/>
+	<field name="quantidadePassageiros" class="java.lang.Integer"/>
+	<field name="ida" class="com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO"/>
+	<field name="volta" class="com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO"/>
+	<field name="hospedagens" class="java.util.List"/>
+	<field name="valorRodoviario" class="java.math.BigDecimal"/>
+
+<field name="passagensRodoviarias" class="java.util.List"/>
+<field name="valorAereo" class="java.math.BigDecimal"/>
+	<field name="valorHospedagem" class="java.math.BigDecimal"/>
+	<field name="taxas" class="java.math.BigDecimal"/>
+	<field name="servicos" class="java.math.BigDecimal"/>
+	<field name="desconto" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="valorPorPessoa" class="java.math.BigDecimal"/>
+	<field name="aluguelCarro" class="com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO"/>
+	<field name="transfer" class="com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO"/>
+	<field name="valorTransfer" class="java.math.BigDecimal"/>
+	<title height="710" splitType="Prevent"><element kind="image" uuid="e1c25e1e-ea78-4f73-9536-84250311cdda" x="220" y="25" width="83" height="105" scaleImage="RetainShape" hImageAlign="Center" vImageAlign="Middle"><expression><![CDATA[$P{LOGO}]]></expression></element><element kind="staticText" uuid="66c7dd25-61ee-4b96-bb8a-2489fcb2bcb9" x="24" y="144" width="475" height="35" forecolor="#003366" fontSize="23" hTextAlign="Center" vTextAlign="Middle" bold="true"><text><![CDATA[ORÇAMENTO DE VIAGEM]]></text></element><element kind="staticText" uuid="c61019b1-c837-434e-b21a-5775f9d0af22" x="24" y="183" width="475" height="24" forecolor="#718398" fontSize="11" hTextAlign="Center" vTextAlign="Middle" bold="false"><text><![CDATA[Sua próxima viagem começa aqui.]]></text></element><element kind="rectangle" uuid="783a5033-2ba5-43ce-974c-c88968e57407" x="0" y="229" width="523" height="410" mode="Opaque" backcolor="#F3F6FA" radius="16"><pen lineWidth="0.5" lineColor="#DFE7EF"/></element><element kind="staticText" uuid="bd9e7fbf-fdbf-458c-82bc-e7d424d175f4" x="24" y="248" width="475" height="18" forecolor="#8C7138" fontSize="9" hTextAlign="Center" vTextAlign="Middle" bold="true"><text><![CDATA[ORIGEM]]></text></element><element kind="textField" uuid="1efdae75-2ba5-470f-ac60-0f517a8d2edb" x="24" y="270" width="475" height="70" forecolor="#003366" fontSize="24" hTextAlign="Center" vTextAlign="Middle" bold="true" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA[$F{origem}]]></expression></element><element kind="staticText" uuid="c8c3e5fd-6ef1-4914-baa7-7746576ac66a" x="24" y="350" width="475" height="18" forecolor="#8C7138" fontSize="9" hTextAlign="Center" vTextAlign="Middle" bold="true"><text><![CDATA[DESTINO]]></text></element><element kind="textField" uuid="4f1e11ea-8fa2-4784-8e58-73fcff12f305" x="24" y="372" width="475" height="70" forecolor="#003366" fontSize="24" hTextAlign="Center" vTextAlign="Middle" bold="true" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA[$F{destino}]]></expression></element><element kind="textField" uuid="76735c10-d86b-4dce-9aa5-38afeca58039" x="24" y="470" width="475" height="48" forecolor="#003366" fontSize="15" hTextAlign="Center" vTextAlign="Middle" bold="true" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA["Cliente: " + $F{cliente}]]></expression></element><element kind="textField" uuid="353ca734-b074-44c5-a9f5-292db7ce4519" x="24" y="528" width="475" height="25" forecolor="#003366" fontSize="14" hTextAlign="Center" vTextAlign="Middle" bold="true" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA["Viajantes: " + $F{quantidadePassageiros}]]></expression></element><element kind="textField" uuid="0386b31b-9c3b-4cfb-a8be-66b4fdc47535" x="24" y="558" width="475" height="24" forecolor="#003366" fontSize="11" hTextAlign="Center" vTextAlign="Middle" bold="false" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA[$F{perfilPassageiros}]]></expression></element><element kind="textField" uuid="fc798ddc-7c6c-449d-85df-72068ee6235e" x="24" y="598" width="475" height="24" forecolor="#003366" fontSize="11" hTextAlign="Center" vTextAlign="Middle" bold="false" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA["Consultor: " + java.util.Objects.toString($F{consultor}, "")]]></expression></element><element kind="textField" uuid="f6e2e8b6-8535-43f9-88ea-1f1a1f5980b6" x="24" y="662" width="475" height="24" forecolor="#8C7138" fontSize="11" hTextAlign="Center" vTextAlign="Middle" bold="false" textAdjust="ScaleFont" blankWhenNull="true"><expression><![CDATA["Cotação nº " + $F{numero} + " • " + $F{elaboradoEm}]]></expression></element></title><pageHeader height="88">
+		<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression><element kind="image" uuid="23341dd8-5a8d-497e-9434-d872d684d32d" x="0" y="0" width="47" height="65" scaleImage="RetainShape">
+			<expression><![CDATA[$P{LOGO}]]></expression>
+		</element>
+		<element kind="staticText" uuid="62dce090-3a29-4b64-a2ed-65850fb09709" x="65" y="2" width="458" height="34" forecolor="#003366" fontName="DejaVu Sans" fontSize="20.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Orçamento de viagem]]></text>
+		</element>
+		<element kind="line" uuid="2044f8a7-e829-4487-a9da-771e86a33ee7" x="65" y="46" width="458" height="1">
+			<pen lineWidth="1.0" lineColor="#C8A753"/>
+		</element>
+		<element kind="textField" uuid="3eef7492-fd8d-4ac0-b959-ebf0fe6c1a27" x="65" y="50" width="458" height="20" forecolor="#CCAA55" hTextAlign="Right" vTextAlign="Top">
+			<expression><![CDATA["Cotação nº " + $F{numero} + " • " + $F{elaboradoEm}]]></expression>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="320" splitType="Prevent">
+			<printWhenExpression><![CDATA[$F{ida} != null]]></printWhenExpression>
+			<element kind="component" uuid="9d214069-bd45-4ffb-9929-00d12fed980f" positionType="Float" x="0" y="35" width="523" height="62">
+				<component kind="table" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun uuid="b04ca12c-b103-4bc5-abf2-8483b1c3b5a1" subDataset="Voos">
+						<parameter name="VOO_DIRETO">
+							<expression><![CDATA[$F{ida} != null && $F{ida}.getVoos() != null && $F{ida}.getVoos().size() == 1]]></expression>
+						</parameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ida} == null || $F{ida}.getVoos() == null ? java.util.Collections.emptyList() : $F{ida}.getVoos())]]></dataSourceExpression>
+					</datasetRun>
+					<column kind="single" uuid="0bb70e38-5e20-4589-bf0b-801b6f7434e0" width="38">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="bcafffdd-ae41-4eb7-915a-1f548957ee86" mode="Opaque" x="0" y="0" width="38" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CIA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="800c9544-d2f6-4a0b-b2f0-d0ebe4107481" mode="Opaque" x="0" y="0" width="38" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{companhia}.getNome()]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="f1a224c6-a4d3-4467-a291-1b9f063d5288" width="35">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="deb9a7e2-fb93-4298-84d4-208036e429f4" mode="Opaque" x="0" y="0" width="35" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[VOO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="ef38a375-d92c-4c20-a687-ca9d07afbd08" mode="Opaque" x="0" y="0" width="35" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{numero}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="2d668f10-5c97-41a7-9b6c-bbe7878a0a53" width="84">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="ea8e8391-3239-4d90-bfe3-c5f21e080fc3" mode="Opaque" x="0" y="0" width="84" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[ORIGEM]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="e4badd81-af3d-4a7f-8458-1bdf9f999317" mode="Opaque" x="0" y="0" width="84" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{origem}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="5d3cd809-0b48-4a4e-bb1e-6a27e9a5b521" width="83">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="c1885850-9984-4a67-858a-c9cc0551a02d" mode="Opaque" x="0" y="0" width="83" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[SAÍDA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="e296f4fe-3ffc-48ec-a1c7-fea5374618e3" mode="Opaque" x="0" y="0" width="83" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{saida}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="9469903e-dc52-49c1-9967-6594d773b12e" width="83">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="072649bc-721f-4c38-a34b-10a12dc71c62" mode="Opaque" x="0" y="0" width="83" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CHEGADA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="77c6a704-e2b0-43d9-a8b0-1631326f6c92" mode="Opaque" x="0" y="0" width="83" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{chegada}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="3ad7d1b8-c3bd-435c-beac-04059d36727f" width="84">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="1817b0ac-75ce-42f3-bd2e-3a93239f910e" mode="Opaque" x="0" y="0" width="84" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DESTINO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="5d34fc90-ee94-4cfb-bc07-9b899aa081a4" mode="Opaque" x="0" y="0" width="84" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{destino}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="66253018-a8ff-4a53-a807-d5dff194ca6b" width="58">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="c2f61a0d-0f0d-475a-9e96-ed5df1313904" mode="Opaque" x="0" y="0" width="58" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DURAÇÃO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="fd3c7fa3-dff4-4f40-8190-8407b8b7d3f7" mode="Opaque" x="0" y="0" width="58" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{duracaoFormatada}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="f3c3d14a-f3e2-45b6-a9af-eee74ae8d613" width="58">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="2e3d870d-db84-4fe9-87b7-9baef1ca9420" mode="Opaque" x="0" y="0" width="58" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CONEXÃO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="b494f2fb-d581-436b-b3a2-26853881f0e3" mode="Opaque" x="0" y="0" width="58" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[Boolean.TRUE.equals($P{VOO_DIRETO}) ? "Direto" : $F{conexaoFormatada}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+				</component>
+			</element>
+			<element kind="staticText" uuid="592fa9b8-7ae4-45a3-946e-d66908e2e872" positionType="Float" x="0" y="97" width="523" height="19" forecolor="#587087" fontSize="8.0" bold="false" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Os horários mencionados são locais de cada cidade]]></text>
+			</element>
+			<element kind="component" uuid="02ebe1f6-a89c-4cf9-8ccb-70cc9141017a" key="BAGAGENS_IDA" positionType="Float" x="0" y="187" width="523" height="56">
+				<component kind="table" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun uuid="70f4e94e-bd9f-4046-91cf-c12548bd3938" subDataset="Bagagens">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ida} == null || $F{ida}.getBagagens() == null ? java.util.Collections.emptyList() : $F{ida}.getBagagens())]]></dataSourceExpression>
+					</datasetRun>
+					<column kind="single" uuid="7b486da4-e876-44e2-817a-58a4296e92f0" width="170">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="3d82b057-4d7d-41e6-9e7c-e30f220eabca" mode="Opaque" x="0" y="0" width="170" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[TIPO]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="ca17ffbb-2e2e-4538-8b6c-db735ce71f02" mode="Opaque" x="0" y="0" width="170" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{descricaoRelatorio}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+					<column kind="single" uuid="16830ee4-fee9-48d3-ada8-dabad8f3c2d5" width="160">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="e2db6ed0-00f9-4d7a-a1af-c2b65c779996" mode="Opaque" x="0" y="0" width="160" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DIMENSÕES]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="62c16de8-f0ca-435f-8738-77973a4fe735" mode="Opaque" x="0" y="0" width="160" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{dimensoes} == null || $F{dimensoes}.trim().isEmpty() ? "Não informado" : $F{dimensoes}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+					</column>
+					<column kind="single" uuid="62bfa373-b816-4eff-9b82-fcb137719c0e" width="103">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="ea4dcc12-a64a-48b8-b6fd-d430d7ffa7b5" mode="Opaque" x="0" y="0" width="103" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[PESO MÁXIMO]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="86c6a96e-7d66-426a-92e4-a64e3f0d65e8" mode="Opaque" x="0" y="0" width="103" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{pesoMaximo} == null ? "Não informado" : new java.text.DecimalFormat("0.##").format($F{pesoMaximo}) + " kg"]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+					</column>
+					<column kind="single" uuid="644af929-82c0-4b19-85ea-16c897ae26ec" width="90">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="49e72cec-fdd9-48d9-8495-f93d09a97614" mode="Opaque" x="0" y="0" width="90" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[QUANTIDADE]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="adb3d340-ef46-4611-9c63-24f769facdc2" mode="Opaque" x="0" y="0" width="90" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{quantidade} == null ? 0 : $F{quantidade}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+				</component>
+			</element>
+			<element kind="staticText" uuid="0daa3975-2345-4c1c-827e-893b6a3f7d63" key="TITULO_IDA" x="0" y="0" width="523" height="25" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[ITINERÁRIO DA IDA]]></text>
+			</element>
+			<element kind="textField" uuid="b8bc421a-1a2b-4a71-b148-cc8c877dbd11" positionType="Float" x="0" y="119" width="523" height="36" forecolor="#587087" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{ida} == null ? "" : ($F{ida}.getResumoCabine() == null || $F{ida}.getResumoCabine().isBlank() ? "" : "Cabine: " + $F{ida}.getResumoCabine()) + ($F{ida}.getResumoTarifa() == null || $F{ida}.getResumoTarifa().isBlank() ? "" : ($F{ida}.getResumoCabine() == null || $F{ida}.getResumoCabine().isBlank() ? "" : "\n") + "Tarifa: " + $F{ida}.getResumoTarifa())]]></expression>
+			</element>
+			<element kind="staticText" uuid="2f5140b9-ffa0-47ef-b8d2-6cd40559c13c" positionType="Float" x="0" y="162" width="523" height="25" forecolor="#CCAA55" fontSize="13.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[BAGAGENS TOTAIS DA IDA]]></text>
+			</element>
+			<element kind="break" uuid="476087b8-d13b-45d4-a567-e6f35c6e04d5" x="0" y="319" width="100" height="1"/>
+		</band>
+		<band height="320" splitType="Prevent">
+			<printWhenExpression><![CDATA[$F{volta} != null]]></printWhenExpression>
+			<element kind="component" uuid="a5423f85-0b79-47e1-9bff-9c9247e79a6f" positionType="Float" x="0" y="35" width="523" height="62">
+				<component kind="table" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun uuid="6f0eaa56-fc86-4a63-a35c-f95080c667f3" subDataset="Voos">
+						<parameter name="VOO_DIRETO">
+							<expression><![CDATA[$F{volta} != null && $F{volta}.getVoos() != null && $F{volta}.getVoos().size() == 1]]></expression>
+						</parameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{volta} == null || $F{volta}.getVoos() == null ? java.util.Collections.emptyList() : $F{volta}.getVoos())]]></dataSourceExpression>
+					</datasetRun>
+					<column kind="single" uuid="8fbeff3a-2ca3-4000-9e11-c9f19bd3523f" width="38">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="3c3a7210-3174-4b5f-b8b7-8b747c993b8b" mode="Opaque" x="0" y="0" width="38" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CIA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="00a841a9-84ad-486e-9d0b-74e9abc30d4f" mode="Opaque" x="0" y="0" width="38" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{companhia}.getNome()]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="7f4617b3-163d-47c7-9c6c-15aa717d75f8" width="35">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="9ba4f491-cda7-470f-9e74-9b83451b68b5" mode="Opaque" x="0" y="0" width="35" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[VOO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="f313d415-b058-4b0f-ad84-e7f9230ee510" mode="Opaque" x="0" y="0" width="35" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{numero}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="4a1e38be-c04f-491c-8cb6-bdd827095d62" width="84">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="f4e34628-e607-4a8e-ade3-87a9afe3e800" mode="Opaque" x="0" y="0" width="84" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[ORIGEM]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="3225dfed-ba9f-4c61-8065-cc6852c4292b" mode="Opaque" x="0" y="0" width="84" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{origem}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="ead40961-d50d-43e8-86c0-a8d9ec657eee" width="83">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="6dade58c-88c0-49b3-abaf-37ddca9f5c9d" mode="Opaque" x="0" y="0" width="83" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[SAÍDA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="06f100dd-cb1a-4a23-b510-e49fcb1b4b2b" mode="Opaque" x="0" y="0" width="83" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{saida}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="afabdef4-baf2-415c-8fea-7d3c7cfc9bce" width="83">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="8ab01022-6c20-4e04-b4ab-257d7b3ac62d" mode="Opaque" x="0" y="0" width="83" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CHEGADA]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="16e804c6-c774-4f52-b73e-c15da92b6805" mode="Opaque" x="0" y="0" width="83" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{chegada}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="65e7563e-1379-421f-b34f-0901462bac6e" width="84">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="db068869-9921-4bbe-b1b9-1342ac1f52d7" mode="Opaque" x="0" y="0" width="84" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DESTINO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="50fc0686-02a2-49bb-8912-9245c249078b" mode="Opaque" x="0" y="0" width="84" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{destino}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="5849c0d1-156a-495e-a1b3-c4816cee1d69" width="58">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="e6f75b43-ebb8-4f8f-b433-ee105a88d5b5" mode="Opaque" x="0" y="0" width="58" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DURAÇÃO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="dfbc56a4-ce0d-4de1-afa2-0c65b206a844" mode="Opaque" x="0" y="0" width="58" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{duracaoFormatada}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+					<column kind="single" uuid="43fac785-5a9a-43b6-bb9c-1cf7aa7856a6" width="58">
+						<columnHeader height="24">
+							<element kind="staticText" uuid="32aaa7f3-fc69-47a5-91f4-3834e1969683" mode="Opaque" x="0" y="0" width="58" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[CONEXÃO]]></text>
+								<box leftPadding="6" rightPadding="4"/>
+							</element>
+						</columnHeader>
+						<detailCell height="38">
+							<element kind="textField" uuid="ae5261c8-8d92-494c-90ef-e5bc926e485b" mode="Opaque" x="0" y="0" width="58" height="38" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[Boolean.TRUE.equals($P{VOO_DIRETO}) ? "Direto" : $F{conexaoFormatada}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+					</column>
+				</component>
+			</element>
+			<element kind="staticText" uuid="927eb1c9-9ca7-4718-a519-b12b9db1789e" positionType="Float" x="0" y="97" width="523" height="19" forecolor="#587087" fontSize="8.0" bold="false" hTextAlign="Right" vTextAlign="Middle">
+				<text><![CDATA[Os horários mencionados são locais de cada cidade]]></text>
+			</element>
+			<element kind="component" uuid="227dee70-60ee-4723-b26f-d167a54e2af1" key="BAGAGENS_VOLTA" positionType="Float" x="0" y="187" width="523" height="56">
+				<component kind="table" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun uuid="eafe3cd3-8e8c-44d7-a7f8-f53efe8c9d8c" subDataset="Bagagens">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{volta} == null || $F{volta}.getBagagens() == null ? java.util.Collections.emptyList() : $F{volta}.getBagagens())]]></dataSourceExpression>
+					</datasetRun>
+					<column kind="single" uuid="bbabfe05-f22f-4bd3-a875-b08e3d52ee48" width="170">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="980f22e7-0a0a-4063-b73d-4609bae06560" mode="Opaque" x="0" y="0" width="170" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[TIPO]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="6228ca91-d57e-4a03-ba08-4c74581edaa9" mode="Opaque" x="0" y="0" width="170" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{descricaoRelatorio}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+					<column kind="single" uuid="b1660a85-87aa-4448-999b-a88eda3cb99f" width="160">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="cd904b18-c56f-41d7-b27a-0983697fbc43" mode="Opaque" x="0" y="0" width="160" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[DIMENSÕES]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="c36c1b56-be64-4a90-8d75-a51784b71cda" mode="Opaque" x="0" y="0" width="160" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{dimensoes} == null || $F{dimensoes}.trim().isEmpty() ? "Não informado" : $F{dimensoes}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+					</column>
+					<column kind="single" uuid="24f06a54-9e69-48f5-81e8-1e60ae23318e" width="103">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="af64dcea-fe31-4a9e-a672-b27cc5229315" mode="Opaque" x="0" y="0" width="103" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[PESO MÁXIMO]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="49858cf3-a834-4e56-8840-c5d48907c81e" mode="Opaque" x="0" y="0" width="103" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{pesoMaximo} == null ? "Não informado" : new java.text.DecimalFormat("0.##").format($F{pesoMaximo}) + " kg"]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+					</column>
+					<column kind="single" uuid="81fb49e8-c95d-441b-9f6d-7478edfb14e5" width="90">
+						<columnHeader height="24" rowSpan="1">
+							<element kind="staticText" uuid="7ccd0e2f-edc7-4629-b37b-70c38e7a20b2" mode="Opaque" x="0" y="0" width="90" height="24" forecolor="#FFFFFF" backcolor="#003366" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+								<text><![CDATA[QUANTIDADE]]></text>
+								<box padding="0">
+									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+							</element>
+						</columnHeader>
+						<detailCell height="32">
+							<element kind="textField" uuid="4445465c-6f0b-4539-a088-07b928a24d00" mode="Opaque" x="0" y="0" width="90" height="32" forecolor="#003366" backcolor="#F3F6F9" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+								<expression><![CDATA[$F{quantidade} == null ? 0 : $F{quantidade}]]></expression>
+								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
+									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
+								</box>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+				</component>
+			</element>
+			<element kind="staticText" uuid="0949ed7a-9f47-4139-a5fa-b429ec5a7f09" key="TITULO_VOLTA" x="0" y="0" width="523" height="25" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[ITINERÁRIO DA VOLTA]]></text>
+			</element>
+			<element kind="textField" uuid="62d5a0ed-94c1-4c84-9a5d-7d45303e28b4" positionType="Float" x="0" y="119" width="523" height="36" forecolor="#587087" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{volta} == null ? "" : ($F{volta}.getResumoCabine() == null || $F{volta}.getResumoCabine().isBlank() ? "" : "Cabine: " + $F{volta}.getResumoCabine()) + ($F{volta}.getResumoTarifa() == null || $F{volta}.getResumoTarifa().isBlank() ? "" : ($F{volta}.getResumoCabine() == null || $F{volta}.getResumoCabine().isBlank() ? "" : "\n") + "Tarifa: " + $F{volta}.getResumoTarifa())]]></expression>
+			</element>
+			<element kind="staticText" uuid="363949b8-953a-44c4-b97a-bc4bb9e3663d" positionType="Float" x="0" y="162" width="523" height="25" forecolor="#CCAA55" fontSize="13.0" bold="false" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[BAGAGENS TOTAIS DA VOLTA]]></text>
+			</element>
+			<element kind="break" uuid="cd33e2e8-e151-4a72-8867-dc8b24ef82dd" x="0" y="319" width="100" height="1"/>
+		</band>
+		<band height="1" splitType="Stretch">
+ <element kind="subreport" key="TITULO_HOSPEDAGEM" x="0" y="0" width="523" height="1">
+ <dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagens})]]></dataSourceExpression>
+ <expression><![CDATA[$P{RELATORIO_HOSPEDAGENS}]]></expression>
+ </element></band>
+		
+		<band height="365" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{transfer} != null]]></printWhenExpression>
+			<element kind="staticText" uuid="2dd53207-340c-4256-ab5b-a2fd6e314f77" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16" bold="true" vTextAlign="Middle" key="TITULO_TRANSFER" hTextAlign="Center">
+				<text><![CDATA[TRANSFER]]></text>
+			</element>
+			<element kind="textField" uuid="6ac82ef9-88e3-45bb-b6af-9d7f394f8b6d" positionType="Float" x="0" y="36" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="11" bold="true" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Prestador: " + $F{transfer}.getPrestador()]]></expression>
+			</element>
+			<element kind="textField" uuid="eb92b910-55d8-4f5b-9eb9-7336888df36c" positionType="Float" x="0" y="72" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Modalidade: " + java.util.Objects.toString($F{transfer}.getTipo(), "") + "  |  Passageiros: " + $F{transfer}.getPassageiros()]]></expression>
+			</element>
+			<element kind="textField" uuid="605d7e31-fe62-4021-986b-b96fa582b5ae" positionType="Float" x="0" y="108" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Localizador / voucher: " + (($F{transfer}.getLocalizador() == null || $F{transfer}.getLocalizador().isBlank()) ? "Não informado" : $F{transfer}.getLocalizador())]]></expression>
+			</element>
+			<element kind="textField" uuid="57b039e1-3221-494a-9e6a-a0befb98db9b" positionType="Float" x="0" y="144" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Percursos: " + $F{transfer}.getResumoPercursos()]]></expression>
+			</element>
+			<element kind="textField" uuid="76183be5-5634-45f2-b689-91ccc22833ed" positionType="Float" x="0" y="180" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Data e horário: " + $F{transfer}.getResumoDatas()]]></expression>
+			</element>
+			<element kind="textField" uuid="c0931c80-c750-4d09-a699-998655c810ea" positionType="Float" x="0" y="216" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Quantidade de percursos: " + $F{transfer}.getQuantidade()]]></expression>
+			</element>
+			<element kind="textField" uuid="6eca7cde-2a0a-4da4-9815-fb33cec63466" positionType="Float" x="0" y="252" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Horários: " + $F{transfer}.getResumoDatas()]]></expression>
+			</element>
+			<element kind="textField" uuid="f9839e32-708c-49bf-b819-7bbb443f79e5" positionType="Float" x="0" y="288" width="523" height="32" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true">
+				<expression><![CDATA["Observações / ponto de encontro: " + java.util.Objects.toString($F{transfer}.getObservacoes(), "")]]></expression>
+			</element>
+			<element kind="break" uuid="25f6d8a3-46cd-4900-a3d0-2295a1dc6df8" positionType="Float" x="0" y="350" width="100" height="1"/>
+		</band>
+		<band height="470" splitType="Stretch"><printWhenExpression><![CDATA[$F{aluguelCarro} != null]]></printWhenExpression><element kind="staticText" uuid="11acfe5c-370b-4fc0-9593-833bf09decad" key="TITULO_ALUGUEL_CARRO" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontSize="16" bold="true" hTextAlign="Center"><text><![CDATA[ALUGUEL DE CARRO]]></text></element><element kind="textField" uuid="ea58216f-710b-48cf-9a46-dff99e1cf482" positionType="Float" x="0" y="36" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Locadora: " + java.util.Objects.toString($F{aluguelCarro}.getLocadora(), "")]]></expression></element><element kind="textField" uuid="4942dbc5-fff3-4c81-8aa6-519e42cc8f4c" positionType="Float" x="0" y="70" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Categoria / modelo (ou similar): " + java.util.Objects.toString($F{aluguelCarro}.getCategoria(), "")]]></expression></element><element kind="textField" uuid="c454dec4-74bb-42ef-a6c3-df6c60ddc868" positionType="Float" x="0" y="104" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Condutor principal: " + java.util.Objects.toString($F{aluguelCarro}.getCondutor(), "")]]></expression></element><element kind="textField" uuid="7e0ddaf1-66c4-4fdb-8ee6-d9bfc8a5f66c" positionType="Float" x="0" y="138" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Localizador / voucher: " + java.util.Objects.toString($F{aluguelCarro}.getLocalizador(), "")]]></expression></element><element kind="textField" uuid="5a1e74ad-ac4d-4443-a307-462160f47038" positionType="Float" x="0" y="172" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Local de retirada: " + java.util.Objects.toString($F{aluguelCarro}.getLocalRetirada(), "")]]></expression></element><element kind="textField" uuid="362bb1d5-543f-47dc-8f87-d9552f4a86cd" positionType="Float" x="0" y="206" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Local de devolução: " + java.util.Objects.toString($F{aluguelCarro}.getLocalDevolucao(), "")]]></expression></element><element kind="textField" uuid="f1edaccd-f53a-43d1-a7bf-d9095849c590" positionType="Float" x="0" y="240" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Coberturas / seguros: " + java.util.Objects.toString($F{aluguelCarro}.getCoberturas(), "")]]></expression></element><element kind="textField" uuid="3b40a90f-8ae9-4a52-abb3-e4b40f6bdb40" positionType="Float" x="0" y="274" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Franquia, caução, quilometragem e combustível: " + java.util.Objects.toString($F{aluguelCarro}.getCondicoes(), "")]]></expression></element><element kind="textField" uuid="51f1ef3a-d21a-4340-a5e5-e664fe88aeaf" positionType="Float" x="0" y="308" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Observações: " + java.util.Objects.toString($F{aluguelCarro}.getObservacoes(), "")]]></expression></element><element kind="textField" uuid="354d7277-4693-4d5e-8de5-8beda3725d40" positionType="Float" x="0" y="342" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Retirada: " + $F{aluguelCarro}.getResumoRetirada()]]></expression></element><element kind="textField" uuid="8c672043-4939-48e0-8099-f9b6d9186eed" positionType="Float" x="0" y="376" width="523" height="30" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA["Devolução: " + $F{aluguelCarro}.getResumoDevolucao()]]></expression></element><element kind="break" uuid="2f83a3f0-5dfe-4768-aa20-f6590632bd6f" positionType="Float" x="0" y="465" width="100" height="1"/></band>
+		<band height="325" splitType="Prevent">
+			<element kind="staticText" uuid="ad2dcb08-afaa-4cc8-a2f5-7ad5ee31f977" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<text><![CDATA[INVESTIMENTO]]></text>
+			</element>
+			<element kind="textField" uuid="989b5fe5-15ce-4ec3-8239-a8c66e39860e" positionType="Float" x="0" y="33" width="523" height="24" forecolor="#003366" fontSize="10.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Passagem aérea (todos os passageiros): " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorAereo})]]></expression>
+			</element>
+			<element kind="textField" uuid="b16aaf80-63be-4974-ab74-4b52c0d099d6" positionType="Float" x="0" y="59" width="523" height="24" forecolor="#003366" fontSize="10.0" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true" vTextAlign="Middle">
+				<printWhenExpression><![CDATA[$F{hospedagens} != null && !$F{hospedagens}.isEmpty()]]></printWhenExpression>
+				<expression><![CDATA["Hospedagens (todos os hotéis e quartos): " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorHospedagem})]]></expression>
+			</element>
+			<element kind="textField" uuid="a0cc409c-d6c5-431d-a05a-493a4db67f76" positionType="Float" x="0" y="217" width="523" height="24" forecolor="#003366" fontName="DejaVu Sans" fontSize="11.0" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true" hTextAlign="Center" vTextAlign="Middle">
+                <printWhenExpression><![CDATA[$F{desconto} != null && $F{desconto}.signum() > 0]]></printWhenExpression>
+                <expression><![CDATA["Desconto aplicado: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{desconto})]]></expression>
+            </element>
+			<element kind="textField" uuid="b75501fc-718b-44b1-9ab3-749c97609bfc" positionType="Float" x="0" y="249" width="523" height="35" forecolor="#003366" fontName="DejaVu Sans" fontSize="22.0" textAdjust="StretchHeight" blankWhenNull="true" bold="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA["TOTAL: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{total})]]></expression>
+			</element>
+			<element kind="textField" uuid="ef9b7de9-205d-4e3a-85db-8433925f968f" positionType="Float" x="0" y="289" width="523" height="25" forecolor="#003366" fontSize="11.0" textAdjust="StretchHeight" blankWhenNull="true" hTextAlign="Center" vTextAlign="Middle">
+				<expression><![CDATA[java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorPorPessoa}) + " por pessoa (média para " + $F{quantidadePassageiros} + " viajantes)"]]></expression>
+			</element>
+			<element kind="textField" uuid="a74fbbac-ac99-441a-bb87-ac6f4f221bd8" positionType="Float" x="0" y="87" width="523" height="24" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" bold="false" vTextAlign="Middle" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true">
+				<printWhenExpression><![CDATA[$F{transfer} != null]]></printWhenExpression>
+				<expression><![CDATA["Transfer (todos os passageiros): " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorTransfer})]]></expression>
+			</element>
+		<element kind="textField" uuid="dac15faa-9ff8-4140-ae21-7b2d9d15ed1c" positionType="Float" x="0" y="115" width="523" height="24" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true" vTextAlign="Middle"><printWhenExpression><![CDATA[$F{aluguelCarro} != null]]></printWhenExpression><expression><![CDATA["Aluguel de carro: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{aluguelCarro}.getValorTotal())]]></expression></element>
+		<element kind="textField" positionType="Float" x="0" y="143" width="523" height="60" fontSize="10" textAdjust="StretchHeight"><expression><![CDATA["Passagem rodoviária: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorRodoviario}) + "\nSeguro viagem: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorSeguros}) + "\neSIM: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorESims}) + "\nTaxas: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{taxas}) + "\nServiços: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{servicos})]]></expression></element></band>
+		<band height="283" splitType="Stretch">
+			<element kind="staticText" uuid="1e1ca93f-28b4-41ea-9965-ac0bd8edd197" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="14.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[CONDIÇÕES DO ORÇAMENTO]]></text>
+			</element>
+			<element kind="textField" uuid="bcf56ad6-0de0-4b15-9d8f-53efc2bc48d2" positionType="Float" x="0" y="34" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Pagamento: " + $F{pagamento}]]></expression>
+			</element>
+			<element kind="textField" uuid="a1bfd9cf-fc61-4b3b-92f6-7af0131ed992" positionType="Float" x="0" y="66" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Tarifa aérea: " + $F{tarifa}]]></expression>
+			</element>
+			<element kind="textField" uuid="dffc148f-680e-4cf3-b939-7260cd7a9509" positionType="Float" x="0" y="98" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Alteração e cancelamento: " + $F{regras}]]></expression>
+			</element>
+			<element kind="textField" uuid="7ef78416-69e7-4f29-a27b-6e699bc123ba" positionType="Float" x="0" y="132" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
+				<expression><![CDATA["Observações: " + $F{orientacoes}]]></expression>
+			</element>
+			<element kind="textField" uuid="c9085461-f46a-4958-866a-08e03323087c" positionType="Float" x="0" y="171" width="523" height="72" textAdjust="StretchHeight" forecolor="#003366" fontSize="9.0" bold="true" vTextAlign="Middle">
+				<expression><![CDATA[$F{aviso}]]></expression>
+			</element><element kind="textField" positionType="Float" x="0" y="251" width="523" height="24" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA["Consulta dos preços: " + $F{consultaPrecosEm}]]></expression></element>
+		</band>
+	</detail>
+	<pageFooter height="43">
+		<element kind="line" uuid="26785b53-2508-4a6b-9983-15c24238599a" x="0" y="0" width="523" height="1">
+			<pen lineWidth="1.0" lineColor="#C8A753"/>
+		</element>
+		<element kind="staticText" uuid="dedc1890-ef8a-4b4f-a07e-26da8dfe6ff5" x="0" y="7" width="455" height="15" forecolor="#003366" fontSize="9.0" bold="true" vTextAlign="Middle">
+			<text><![CDATA[JBD Viagens · WhatsApp (31) 98391-3873]]></text>
+		</element>
+		<element kind="staticText" uuid="d7afd3d5-0f96-42f8-8563-de2698cc6079" x="0" y="23" width="455" height="14" forecolor="#587087" fontSize="8.0" bold="false" vTextAlign="Middle">
+			<text><![CDATA[contato@jbdviagens.com.br · Plantão pelo WhatsApp]]></text>
+		</element>
+		<element kind="textField" uuid="52807e79-1a55-47f9-bedf-6f7d4c997456" x="464" y="16" width="59" height="16" forecolor="#587087" fontSize="8.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+			<expression><![CDATA["Pág. " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+	</pageFooter>
+</jasperReport>

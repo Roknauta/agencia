@@ -1,0 +1,24 @@
+Criar um CRUD para a entidade Hotel.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Hotel
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- cidade: Cidade
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete para Cidade
+- endereco: String
+  - Obrigatório: sim
+  - Tamanho máximo: 200 caracteres
+  - Interface: inputText padrão
+Pesquisa:
+- Filtros: nome,cidade
+Tabela de resultados:
+- Colunas: nome,cidade
+- Ações: padrão
+Regras de negócio:
+- Unique conjunta em nome,cidade

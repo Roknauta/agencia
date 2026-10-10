@@ -1,0 +1,31 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{hotelController}"/>
+    <ui:param name="formId" value="hotel"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{hotelController.searchForm.nome}" maxlength="100"/>
+        <m:autoComplete id="cidade" label="#{msg['cidade']}"
+                        value="#{hotelController.searchForm.cidade}"
+                        completeMethod="#{cidadeController.completeCidade}"
+                        var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                        converter="#{cidadeConverter}" required="false" minQueryLength="1"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['cidade']}" value="#{item.cidade.nome}" sortBy="#{item.cidade.nome}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{hotelController.editForm.nome}" required="true" maxlength="100"/>
+            <m:autoComplete id="cidade" label="#{msg['cidade']}"
+                            value="#{hotelController.editForm.cidade}"
+                            completeMethod="#{cidadeController.completeCidade}"
+                            var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                            converter="#{cidadeConverter}" required="true" minQueryLength="1"/>
+            <m:inputText id="endereco" label="#{msg['campo.endereco']}" value="#{hotelController.editForm.endereco}" required="true" maxlength="200"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

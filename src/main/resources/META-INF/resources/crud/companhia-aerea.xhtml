@@ -1,0 +1,30 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{companhiaAereaController}"/>
+    <ui:param name="formId" value="companhiaAerea"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{companhiaAereaController.searchForm.nome}" maxlength="100"/>
+        <m:autoComplete id="pais" label="#{msg['pais']}"
+                        value="#{companhiaAereaController.searchForm.pais}"
+                        completeMethod="#{paisController.completePais}"
+                        var="pais" itemLabel="#{pais.nome}" itemValue="#{pais}"
+                        converter="#{paisConverter}" required="false" minQueryLength="1"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['pais']}" value="#{item.pais.nome}" sortBy="#{item.pais.nome}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{companhiaAereaController.editForm.nome}" required="true" maxlength="100"/>
+            <m:autoComplete id="pais" label="#{msg['pais']}"
+                            value="#{companhiaAereaController.editForm.pais}"
+                            completeMethod="#{paisController.completePais}"
+                            var="pais" itemLabel="#{pais.nome}" itemValue="#{pais}"
+                            converter="#{paisConverter}" required="true" minQueryLength="1"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

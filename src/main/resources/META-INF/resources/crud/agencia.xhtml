@@ -1,0 +1,29 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{agenciaController}"/>
+    <ui:param name="formId" value="agencia"/>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="razaoSocial" label="#{msg['agencia.razao.social']}"
+                         value="#{agenciaController.editForm.agenciaRazaoSocial}" maxlength="200"/>
+            <m:inputText id="nomeFantasia" label="#{msg['agencia.nome.fantasia']}"
+                         value="#{agenciaController.editForm.agenciaNomeFantasia}" maxlength="200"/>
+            <m:inputText id="cnpj" label="#{msg['agencia.cnpj']}"
+                         value="#{agenciaController.editForm.agenciaCnpj}" maxlength="18"/>
+            <m:inputText id="email" label="#{msg['agencia.email']}"
+                         value="#{agenciaController.editForm.agenciaEmail}" maxlength="254"/>
+            <m:inputText id="telefone" label="#{msg['agencia.telefone']}"
+                         value="#{agenciaController.editForm.agenciaTelefone}" maxlength="30"/>
+            <m:inputText id="representante" label="#{msg['agencia.representante']}"
+                         value="#{agenciaController.editForm.agenciaRepresentante}" maxlength="200"/>
+            <m:inputText id="cadastur" label="#{msg['agencia.cadastur']}"
+                         value="#{agenciaController.editForm.agenciaCadastur}" maxlength="30"/>
+            <m:inputTextarea id="endereco" label="#{msg['agencia.endereco']}"
+                             value="#{agenciaController.editForm.agenciaEndereco}" maxlength="500" rows="3"/>
+            <m:inputTextarea id="horario" label="#{msg['agencia.horario']}"
+                             value="#{agenciaController.editForm.agenciaHorario}" maxlength="500" rows="3"/>
+            <m:inputTextarea id="urgencia" label="#{msg['agencia.urgencia']}"
+                             value="#{agenciaController.editForm.agenciaUrgencia}" maxlength="200" rows="3"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

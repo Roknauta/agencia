@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html" xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core" lang="pt-BR">
+<f:view locale="pt_BR">
+    <h:head>
+        <title>#{msg['interface.agencia.2']}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <h:outputScript library="primefaces" name="locales/locale-pt.js"/>
+        <h:outputStylesheet library="css" name="custom.css"/>
+        <h:outputStylesheet library="css" name="primefaces-custom.css"/>
+    </h:head>
+    <h:body styleClass="agencia-app">
+        <p:panelGrid columns="2" layout="grid" styleClass="app-shell">
+            <h:panelGroup aria-label="#{msg['interface.menu.principal']}" layout="block" styleClass="app-sidebar">
+                <ui:include src="/layout/navigation.xhtml"/>
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="app-workspace"/>
+        </p:panelGrid>
+    </h:body>
+</f:view>
+</html>

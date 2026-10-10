@@ -1,0 +1,27 @@
+Criar um CRUD para a entidade Cidade.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Cidade
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- estado: String
+  - Obrigatório: não
+  - Tamanho máximo: 50 caracteres
+  - Interface: inputText padrão
+- fusoHorario: String
+  - Obrigatório: não
+  - Tamanho máximo: 50 caracteres
+  - Interface: autoComplete com identificadores IANA (ex.: America/Sao_Paulo)
+- pais: Pais
+  - Obrigatório: não
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete apontando para Pais
+Pesquisa:
+- Filtros: nome,estado,fusoHorario,pais
+Tabela de resultados:
+- Colunas: nome,estado,fusoHorario,pais
+- Ações: padrão
+Regras de negócio:

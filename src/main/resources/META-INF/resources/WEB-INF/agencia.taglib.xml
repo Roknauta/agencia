@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib xmlns="https://jakarta.ee/xml/ns/jakartaee" version="4.0">
+    <namespace>http://agencia.com/jsf</namespace>
+    <tag>
+        <tag-name>column</tag-name>
+        <source>../resources/tags/column.xhtml</source>
+    </tag>
+</facelet-taglib>

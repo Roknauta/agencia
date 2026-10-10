@@ -1,0 +1,26 @@
+Criar um CRUD de configuração da agência, com um único registro.
+
+Menu:
+- Item "Agência" fora do submenu Cadastro.
+
+Tela:
+- Abrir diretamente o formulário de edição da configuração.
+- Não exibir pesquisa nem tabela de resultados.
+- Permanecer no formulário após salvar; ao cancelar, recarregar os dados persistidos.
+- Controller com escopo de sessão.
+
+Campos:
+- agenciaRazaoSocial: String, máximo 200 caracteres.
+- agenciaNomeFantasia: String, máximo 200 caracteres.
+- agenciaCnpj: String, máximo 18 caracteres.
+- agenciaEndereco: String, máximo 500 caracteres.
+- agenciaEmail: String, máximo 254 caracteres.
+- agenciaTelefone: String, máximo 30 caracteres.
+- agenciaRepresentante: String, máximo 200 caracteres.
+- agenciaCadastur: String, máximo 30 caracteres.
+- agenciaHorario: String, máximo 500 caracteres.
+- agenciaUrgencia: String, máximo 200 caracteres.
+
+Persistência e uso:
+- Manter um único registro de configuração da agência.
+- Ao criar um contrato, copiar os dados atuais da agência para um snapshot imutável do contrato, para que alterações posteriores na configuração não modifiquem contratos já emitidos.

@@ -1,0 +1,33 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{aeroportoController}"/>
+    <ui:param name="formId" value="aeroporto"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{aeroportoController.searchForm.nome}" maxlength="100"/>
+        <m:autoComplete id="cidadeAtendida" label="#{msg['cidade.atendida']}"
+                        value="#{aeroportoController.searchForm.cidadeAtendida}"
+                        completeMethod="#{cidadeController.completeCidade}"
+                        var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                        converter="#{cidadeConverter}" required="false" minQueryLength="1"/>
+        <m:inputText id="codigoIata" label="#{msg['codigo.iata']}" value="#{aeroportoController.searchForm.codigoIata}" maxlength="4"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['cidade.atendida']}" value="#{item.cidadeAtendida.nome}" sortBy="#{item.cidadeAtendida.nome}"/>
+            <t:column headerText="#{msg['codigo.iata']}" value="#{item.codigoIata}" sortBy="#{item.codigoIata}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{aeroportoController.editForm.nome}" required="true" maxlength="100"/>
+            <m:autoComplete id="cidadeAtendida" label="#{msg['cidade.atendida']}"
+                            value="#{aeroportoController.editForm.cidadeAtendida}"
+                            completeMethod="#{cidadeController.completeCidade}"
+                            var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                            converter="#{cidadeConverter}" required="true" minQueryLength="1"/>
+            <m:inputText id="codigoIata" label="#{msg['codigo.iata']}" value="#{aeroportoController.editForm.codigoIata}" required="true" maxlength="4"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

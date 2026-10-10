@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="contrato_blocos_jbd" language="java" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="42" rightMargin="42" topMargin="0" bottomMargin="36">
+ <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+ <style name="Base" default="true" fontName="DejaVu Sans" fontSize="9" forecolor="#243246"/>
+ <field name="titulo" class="java.lang.String"/>
+ <field name="texto" class="java.lang.String"/>
+ <field name="destaque" class="java.lang.Boolean"/>
+ <detail><band height="69" splitType="Stretch">
+  <element kind="textField" positionType="Float" x="0" y="0" width="511" height="18" bold="true" fontSize="12" forecolor="#24588C" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true"><expression><![CDATA[$F{titulo}]]></expression></element>
+  <element kind="textField" positionType="Float" x="0" y="21" width="511" height="48" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true">
+   <propertyExpression name="net.sf.jasperreports.style.isBold"><![CDATA[String.valueOf($F{destaque})]]></propertyExpression>
+   <expression><![CDATA[$F{texto}]]></expression>
+   <paragraph lineSpacing="Proportional" lineSpacingSize="1.2"/>
+  </element>
+ </band></detail>
+</jasperReport>

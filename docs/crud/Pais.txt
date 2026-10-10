@@ -1,0 +1,20 @@
+Criar um CRUD para a entidade Pais.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: País
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- sigla: String
+  - Obrigatório: não
+  - Tamanho máximo: 5 caracteres
+  - Interface: inputText padrão
+Pesquisa:
+- Filtros: nome,sigla
+Tabela de resultados:
+- Colunas: nome,sigla
+- Ações: padrão
+Regras de negócio:
+- Exclusão: unique no campo nome

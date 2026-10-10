@@ -1,0 +1,41 @@
+<ui:component xmlns:ui="jakarta.faces.facelets" xmlns:cc="jakarta.faces.composite" xmlns:p="http://primefaces.org/ui" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core">
+    <cc:interface>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="completeMethod" required="true" method-signature="java.util.List completeMethod(java.lang.String)"/>
+        <cc:attribute name="var" required="true"/>
+        <cc:attribute name="itemLabel" required="true"/>
+        <cc:attribute name="itemValue" required="true"/>
+        <cc:attribute name="converter" type="jakarta.faces.convert.Converter" required="true"/>
+        <cc:attribute name="label" default=""/>
+        <cc:attribute name="required" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="disabled" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="readonly" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="requiredMessage" default="#{msg['componente.obrigatorio']}"/>
+        <cc:attribute name="placeholder" default=""/>
+        <cc:attribute name="forceSelection" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="multiple" type="java.lang.Boolean" default="false"/>
+        <cc:attribute name="dropdown" type="java.lang.Boolean" default="true"/>
+        <cc:attribute name="minQueryLength" type="java.lang.Integer" default="1"/>
+        <cc:attribute name="queryDelay" type="java.lang.Integer" default="300"/>
+        <cc:attribute name="scrollHeight" type="java.lang.Integer" default="200"/>
+        <cc:attribute name="emptyMessage" default=""/>
+        <cc:editableValueHolder name="input" targets="input"/>
+        <cc:clientBehavior name="itemSelect" event="itemSelect" targets="input" default="true"/>
+        <cc:clientBehavior name="clear" event="clear" targets="input"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGrid columns="1" styleClass="form-field">
+            <p:outputLabel for="input" value="#{cc.attrs.label}" rendered="#{not empty cc.attrs.label}"/>
+            <p:autoComplete id="input" value="#{cc.attrs.value}" completeMethod="#{cc.attrs.completeMethod}"
+                var="#{cc.attrs.var}" itemLabel="#{cc.attrs.itemLabel}" itemValue="#{cc.attrs.itemValue}"
+                converter="#{cc.attrs.converter}" label="#{cc.attrs.label}"
+                required="#{cc.attrs.required}" disabled="#{cc.attrs.disabled}" readonly="#{cc.attrs.readonly}"
+                requiredMessage="#{cc.attrs.requiredMessage}" placeholder="#{cc.attrs.placeholder}"
+                forceSelection="#{cc.attrs.forceSelection}" dropdown="#{cc.attrs.dropdown}"
+                multiple="#{cc.attrs.multiple}"
+                minQueryLength="#{cc.attrs.minQueryLength}" queryDelay="#{cc.attrs.queryDelay}"
+                scrollHeight="#{cc.attrs.scrollHeight}" emptyMessage="#{cc.attrs.emptyMessage}"/>
+            <p:message for="input"/>
+        </h:panelGrid>
+    </cc:implementation>
+</ui:component>

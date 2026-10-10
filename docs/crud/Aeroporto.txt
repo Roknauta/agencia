@@ -1,0 +1,25 @@
+Criar um CRUD para a entidade Aeroporto.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Aeroporto
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- cidadeAtendida: Cidade
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete para Cidade
+- codigoIata: String
+  - Obrigatório: sim
+  - Tamanho máximo: 4 caracteres
+  - Interface: inputText padrão
+Pesquisa:
+- Filtros: nome,cidadeAtendida,codigoIata
+Tabela de resultados:
+- Colunas: nome,cidadeAtendida,codigoIata
+- Ações: padrão
+Converter: 
+- getAsString deve trazer a cidade de cidade - codigoIata
+Regras de negócio:

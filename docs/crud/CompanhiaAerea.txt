@@ -1,0 +1,20 @@
+Criar um CRUD para a entidade CompanhiaAerea.
+Menu:
+- Submenu: Cadastro
+- Nome exibido: Companhia Aérea
+Campos:
+- nome: String
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: inputText padrão
+- pais: Pais
+  - Obrigatório: sim
+  - Tamanho máximo: 100 caracteres
+  - Interface: autoComplete em Pais
+Pesquisa:
+- Filtros: nome,pais
+Tabela de resultados:
+- Colunas: nome,pais
+- Ações: padrão
+Regras de negócio:
+- Unique em nome,pais
