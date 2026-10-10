@@ -11,5 +11,6 @@ public class CidadeDTO extends BaseDTO {
 
     private String nome;
     private String estado;
+    private String fusoHorario;
     private PaisDTO pais;
 }

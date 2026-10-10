@@ -1,10 +1,14 @@
 package com.roknauta.agencia.service;
 
+import java.time.DateTimeException;
+import java.time.ZoneId;
 import java.util.List;
 
 import com.roknauta.agencia.domain.documento.Agencia;
+import com.roknauta.agencia.domain.Cidade;
 import com.roknauta.agencia.dto.AgenciaDTO;
 import com.roknauta.agencia.repository.AgenciaRepository;
+import com.roknauta.agencia.repository.CidadeRepository;
 import com.roknauta.agencia.service.crud.CrudServiceBase;
 import com.roknauta.agencia.service.mapper.AgenciaMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,10 +22,12 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
 
     private final AgenciaRepository repository;
     private final AgenciaMapper mapper;
+    private final CidadeRepository cidadeRepository;
 
-    public AgenciaService(AgenciaRepository repository, AgenciaMapper mapper) {
+    public AgenciaService(AgenciaRepository repository, AgenciaMapper mapper, CidadeRepository cidadeRepository) {
         this.repository = repository;
         this.mapper = mapper;
+        this.cidadeRepository = cidadeRepository;
     }
 
     @Override
@@ -38,6 +44,7 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
     protected Agencia toEntity(AgenciaDTO dto) {
         Agencia entity = mapper.toEntity(dto);
         entity.setChaveConfiguracao(CHAVE_CONFIGURACAO);
+        entity.setCidade(cidadeReference(dto));
         return entity;
     }
 
@@ -45,6 +52,7 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
     protected void updateEntity(AgenciaDTO dto, Agencia entity) {
         mapper.updateEntity(dto, entity);
         entity.setChaveConfiguracao(CHAVE_CONFIGURACAO);
+        entity.setCidade(cidadeReference(dto));
     }
 
     @Override
@@ -63,9 +71,27 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
     @Override
     @Transactional
     public AgenciaDTO save(AgenciaDTO dto) {
+        if (dto.getCidade() == null || dto.getCidade().getId() == null) {
+            throw new IllegalArgumentException("A cidade da agência é obrigatória.");
+        }
+        String fusoHorario = dto.getCidade().getFusoHorario();
+        if (fusoHorario == null || fusoHorario.isBlank()) {
+            throw new IllegalArgumentException("A cidade da agência precisa ter um fuso horário configurado.");
+        }
+        try {
+            ZoneId.of(fusoHorario);
+        } catch (DateTimeException e) {
+            throw new IllegalArgumentException("Informe um fuso horário IANA válido para a cidade da agência.", e);
+        }
         if (dto.getId() == null) {
             repository.findFirstByOrderByIdAsc().ifPresent(agencia -> dto.setId(agencia.getId()));
         }
         return super.save(dto);
+    }
+
+    private Cidade cidadeReference(AgenciaDTO dto) {
+        return dto.getCidade() == null || dto.getCidade().getId() == null
+                ? null
+                : cidadeRepository.getReferenceById(dto.getCidade().getId());
     }
 }

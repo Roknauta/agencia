@@ -10,17 +10,18 @@ Tela:
 - Controller com escopo de sessão.
 
 Campos:
-- agenciaRazaoSocial: String, máximo 200 caracteres.
-- agenciaNomeFantasia: String, máximo 200 caracteres.
-- agenciaCnpj: String, máximo 18 caracteres.
-- agenciaEndereco: String, máximo 500 caracteres.
-- agenciaEmail: String, máximo 254 caracteres.
-- agenciaTelefone: String, máximo 30 caracteres.
-- agenciaRepresentante: String, máximo 200 caracteres.
-- agenciaCadastur: String, máximo 30 caracteres.
-- agenciaHorario: String, máximo 500 caracteres.
-- agenciaUrgencia: String, máximo 200 caracteres.
+- cidade: referência obrigatória a Cidade; seu fuso horário é a referência para datas e horas do contrato.
+- razaoSocial: String, máximo 200 caracteres.
+- nomeFantasia: String, máximo 200 caracteres.
+- cnpj: String, máximo 18 caracteres.
+- endereco: String, máximo 500 caracteres.
+- email: String, máximo 254 caracteres.
+- telefone: String, máximo 30 caracteres.
+- representante: String, máximo 200 caracteres.
+- cadastur: String, máximo 30 caracteres.
+- horario: String, máximo 500 caracteres.
+- urgencia: String, máximo 200 caracteres.
 
 Persistência e uso:
 - Manter um único registro de configuração da agência.
-- Ao criar um contrato, copiar os dados atuais da agência para um snapshot imutável do contrato, para que alterações posteriores na configuração não modifiquem contratos já emitidos.
+- O PDF do contrato deve consultar os dados atuais da agência no momento da geração e formatar as datas e horas usando o fuso horário da cidade configurada.

@@ -36,6 +36,7 @@
     </dataset>
 	<parameter name="RELATORIO_HOSPEDAGENS" class="net.sf.jasperreports.engine.JasperReport"/>
 <parameter name="LOGO" class="java.awt.Image"/>
+	<field name="numeroContrato" class="java.lang.String"/>
 	<field name="origem" class="java.lang.String"/>
 	<field name="destino" class="java.lang.String"/>
 	<field name="periodo" class="java.lang.String"/>
@@ -121,8 +122,8 @@
 		<element kind="line" uuid="2044f8a7-e829-4487-a9da-771e86a33ee7" x="65" y="46" width="458" height="1">
 			<pen lineWidth="1.0" lineColor="#C8A753"/>
 		</element>
-		<element kind="textField" uuid="3eef7492-fd8d-4ac0-b959-ebf0fe6c1a27" x="300" y="50" width="220" height="20" forecolor="#CCAA55" hTextAlign="Right" vTextAlign="Top">
-			<expression><![CDATA["Reserva emitida em: "+$F{emitidoEm}]]></expression>
+		<element kind="textField" uuid="3eef7492-fd8d-4ac0-b959-ebf0fe6c1a27" x="245" y="50" width="275" height="20" forecolor="#CCAA55" hTextAlign="Right" vTextAlign="Top">
+			<expression><![CDATA["Contrato " + java.util.Objects.toString($F{numeroContrato}, "") + " • Emitido em: " + $F{emitidoEm}]]></expression>
 		</element>
 	</pageHeader>
 	<detail>

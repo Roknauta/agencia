@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
+import com.roknauta.agencia.dto.documento.ContratoDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import com.roknauta.agencia.web.jasper.DadosRelatoriosTeste;
 
@@ -19,6 +20,9 @@ class EmissaoRelatorioDTOTest {
         EmissaoDTO emissao = new EmissaoDTO();
         DadosRelatoriosTeste.preencherDocumento(emissao);
         emissao.setDataDocumento(LocalDate.of(2026, 10, 9));
+        ContratoDTO contrato = new ContratoDTO();
+        contrato.setNumero("CTR-2026-001");
+        emissao.setContrato(contrato);
 
         BilheteAereoDTO bilheteIda = new BilheteAereoDTO();
         bilheteIda.setViajante(emissao.getViajantes().getFirst());
@@ -39,6 +43,7 @@ class EmissaoRelatorioDTOTest {
 
         assertEquals("DOC-TESTE-2027-001", relatorio.getNumero());
         assertEquals("09/10/2026 00:00", relatorio.getEmitidoEm());
+        assertEquals("CTR-2026-001", relatorio.getNumeroContrato());
         assertEquals(2, relatorio.getPassageiros().size());
         assertEquals("Joana Exemplo", relatorio.getPassageiros().getFirst().getNome());
         assertEquals("9571234567890", relatorio.getPassageiros().getFirst().getBilhete());

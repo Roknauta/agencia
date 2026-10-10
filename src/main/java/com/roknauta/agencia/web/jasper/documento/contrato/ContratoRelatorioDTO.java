@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+import com.roknauta.agencia.dto.AgenciaDTO;
 import com.roknauta.agencia.dto.documento.ContratoDTO;
 import com.roknauta.agencia.web.jasper.JasperUtils;
 import com.roknauta.agencia.web.jasper.documento.comum.BlocoTextoRelatorioDTO;
@@ -29,11 +31,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
 
-    private static final DateTimeFormatter DATA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
-            .withZone(ZoneId.of("America/Sao_Paulo"));
+    private static final DateTimeFormatter DATA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     private String numeroOrcamento;
     private String dataAssinatura;
+    private String dataConsultaPrecos;
+    private String referenciaPreReserva;
+    private String preReservaValidaAte;
     private String razaoSocialAgencia;
     private String nomeFantasiaAgencia;
     private String cnpjAgencia;
@@ -47,27 +51,44 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private List<BlocoTextoRelatorioDTO> clausulas = new ArrayList<>();
     private List<BlocoTextoRelatorioDTO> conteudoContrato = new ArrayList<>();
 
-    public ContratoRelatorioDTO(ContratoDTO contrato) throws IOException {
+    public ContratoRelatorioDTO(ContratoDTO contrato, AgenciaDTO agencia) throws IOException {
         super(contrato);
         if (contrato == null) {
             return;
         }
         numeroOrcamento = contrato.getOrcamento() == null ? null : contrato.getOrcamento().getNumero();
-        dataAssinatura = contrato.getDataAssinatura() == null ? null : DATA_HORA.format(contrato.getDataAssinatura());
-        if (contrato.getDadosAgencia() != null) {
-            razaoSocialAgencia = contrato.getDadosAgencia().getAgenciaRazaoSocial();
-            nomeFantasiaAgencia = contrato.getDadosAgencia().getAgenciaNomeFantasia();
-            cnpjAgencia = contrato.getDadosAgencia().getAgenciaCnpj();
-            enderecoAgencia = contrato.getDadosAgencia().getAgenciaEndereco();
-            emailAgencia = contrato.getDadosAgencia().getAgenciaEmail();
-            telefoneAgencia = contrato.getDadosAgencia().getAgenciaTelefone();
-            representanteAgencia = contrato.getDadosAgencia().getAgenciaRepresentante();
-            cadasturAgencia = contrato.getDadosAgencia().getAgenciaCadastur();
-            horarioAgencia = contrato.getDadosAgencia().getAgenciaHorario();
-            urgenciaAgencia = contrato.getDadosAgencia().getAgenciaUrgencia();
+        ZoneId fusoHorario = obterFusoHorario(agencia);
+        dataAssinatura = formatarDataHora(contrato.getDataAssinatura(), fusoHorario);
+        dataConsultaPrecos = formatarDataHora(contrato.getDataConsultaPrecos(), fusoHorario);
+        referenciaPreReserva = contrato.getReferenciaPreReserva();
+        preReservaValidaAte = formatarDataHora(contrato.getPreReservaValidaAte(), fusoHorario);
+        if (agencia != null) {
+            razaoSocialAgencia = agencia.getRazaoSocial();
+            nomeFantasiaAgencia = agencia.getNomeFantasia();
+            cnpjAgencia = agencia.getCnpj();
+            enderecoAgencia = agencia.getEndereco();
+            emailAgencia = agencia.getEmail();
+            telefoneAgencia = agencia.getTelefone();
+            representanteAgencia = agencia.getRepresentante();
+            cadasturAgencia = agencia.getCadastur();
+            horarioAgencia = agencia.getHorario();
+            urgenciaAgencia = agencia.getUrgencia();
         }
         clausulas = carregarClausulas();
         conteudoContrato = montarConteudoContrato();
+    }
+
+    private ZoneId obterFusoHorario(AgenciaDTO agencia) {
+        String fuso = agencia == null || agencia.getCidade() == null
+                ? null : agencia.getCidade().getFusoHorario();
+        if (fuso == null || fuso.isBlank()) {
+            throw new IllegalArgumentException("Configure uma cidade com fuso horário na agência para gerar o contrato.");
+        }
+        return ZoneId.of(fuso);
+    }
+
+    private String formatarDataHora(Instant instante, ZoneId fusoHorario) {
+        return instante == null ? null : DATA_HORA.withZone(fusoHorario).format(instante);
     }
 
     private List<BlocoTextoRelatorioDTO> montarConteudoContrato() {
@@ -80,6 +101,10 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Urgência", urgenciaAgencia)));
         adicionar(blocos, "Viajantes", getViajantes().stream().map(ViajanteRelatorioDTO::getNome)
                 .filter(Objects::nonNull).collect(java.util.stream.Collectors.joining("\n")));
+        adicionar(blocos, "Consulta de preços e pré-reserva", juntar(
+                linha("Preços consultados em", dataConsultaPrecos),
+                linha("Referência da pré-reserva", referenciaPreReserva),
+                linha("Pré-reserva válida até", preReservaValidaAte)));
         adicionar(blocos, "Passagens aéreas", reservasAereas());
         getTrajetosRodoviarios().forEach(trajeto -> adicionar(blocos, "Passagem rodoviária", juntar(
                 linha("Transportadora", trajeto.getTransportadora()),

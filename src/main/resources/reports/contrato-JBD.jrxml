@@ -12,6 +12,9 @@
  <field name="inicio" class="java.time.LocalDate"/>
  <field name="fim" class="java.time.LocalDate"/>
  <field name="dataAssinatura" class="java.lang.String"/>
+ <field name="dataConsultaPrecos" class="java.lang.String"/>
+ <field name="referenciaPreReserva" class="java.lang.String"/>
+ <field name="preReservaValidaAte" class="java.lang.String"/>
  <field name="razaoSocialAgencia" class="java.lang.String"/>
  <field name="conteudoContrato" class="java.util.List"/>
  <title height="128" splitType="Stretch">

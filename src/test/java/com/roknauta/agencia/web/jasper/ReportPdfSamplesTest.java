@@ -17,7 +17,8 @@ import org.junit.jupiter.api.Test;
 
 import com.roknauta.agencia.dto.documento.ContratoDTO;
 import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
-import com.roknauta.agencia.dto.documento.DadosAgenciaContratoDTO;
+import com.roknauta.agencia.dto.AgenciaDTO;
+import com.roknauta.agencia.dto.CidadeDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
 import com.roknauta.agencia.web.jasper.documento.contrato.ContratoRelatorioDTO;
@@ -52,6 +53,9 @@ class ReportPdfSamplesTest {
         EmissaoDTO emissao = new EmissaoDTO();
         DadosRelatoriosTeste.preencherDocumento(emissao);
         emissao.setDataDocumento(LocalDate.of(2026, 10, 9));
+        ContratoDTO contratoEmissao = new ContratoDTO();
+        contratoEmissao.setNumero("CTR-2026-001");
+        emissao.setContrato(contratoEmissao);
         BilheteAereoDTO bilheteIda = new BilheteAereoDTO();
         bilheteIda.setViajante(emissao.getViajantes().getFirst());
         bilheteIda.setTrechoReserva(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU",
@@ -72,12 +76,17 @@ class ReportPdfSamplesTest {
         ContratoDTO contrato = new ContratoDTO();
         DadosRelatoriosTeste.preencherDocumento(contrato);
         contrato.setOrcamento(orcamento);
-        DadosAgenciaContratoDTO dadosAgencia = new DadosAgenciaContratoDTO();
-        dadosAgencia.setAgenciaRazaoSocial("Agência de Teste Ltda.");
-        dadosAgencia.setAgenciaCnpj("12.345.678/0001-90");
-        dadosAgencia.setAgenciaEmail("teste@agencia.com.br");
-        contrato.setDadosAgencia(dadosAgencia);
-        byte[] pdfContrato = JasperUtils.gerarContratoPdf(new ContratoRelatorioDTO(contrato), Map.of());
+        contrato.setDataConsultaPrecos(java.time.Instant.parse("2026-10-09T17:00:00Z"));
+        contrato.setReferenciaPreReserva("PR-123456");
+        contrato.setPreReservaValidaAte(java.time.Instant.parse("2026-10-10T18:00:00Z"));
+        AgenciaDTO agencia = new AgenciaDTO();
+        agencia.setRazaoSocial("Agência de Teste Ltda.");
+        agencia.setCnpj("12.345.678/0001-90");
+        agencia.setEmail("teste@agencia.com.br");
+        CidadeDTO cidadeAgencia = new CidadeDTO();
+        cidadeAgencia.setFusoHorario("America/Sao_Paulo");
+        agencia.setCidade(cidadeAgencia);
+        byte[] pdfContrato = JasperUtils.gerarContratoPdf(new ContratoRelatorioDTO(contrato, agencia), Map.of());
         gravar(diretorio.resolve("contrato-teste.pdf"), pdfContrato);
 
         assertTrue(pdfOrcamento.length > 1000);
@@ -86,10 +95,13 @@ class ReportPdfSamplesTest {
         String textoOrcamento = textoPdf(pdfOrcamento);
         String textoOrcamentoNormalizado = textoOrcamento.replaceAll("\\s+", "");
         String textoContratoNormalizado = textoPdf(pdfContrato).replace("\u00a0", "").replaceAll("\\s+", "");
+        String textoEmissao = textoPdf(pdfEmissao).replaceAll("\\s+", "");
         assertTrue(textoOrcamentoNormalizado.contains("JJ1234"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("JJ5678"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TP1020"), textoOrcamento);
         assertTrue(textoContratoNormalizado.contains("Passagensaéreas"), textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("PR-123456"), textoContratoNormalizado);
+        assertTrue(textoEmissao.contains("CTR-2026-001"), textoEmissao);
         assertTrue(textoContratoNormalizado.contains("ViaçãoExemplo"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("HotelCentralLisboa"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("TransferExemplo"), textoContratoNormalizado);

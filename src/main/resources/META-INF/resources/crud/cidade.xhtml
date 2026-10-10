@@ -16,6 +16,7 @@
         <m:crudDataTable>
             <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
             <t:column headerText="#{msg['estado']}" value="#{item.estado}" sortBy="#{item.estado}"/>
+            <t:column headerText="#{msg['cidade.fuso.horario']}" value="#{item.fusoHorario}" sortBy="#{item.fusoHorario}"/>
             <t:column headerText="#{msg['pais']}" value="#{item.pais.nome}" sortBy="#{item.pais.nome}"/>
         </m:crudDataTable>
     </ui:define>
@@ -23,6 +24,7 @@
         <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
             <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{cidadeController.editForm.nome}" required="true" maxlength="100"/>
             <m:inputText id="estado" label="#{msg['estado']}" value="#{cidadeController.editForm.estado}" maxlength="50"/>
+            <m:inputText id="fusoHorario" label="#{msg['cidade.fuso.horario']}" value="#{cidadeController.editForm.fusoHorario}" maxlength="50"/>
             <m:autoComplete id="pais" label="#{msg['pais']}"
                             value="#{cidadeController.editForm.pais}"
                             completeMethod="#{paisController.completePais}"

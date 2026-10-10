@@ -6,7 +6,9 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.roknauta.agencia.domain.documento.BilheteAereo;
+import com.roknauta.agencia.domain.documento.Contrato;
 import com.roknauta.agencia.domain.documento.Emissao;
+import com.roknauta.agencia.domain.documento.StatusContrato;
 import com.roknauta.agencia.domain.documento.TrechoReserva;
 import com.roknauta.agencia.domain.documento.Viajante;
 import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
@@ -14,6 +16,7 @@ import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import com.roknauta.agencia.dto.documento.TrechoReservaDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.repository.documento.EmissaoRepository;
+import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.service.mapper.EmissaoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +25,14 @@ import org.apache.commons.lang3.StringUtils;
 @Service
 public class EmissaoService {
     private final EmissaoRepository repository;
+    private final ContratoRepository contratoRepository;
     private final EmissaoMapper mapper;
     private final TrechoReservaService trechoReservaService;
 
-    public EmissaoService(EmissaoRepository repository, EmissaoMapper mapper,
+    public EmissaoService(EmissaoRepository repository, ContratoRepository contratoRepository, EmissaoMapper mapper,
                           TrechoReservaService trechoReservaService) {
         this.repository = repository;
+        this.contratoRepository = contratoRepository;
         this.mapper = mapper;
         this.trechoReservaService = trechoReservaService;
     }
@@ -49,15 +54,32 @@ public class EmissaoService {
     public EmissaoDTO salvar(EmissaoDTO dto) {
         Emissao entidade;
         if (dto.getId() == null) {
+            Contrato contrato = contratoObrigatorio(dto);
+            if (contrato.getStatus() != StatusContrato.PAGAMENTO_CONFIRMADO) {
+                throw new IllegalStateException("A emissão exige contrato aceito e com pagamento confirmado.");
+            }
             entidade = mapper.toEntity(dto);
+            entidade.setContrato(contrato);
         } else {
             entidade = repository.findById(dto.getId())
                     .orElseThrow(() -> new IllegalArgumentException("Emissao não encontrado."));
+            Contrato contrato = contratoObrigatorio(dto);
+            if (!Objects.equals(entidade.getContrato().getId(), contrato.getId())) {
+                throw new IllegalArgumentException("O contrato vinculado à emissão não pode ser alterado.");
+            }
             mapper.updateEntity(dto, entidade);
         }
         trechoReservaService.resolverReferencias(dto, entidade);
         resolverBilhetesAereos(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
+    }
+
+    private Contrato contratoObrigatorio(EmissaoDTO dto) {
+        if (dto.getContrato() == null || dto.getContrato().getId() == null) {
+            throw new IllegalArgumentException("Contrato é obrigatório para criar uma emissão.");
+        }
+        return contratoRepository.findById(dto.getContrato().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
     }
 
     private void resolverBilhetesAereos(EmissaoDTO dto, Emissao emissao) {

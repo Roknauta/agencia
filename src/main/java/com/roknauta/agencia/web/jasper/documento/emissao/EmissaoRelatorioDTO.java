@@ -22,6 +22,7 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
 
     private static final DateTimeFormatter DATA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private String emitidoEm;
+    private String numeroContrato;
     private List<BilheteAereoRelatorioDTO> passageiros = new ArrayList<>();
 
     public EmissaoRelatorioDTO(EmissaoDTO emissao) {
@@ -29,6 +30,7 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         if (emissao == null) {
             return;
         }
+        numeroContrato = emissao.getContrato() == null ? null : emissao.getContrato().getNumero();
         emitidoEm = emissao.getDataDocumento() == null
                 ? LocalDateTimeProvider.agora()
                 : emissao.getDataDocumento().atStartOfDay().format(DATA_HORA);

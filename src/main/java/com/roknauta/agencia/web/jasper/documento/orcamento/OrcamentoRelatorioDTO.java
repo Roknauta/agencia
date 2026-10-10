@@ -41,7 +41,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private BigDecimal total = BigDecimal.ZERO;
     private BigDecimal valorPorPessoa = BigDecimal.ZERO;
     private String consultaPrecosEm;
-    private String aviso = "Esta cotação não representa reserva ou emissão. Antes da contratação, a agência verificará preço e disponibilidade com os fornecedores e apresentará as condições finais para aprovação do cliente. Quando realizada a pré-reserva, seu prazo e suas condições serão informados expressamente.";
+    private String aviso = "Esta cotação é preliminar: não representa reserva nem garante preço ou disponibilidade. Se o cliente desejar prosseguir, a agência fará nova consulta e poderá solicitar uma pré-reserva. Os valores e o prazo da pré-reserva serão confirmados no contrato antes do aceite e do pagamento.";
 
     public OrcamentoRelatorioDTO(OrcamentoDTO orcamento) {
         super(orcamento);
