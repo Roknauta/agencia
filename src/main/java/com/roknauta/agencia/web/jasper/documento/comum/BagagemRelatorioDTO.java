@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.roknauta.agencia.dto.documento.BagagemReservaDTO;
+import com.roknauta.agencia.dto.documento.BagagemTrechoAereoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,7 @@ public class BagagemRelatorioDTO {
     private Double pesoMaximo;
     private Integer quantidade;
 
-    public BagagemRelatorioDTO(BagagemReservaDTO bagagem) {
+    public BagagemRelatorioDTO(BagagemTrechoAereoDTO bagagem) {
         if (bagagem == null) {
             return;
         }

@@ -2,8 +2,10 @@ package com.roknauta.agencia.web.jasper.documento.comum;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.roknauta.agencia.dto.documento.TrechoReservaDTO;
+import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +26,12 @@ public class VooRelatorioDTO {
     private String regraCancelamento;
     private String regraAlteracao;
     private String outrasInformacoesTarifarias;
+    private String localizador;
+    private String cabine;
+    private String tarifa;
+    private List<BagagemRelatorioDTO> bagagens = new ArrayList<>();
 
-    public VooRelatorioDTO(TrechoReservaDTO trecho) {
+    public VooRelatorioDTO(TrechoAereoDTO trecho) {
         if (trecho == null || trecho.getVoo() == null) {
             return;
         }
@@ -33,12 +39,18 @@ public class VooRelatorioDTO {
         companhia = voo.getCompanhiaAerea() == null ? null
                 : new CompanhiaAereaRelatorioDTO(voo.getCompanhiaAerea().getNome());
         numero = voo.getNumero();
+        localizador = trecho.getLocalizador();
+        cabine = trecho.getCabine() == null ? null : trecho.getCabine().name();
         origem = voo.getOrigem() == null ? null : voo.getOrigem().getCodigoIata();
         destino = voo.getDestino() == null ? null : voo.getDestino().getCodigoIata();
         if (trecho.getTarifaAerea() != null) {
+            tarifa = trecho.getTarifaAerea().getNome();
             regraCancelamento = trecho.getTarifaAerea().getRegraCancelamento();
             regraAlteracao = trecho.getTarifaAerea().getRegraAlteracao();
             outrasInformacoesTarifarias = trecho.getTarifaAerea().getOutrasInformacoes();
+        }
+        if (trecho.getBagagens() != null) {
+            bagagens = trecho.getBagagens().stream().map(BagagemRelatorioDTO::new).toList();
         }
         if (trecho.getDataPartida() != null && voo.getPartida() != null) {
             saida = trecho.getDataPartida().atTime(voo.getPartida());

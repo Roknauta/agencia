@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BilheteAereoDTO extends BaseDTO {
     private ViajanteDTO viajante;
-    private TrechoReservaDTO trechoReserva;
+    private TrechoAereoDTO trechoAereo;
     private String numeroBilhete;
     private String assento;
 }

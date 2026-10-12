@@ -21,7 +21,7 @@ public class BilheteAereoRelatorioDTO {
         nome = bilheteAereo.getViajante() == null ? null : bilheteAereo.getViajante().getNome();
         bilhete = bilheteAereo.getNumeroBilhete();
         assento = bilheteAereo.getAssento();
-        voo = bilheteAereo.getTrechoReserva() == null || bilheteAereo.getTrechoReserva().getVoo() == null
-                ? null : bilheteAereo.getTrechoReserva().getVoo().getNumero();
+        voo = bilheteAereo.getTrechoAereo() == null || bilheteAereo.getTrechoAereo().getVoo() == null
+                ? null : bilheteAereo.getTrechoAereo().getVoo().getNumero();
     }
 }

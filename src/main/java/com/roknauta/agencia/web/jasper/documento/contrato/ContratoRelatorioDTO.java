@@ -155,21 +155,19 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private String reservasAereas() {
         StringJoiner texto = new StringJoiner("\n\n");
         for (TrajetoAereoRelatorioDTO trajeto : getTrajetosAereos()) {
-            for (var reserva : trajeto.getReservas()) {
-                StringJoiner reservaTexto = new StringJoiner("\n");
-                adicionarLinha(reservaTexto, "Sentido", trajeto.getSentido());
-                adicionarLinha(reservaTexto, "Companhia", reserva.getCompanhia() == null ? null : reserva.getCompanhia().getNome());
-                adicionarLinha(reservaTexto, "Localizador", reserva.getLocalizador());
-                adicionarLinha(reservaTexto, "Cabine", reserva.getCabine());
-                adicionarLinha(reservaTexto, "Tarifa", reserva.getTarifa());
-                for (var voo : reserva.getVoos()) {
-                    adicionarLinha(reservaTexto, "Voo", formatarLista(" ", voo.getNumero(), formatarLista(" → ", voo.getOrigem(), voo.getDestino()),
-                            dataHora(voo.getSaida()), dataHora(voo.getChegada())));
+            for (var voo : trajeto.getVoos()) {
+                StringJoiner trechoTexto = new StringJoiner("\n");
+                adicionarLinha(trechoTexto, "Sentido", trajeto.getSentido());
+                adicionarLinha(trechoTexto, "Companhia", voo.getCompanhia() == null ? null : voo.getCompanhia().getNome());
+                adicionarLinha(trechoTexto, "Localizador", voo.getLocalizador());
+                adicionarLinha(trechoTexto, "Cabine", voo.getCabine());
+                adicionarLinha(trechoTexto, "Tarifa", voo.getTarifa());
+                adicionarLinha(trechoTexto, "Voo", formatarLista(" ", voo.getNumero(), formatarLista(" → ", voo.getOrigem(), voo.getDestino()),
+                        dataHora(voo.getSaida()), dataHora(voo.getChegada())));
+                if (voo.getBagagens() != null) {
+                    voo.getBagagens().forEach(bagagem -> adicionarLinha(trechoTexto, "Bagagem", bagagem.getDescricaoRelatorio()));
                 }
-                if (reserva.getBagagens() != null) {
-                    reserva.getBagagens().forEach(bagagem -> adicionarLinha(reservaTexto, "Bagagem", bagagem.getDescricaoRelatorio()));
-                }
-                texto.add(reservaTexto.toString());
+                texto.add(trechoTexto.toString());
             }
             adicionarLinha(texto, "Valor total " + trajeto.getSentido(), trajeto.getValorTotal());
         }

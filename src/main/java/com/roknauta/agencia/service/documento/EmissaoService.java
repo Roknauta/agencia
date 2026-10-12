@@ -9,11 +9,11 @@ import com.roknauta.agencia.domain.documento.BilheteAereo;
 import com.roknauta.agencia.domain.documento.Contrato;
 import com.roknauta.agencia.domain.documento.Emissao;
 import com.roknauta.agencia.domain.documento.StatusContrato;
-import com.roknauta.agencia.domain.documento.TrechoReserva;
+import com.roknauta.agencia.domain.documento.TrechoAereo;
 import com.roknauta.agencia.domain.documento.Viajante;
 import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
-import com.roknauta.agencia.dto.documento.TrechoReservaDTO;
+import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.repository.documento.EmissaoRepository;
 import com.roknauta.agencia.repository.documento.ContratoRepository;
@@ -27,14 +27,14 @@ public class EmissaoService {
     private final EmissaoRepository repository;
     private final ContratoRepository contratoRepository;
     private final EmissaoMapper mapper;
-    private final TrechoReservaService trechoReservaService;
+    private final TrechoAereoService trechoAereoService;
 
     public EmissaoService(EmissaoRepository repository, ContratoRepository contratoRepository, EmissaoMapper mapper,
-                          TrechoReservaService trechoReservaService) {
+                          TrechoAereoService trechoAereoService) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
-        this.trechoReservaService = trechoReservaService;
+        this.trechoAereoService = trechoAereoService;
     }
 
     @Transactional(readOnly = true)
@@ -69,7 +69,7 @@ public class EmissaoService {
             }
             mapper.updateEntity(dto, entidade);
         }
-        trechoReservaService.resolverReferencias(dto, entidade);
+        trechoAereoService.resolverReferencias(dto, entidade);
         resolverBilhetesAereos(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
@@ -95,7 +95,7 @@ public class EmissaoService {
             BilheteAereoDTO bilheteDTO = dto.getBilhetesAereos().get(i);
             BilheteAereo bilhete = emissao.getBilhetesAereos().get(i);
             bilhete.setViajante(localizarViajante(emissao, bilheteDTO.getViajante()));
-            bilhete.setTrechoReserva(localizarTrecho(emissao, bilheteDTO.getTrechoReserva()));
+            bilhete.setTrechoAereo(localizarTrecho(emissao, bilheteDTO.getTrechoAereo()));
         }
     }
 
@@ -112,15 +112,13 @@ public class EmissaoService {
                 .orElseThrow(() -> new IllegalArgumentException("Viajante do bilhete não pertence à emissão."));
     }
 
-    private TrechoReserva localizarTrecho(Emissao emissao, TrechoReservaDTO dto) {
+    private TrechoAereo localizarTrecho(Emissao emissao, TrechoAereoDTO dto) {
         if (dto == null || dto.getVoo() == null || dto.getVoo().getId() == null) {
             throw new IllegalArgumentException("O trecho do bilhete aéreo é obrigatório.");
         }
-        Stream<TrechoReserva> trechos = emissao.getTrajetosAereos().stream()
+        Stream<TrechoAereo> trechos = emissao.getTrajetosAereos().stream()
                 .filter(Objects::nonNull)
-                .flatMap(trajeto -> trajeto.getReservas().stream())
-                .filter(Objects::nonNull)
-                .flatMap(reserva -> reserva.getTrechos().stream())
+                .flatMap(trajeto -> trajeto.getTrechos().stream())
                 .filter(Objects::nonNull);
         return trechos.filter(trecho -> Objects.equals(trecho.getVoo().getId(), dto.getVoo().getId())
                         && Objects.equals(trecho.getDataPartida(), dto.getDataPartida())

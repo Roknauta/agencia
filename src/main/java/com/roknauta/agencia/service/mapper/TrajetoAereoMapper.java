@@ -5,7 +5,7 @@ import com.roknauta.agencia.dto.documento.TrajetoAereoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {ReservaMapper.class})
+@Mapper(componentModel = "spring", uses = {TrechoAereoMapper.class})
 public interface TrajetoAereoMapper {
     TrajetoAereoDTO toDTO(TrajetoAereo entity);
 

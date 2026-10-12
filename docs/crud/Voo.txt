@@ -35,4 +35,4 @@ Regras de negócio:
 - Unique conjunta em numero,companhiaAerea,dataReferencia
 - Voo é imutável; qualquer alteração deve ser cadastrada como uma nova versão.
 - Voo guarda horários locais, sem data, tarifa ou cabine.
-- A Reserva agrupa cada Voo em um TrechoReserva, onde ficam as datas de partida/chegada e tarifa/cabine escolhidas.
+- O TrajetoAereo agrupa TrechoAereo; cada trecho guarda as datas, tarifa, cabine, localizador e bagagens específicas do voo.

@@ -31,16 +31,16 @@ public class ContratoService {
     private final ContratoRepository repository;
     private final OrcamentoRepository orcamentoRepository;
     private final ContratoMapper mapper;
-    private final TrechoReservaService trechoReservaService;
+    private final TrechoAereoService trechoAereoService;
     private final AgenciaService agenciaService;
 
     public ContratoService(ContratoRepository repository, OrcamentoRepository orcamentoRepository,
-                           ContratoMapper mapper, TrechoReservaService trechoReservaService,
+                           ContratoMapper mapper, TrechoAereoService trechoAereoService,
                            AgenciaService agenciaService) {
         this.repository = repository;
         this.orcamentoRepository = orcamentoRepository;
         this.mapper = mapper;
-        this.trechoReservaService = trechoReservaService;
+        this.trechoAereoService = trechoAereoService;
         this.agenciaService = agenciaService;
     }
 
@@ -85,7 +85,7 @@ public class ContratoService {
         Contrato contrato = mapper.toEntity(dto);
         contrato.setOrcamento(orcamento);
         contrato.setStatus(StatusContrato.AGUARDANDO_ACEITE);
-        trechoReservaService.resolverReferencias(dto, contrato);
+        trechoAereoService.resolverReferencias(dto, contrato);
         Contrato salvo = repository.save(contrato);
         orcamento.setStatus(StatusOrcamento.CONVERTIDO_EM_CONTRATO);
         orcamentoRepository.save(orcamento);

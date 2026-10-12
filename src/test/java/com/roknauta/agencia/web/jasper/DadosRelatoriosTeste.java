@@ -24,16 +24,15 @@ import com.roknauta.agencia.dto.CidadeDTO;
 import com.roknauta.agencia.dto.PaisDTO;
 import com.roknauta.agencia.dto.TarifaAereaDTO;
 import com.roknauta.agencia.dto.documento.AluguelVeiculoDTO;
-import com.roknauta.agencia.dto.documento.BagagemReservaDTO;
+import com.roknauta.agencia.dto.documento.BagagemTrechoAereoDTO;
 import com.roknauta.agencia.dto.documento.ESimDTO;
 import com.roknauta.agencia.dto.documento.FotoHospedagemDTO;
 import com.roknauta.agencia.dto.documento.HospedagemDTO;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
-import com.roknauta.agencia.dto.documento.ReservaDTO;
 import com.roknauta.agencia.dto.documento.SeguroViagemDTO;
 import com.roknauta.agencia.dto.documento.TrajetoAereoDTO;
 import com.roknauta.agencia.dto.documento.TrajetoRodoviarioDTO;
-import com.roknauta.agencia.dto.documento.TrechoReservaDTO;
+import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import com.roknauta.agencia.dto.documento.TransferDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.dto.documento.VooDTO;
@@ -84,31 +83,31 @@ public final class DadosRelatoriosTeste {
     }
 
     public static TrajetoAereoDTO trajetoIda() {
-        ReservaDTO reserva = new ReservaDTO();
-        reserva.setLocalizador("ABC123");
-        reserva.setTrechos(List.of(trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0), LocalTime.of(9, 15), DATA_PARTIDA),
-                trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA)));
-        reserva.setBagagens(List.of(bagagem("Despachada", 1), bagagem("Bagagem de mão", 1)));
+        TrechoAereoDTO primeiroTrecho = trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0), LocalTime.of(9, 15), DATA_PARTIDA);
+        primeiroTrecho.setLocalizador("ABC123");
+        primeiroTrecho.setBagagens(List.of(bagagem("Despachada", 1)));
+        TrechoAereoDTO segundoTrecho = trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA);
+        segundoTrecho.setLocalizador("ABC456");
+        segundoTrecho.setBagagens(List.of(bagagem("Bagagem de mão", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.IDA);
-        trajeto.setReservas(List.of(reserva));
+        trajeto.setTrechos(List.of(primeiroTrecho, segundoTrecho));
         trajeto.setValorTotal(new BigDecimal("2600.00"));
         return trajeto;
     }
 
     public static TrajetoAereoDTO trajetoVolta() {
-        ReservaDTO reserva = new ReservaDTO();
-        reserva.setLocalizador("XYZ789");
-        reserva.setTrechos(List.of(trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0), LocalTime.of(18, 20), DATA_PARTIDA.plusDays(8))));
-        reserva.setBagagens(List.of(bagagem("Despachada", 1)));
+        TrechoAereoDTO trecho = trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0), LocalTime.of(18, 20), DATA_PARTIDA.plusDays(8));
+        trecho.setLocalizador("XYZ789");
+        trecho.setBagagens(List.of(bagagem("Despachada", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.VOLTA);
-        trajeto.setReservas(List.of(reserva));
+        trajeto.setTrechos(List.of(trecho));
         trajeto.setValorTotal(new BigDecimal("1900.00"));
         return trajeto;
     }
 
-    public static TrechoReservaDTO trecho(String numero, String origem, String destino,
+    public static TrechoAereoDTO trecho(String numero, String origem, String destino,
                                     LocalTime partida, LocalTime chegada, LocalDate data) {
         CompanhiaAereaDTO companhia = new CompanhiaAereaDTO();
         companhia.setNome("Companhia Exemplo");
@@ -120,7 +119,7 @@ public final class DadosRelatoriosTeste {
         voo.setDestino(aeroporto(destino));
         voo.setPartida(partida);
         voo.setChegada(chegada);
-        TrechoReservaDTO trecho = new TrechoReservaDTO();
+        TrechoAereoDTO trecho = new TrechoAereoDTO();
         trecho.setVoo(voo);
         trecho.setDataPartida(data);
         trecho.setDataChegada(chegada.isBefore(partida) ? data.plusDays(1) : data);
@@ -143,8 +142,8 @@ public final class DadosRelatoriosTeste {
         return aeroporto;
     }
 
-    private static BagagemReservaDTO bagagem(String descricao, int quantidade) {
-        BagagemReservaDTO bagagem = new BagagemReservaDTO();
+    private static BagagemTrechoAereoDTO bagagem(String descricao, int quantidade) {
+        BagagemTrechoAereoDTO bagagem = new BagagemTrechoAereoDTO();
         bagagem.setDescricao(descricao);
         bagagem.setQuantidade(quantidade);
         BagagemCompanhiaAereaDTO referencia = new BagagemCompanhiaAereaDTO();

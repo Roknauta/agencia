@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class TrajetoAereoService {
     private final TrajetoAereoRepository repository;
     private final TrajetoAereoMapper mapper;
-    private final TrechoReservaService trechoReservaService;
+    private final TrechoAereoService trechoAereoService;
 
     public TrajetoAereoService(TrajetoAereoRepository repository, TrajetoAereoMapper mapper,
-                               TrechoReservaService trechoReservaService) {
+                               TrechoAereoService trechoAereoService) {
         this.repository = repository;
         this.mapper = mapper;
-        this.trechoReservaService = trechoReservaService;
+        this.trechoAereoService = trechoAereoService;
     }
 
     @Transactional(readOnly = true)
@@ -44,7 +44,7 @@ public class TrajetoAereoService {
                     .orElseThrow(() -> new IllegalArgumentException("TrajetoAereo não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
-        trechoReservaService.resolverReferencias(dto, entidade);
+        trechoAereoService.resolverReferencias(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 }

@@ -93,7 +93,7 @@ public class DocumentoViagemRelatorioDTO {
         }
         TrajetoAereoRelatorioDTO agregado = new TrajetoAereoRelatorioDTO();
         agregado.setSentido(sentido.name());
-        agregado.setReservas(trajetos.stream().flatMap(trajeto -> trajeto.getReservas().stream()).toList());
+        agregado.setVoos(trajetos.stream().flatMap(trajeto -> trajeto.getVoos().stream()).toList());
         agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal)
                 .filter(Objects::nonNull).reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         return agregado;

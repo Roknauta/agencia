@@ -26,7 +26,7 @@
 		<field name="pesoMaximo" class="java.lang.Double"/>
 		<field name="quantidade" class="java.lang.Integer"/>
 	</dataset>
-	<dataset name="Reservas" uuid="98f78297-c080-4f48-987e-ed740655d7cc">
+	<dataset name="TrechosAereos" uuid="98f78297-c080-4f48-987e-ed740655d7cc">
 		<field name="companhia" class="com.roknauta.agencia.web.jasper.documento.comum.CompanhiaAereaRelatorioDTO"/>
 		<field name="localizador" class="java.lang.String"/>
 	</dataset>
@@ -50,8 +50,8 @@
 	<field name="hospedagens" class="java.util.List"/>
 	<field name="aluguelCarro" class="com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO"/>
 	<field name="transfer" class="com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO"/>
-	<group name="Reserva">
-		<expression><![CDATA["reserva"]]></expression>
+	<group name="PassageirosEmissao">
+		<expression><![CDATA["passageiros"]]></expression>
 		<groupHeader>
 			<band height="97" splitType="Stretch">
 				<element kind="staticText" uuid="d23a7fa0-b3dd-4d6e-8493-cb986132a8de" x="24" y="0" width="475" height="24" forecolor="#8C7138" fontSize="13" hTextAlign="Center" vTextAlign="Middle" bold="true"><text><![CDATA[PASSAGEIROS]]></text></element><element kind="component" uuid="cf4a14f3-0ed0-453a-8fc0-b5cd71975991" positionType="Float" x="0" y="32" width="523" height="56">
@@ -372,10 +372,10 @@
 			<element kind="staticText" uuid="0daa3975-2345-4c1c-827e-893b6a3f7d63" key="TITULO_IDA" x="0" y="0" width="523" height="25" forecolor="#CCAA55" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[ITINERARIO DA IDA]]></text>
 			</element>
-			<element kind="component" uuid="5772cb1c-89d8-4e1a-98a4-3a02107ea2e6" key="RESERVAS_IDA" positionType="Float" x="0" y="37" width="523" height="56">
+			<element kind="component" uuid="5772cb1c-89d8-4e1a-98a4-3a02107ea2e6" key="TRECHOS_IDA" positionType="Float" x="0" y="37" width="523" height="56">
 				<component kind="table" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun uuid="c02ccce6-127c-41b9-9690-1e7e3bc12035" subDataset="Reservas">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ida} == null || $F{ida}.getReservas() == null ? java.util.Collections.emptyList() : $F{ida}.getReservas())]]></dataSourceExpression>
+					<datasetRun uuid="c02ccce6-127c-41b9-9690-1e7e3bc12035" subDataset="TrechosAereos">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ida} == null || $F{ida}.getVoos() == null ? java.util.Collections.emptyList() : $F{ida}.getVoos())]]></dataSourceExpression>
 					</datasetRun>
 					<column kind="single" uuid="a4492b75-0ce1-4986-9b83-7c58ea8d1b34" width="220">
 						<columnHeader height="24">
@@ -666,10 +666,10 @@
 			<element kind="staticText" uuid="0949ed7a-9f47-4139-a5fa-b429ec5a7f09" key="TITULO_VOLTA" x="0" y="0" width="523" height="25" forecolor="#CCAA55" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[ITINERARIO DA VOLTA]]></text>
 			</element>
-			<element kind="component" uuid="3308a41e-1803-4404-9c15-92fd5c3d566f" key="RESERVAS_VOLTA" positionType="Float" x="0" y="37" width="523" height="56">
+			<element kind="component" uuid="3308a41e-1803-4404-9c15-92fd5c3d566f" key="TRECHOS_VOLTA" positionType="Float" x="0" y="37" width="523" height="56">
 				<component kind="table" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun uuid="f06c88ee-768c-48b8-aa94-2aa105220a2d" subDataset="Reservas">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{volta} == null || $F{volta}.getReservas() == null ? java.util.Collections.emptyList() : $F{volta}.getReservas())]]></dataSourceExpression>
+					<datasetRun uuid="f06c88ee-768c-48b8-aa94-2aa105220a2d" subDataset="TrechosAereos">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{volta} == null || $F{volta}.getVoos() == null ? java.util.Collections.emptyList() : $F{volta}.getVoos())]]></dataSourceExpression>
 					</datasetRun>
 					<column kind="single" uuid="cbf724a2-87e8-43a8-bb67-dc4c97814338" width="220">
 						<columnHeader height="24">

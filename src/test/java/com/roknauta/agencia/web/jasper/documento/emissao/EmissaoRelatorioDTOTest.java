@@ -26,14 +26,14 @@ class EmissaoRelatorioDTOTest {
 
         BilheteAereoDTO bilheteIda = new BilheteAereoDTO();
         bilheteIda.setViajante(emissao.getViajantes().getFirst());
-        bilheteIda.setTrechoReserva(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU",
+        bilheteIda.setTrechoAereo(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU",
                 java.time.LocalTime.of(8, 0), java.time.LocalTime.of(9, 15), LocalDate.of(2027, 2, 10)));
         bilheteIda.setNumeroBilhete("9571234567890");
         bilheteIda.setAssento("12A");
 
         BilheteAereoDTO bilheteVolta = new BilheteAereoDTO();
         bilheteVolta.setViajante(emissao.getViajantes().get(1));
-        bilheteVolta.setTrechoReserva(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF",
+        bilheteVolta.setTrechoAereo(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF",
                 java.time.LocalTime.of(10, 0), java.time.LocalTime.of(18, 20), LocalDate.of(2027, 2, 18)));
         bilheteVolta.setNumeroBilhete("0479876543210");
         bilheteVolta.setAssento("14C");
@@ -49,7 +49,7 @@ class EmissaoRelatorioDTOTest {
         assertEquals("9571234567890", relatorio.getPassageiros().getFirst().getBilhete());
         assertEquals("12A", relatorio.getPassageiros().getFirst().getAssento());
         assertEquals("JJ1234", relatorio.getPassageiros().getFirst().getVoo());
-        assertEquals(3, relatorio.getReservas().stream().mapToInt(reserva -> reserva.getVoos().size()).sum());
+        assertEquals(3, relatorio.getTrechosAereos().size());
         assertEquals(1, relatorio.getHospedagens().size());
         assertEquals(2, relatorio.getTransfers().size());
         assertEquals(2, relatorio.getAlugueis().size());

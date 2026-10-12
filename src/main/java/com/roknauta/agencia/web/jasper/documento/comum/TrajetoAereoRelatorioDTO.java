@@ -16,7 +16,7 @@ import lombok.Setter;
 public class TrajetoAereoRelatorioDTO {
     private String sentido;
     private BigDecimal valorTotal;
-    private List<ReservaAereaRelatorioDTO> reservas = new ArrayList<>();
+    private List<VooRelatorioDTO> voos = new ArrayList<>();
 
     public TrajetoAereoRelatorioDTO(TrajetoAereoDTO trajeto) {
         if (trajeto == null) {
@@ -24,30 +24,25 @@ public class TrajetoAereoRelatorioDTO {
         }
         sentido = trajeto.getSentido() == null ? null : trajeto.getSentido().name();
         valorTotal = trajeto.getValorTotal();
-        if (trajeto.getReservas() != null) {
-            reservas = trajeto.getReservas().stream().map(ReservaAereaRelatorioDTO::new).toList();
+        if (trajeto.getTrechos() != null) {
+            voos = trajeto.getTrechos().stream().map(VooRelatorioDTO::new).toList();
         }
     }
 
-    public List<VooRelatorioDTO> getVoos() {
-        return reservas.stream().filter(reserva -> reserva.getVoos() != null)
-                .flatMap(reserva -> reserva.getVoos().stream()).toList();
-    }
-
     public String getResumoCabine() {
-        return reservas.stream().map(ReservaAereaRelatorioDTO::getCabine)
+        return voos.stream().map(VooRelatorioDTO::getCabine)
                 .filter(texto -> texto != null && !texto.isBlank()).distinct()
                 .collect(Collectors.joining(" • "));
     }
 
     public String getResumoTarifa() {
-        return reservas.stream().map(ReservaAereaRelatorioDTO::getTarifa)
+        return voos.stream().map(VooRelatorioDTO::getTarifa)
                 .filter(texto -> texto != null && !texto.isBlank()).distinct()
                 .collect(Collectors.joining(" • "));
     }
 
     public List<BagagemRelatorioDTO> getBagagens() {
-        return reservas.stream().filter(reserva -> reserva.getBagagens() != null)
-                .flatMap(reserva -> reserva.getBagagens().stream()).toList();
+        return voos.stream().filter(voo -> voo.getBagagens() != null)
+                .flatMap(voo -> voo.getBagagens().stream()).toList();
     }
 }

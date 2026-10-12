@@ -21,8 +21,8 @@ public class BilheteAereo extends EntidadeBase {
     private Viajante viajante;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "trecho_reserva_id", nullable = false)
-    private TrechoReserva trechoReserva;
+    @JoinColumn(name = "trecho_aereo_id", nullable = false)
+    private TrechoAereo trechoAereo;
 
     @Column(length = 30)
     private String numeroBilhete;

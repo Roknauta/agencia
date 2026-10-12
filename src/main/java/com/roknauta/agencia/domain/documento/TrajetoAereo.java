@@ -24,7 +24,7 @@ public class TrajetoAereo extends EntidadeBase {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "trajeto_aereo_id")
     @OrderColumn(name = "ordem")
-    private List<Reserva> reservas = new ArrayList<>();
+    private List<TrechoAereo> trechos = new ArrayList<>();
     @Column(precision = 19, scale = 2)
     private BigDecimal valorTotal;
 }

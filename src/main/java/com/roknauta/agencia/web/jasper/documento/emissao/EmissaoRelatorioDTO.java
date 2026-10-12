@@ -11,6 +11,7 @@ import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.DocumentoViagemRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.VooRelatorioDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,10 +45,10 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         }
     }
 
-    public List<com.roknauta.agencia.web.jasper.documento.comum.ReservaAereaRelatorioDTO> getReservas() {
+    public List<VooRelatorioDTO> getTrechosAereos() {
         return getTrajetosAereos().stream()
                 .filter(Objects::nonNull)
-                .flatMap(trajeto -> trajeto.getReservas().stream()).toList();
+                .flatMap(trajeto -> trajeto.getVoos().stream()).toList();
     }
 
     public String getOrientacoes() {

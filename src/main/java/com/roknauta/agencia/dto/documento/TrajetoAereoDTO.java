@@ -16,6 +16,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TrajetoAereoDTO extends BaseDTO {
     private SentidoVoo sentido;
-    private List<ReservaDTO> reservas = new ArrayList<>();
+    private List<TrechoAereoDTO> trechos = new ArrayList<>();
     private BigDecimal valorTotal;
 }
