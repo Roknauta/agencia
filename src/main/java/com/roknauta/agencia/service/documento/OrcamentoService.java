@@ -1,28 +1,33 @@
 package com.roknauta.agencia.service.documento;
 
-import java.time.Instant;
-import java.util.List;
-
 import com.roknauta.agencia.domain.documento.Orcamento;
 import com.roknauta.agencia.domain.documento.StatusOrcamento;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.repository.documento.OrcamentoRepository;
+import com.roknauta.agencia.service.crud.CrudService;
 import com.roknauta.agencia.service.mapper.OrcamentoMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang3.StringUtils;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.UUID;
 
 @Service
-public class OrcamentoService {
+public class OrcamentoService implements CrudService<OrcamentoDTO> {
     private final OrcamentoRepository repository;
+    private final ContratoRepository contratoRepository;
     private final OrcamentoMapper mapper;
-    private final TrechoReservaService trechoReservaService;
 
-    public OrcamentoService(OrcamentoRepository repository, OrcamentoMapper mapper,
-                            TrechoReservaService trechoReservaService) {
+    public OrcamentoService(OrcamentoRepository repository, ContratoRepository contratoRepository,
+                            OrcamentoMapper mapper) {
         this.repository = repository;
+        this.contratoRepository = contratoRepository;
         this.mapper = mapper;
-        this.trechoReservaService = trechoReservaService;
     }
 
     @Transactional(readOnly = true)
@@ -33,15 +38,19 @@ public class OrcamentoService {
 
     @Transactional(readOnly = true)
     public List<OrcamentoDTO> buscar(OrcamentoDTO filtro) {
-        String numero = StringUtils.defaultString(StringUtils.trimToNull(filtro.getNumero()));
-                String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
-        return repository.buscar(numero, cliente).stream().map(mapper::toDTO).toList();
+        String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
+        String destino = StringUtils.defaultString(StringUtils.trimToNull(filtro.getDestino()));
+        Long origemId = filtro.getOrigem() == null ? null : filtro.getOrigem().getId();
+        return repository.buscar(cliente, origemId, destino, filtro.getInicio(), filtro.getFim())
+                .stream().map(mapper::toDTO).toList();
     }
 
     @Transactional
     public OrcamentoDTO salvar(OrcamentoDTO dto) {
         Orcamento entidade;
         if (dto.getId() == null) {
+            dto.setNumero("ORC-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
+                    .format(LocalDateTime.now()) + "-" + UUID.randomUUID().toString().substring(0, 8));
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
@@ -51,8 +60,42 @@ public class OrcamentoService {
             }
             mapper.updateEntity(dto, entidade);
         }
-        trechoReservaService.resolverReferencias(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrcamentoDTO findById(Long id) {
+        return buscarPorId(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrcamentoDTO> find(OrcamentoDTO filtro) {
+        return buscar(filtro);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrcamentoDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toDTO).toList();
+    }
+
+    @Override
+    public OrcamentoDTO save(OrcamentoDTO dto) {
+        return salvar(dto);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("Orçamento não encontrado.");
+        }
+        if (contratoRepository.existsByOrcamentoId(id)) {
+            throw new IllegalStateException("Orçamento associado a contrato não pode ser excluído.");
+        }
+        repository.deleteById(id);
     }
 
     @Transactional

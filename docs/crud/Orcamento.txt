@@ -1,0 +1,41 @@
+Criar um CRUD para a entidade Orcamento.
+Menu:
+- Submenu: Documentos
+- Nome exibido: Orçamento
+Campos:
+- cliente: String
+  - Obrigatório: sim
+  - Tamanho máximo: 200 caracteres
+  - Interface: inputText
+- origem: Cidade
+  - Obrigatório: sim
+  - Interface: autoComplete para Cidade
+- destino: String
+  - Obrigatório: sim
+  - Tamanho máximo: 200 caracteres
+  - Interface: inputText
+- inicio: LocalDate
+  - Obrigatório: sim
+  - Interface: datePicker
+- fim: LocalDate
+  - Obrigatório: sim
+  - Interface: datePicker
+- adultos: Integer
+  - Obrigatório: sim
+  - Valor inicial: 1
+  - Valor mínimo: 0
+  - Interface: inputNumber
+- criancas: Integer
+  - Obrigatório: sim
+  - Valor inicial: 0
+  - Valor mínimo: 0
+  - Interface: inputNumber
+- bebes: Integer
+  - Obrigatório: sim
+  - Valor inicial: 0
+  - Valor mínimo: 0
+  - Interface: inputNumber
+Pesquisa:
+- Filtros: cliente,origem,destino,inicio,fim
+Tabela de resultados:
+- Colunas: cliente,origem,destino,inicio,fim

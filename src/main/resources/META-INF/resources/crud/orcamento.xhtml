@@ -1,0 +1,42 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{orcamentoController}"/>
+    <ui:param name="formId" value="orcamento"/>
+    <ui:define name="searchField">
+        <m:inputText id="cliente" label="#{msg['cliente']}" value="#{orcamentoController.searchForm.cliente}" maxlength="200"/>
+        <m:autoComplete id="origem" label="#{msg['campo.origem']}"
+                        value="#{orcamentoController.searchForm.origem}"
+                        completeMethod="#{orcamentoController.completeCidade}"
+                        var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                        converter="#{cidadeConverter}" required="false" minQueryLength="1"/>
+        <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{orcamentoController.searchForm.destino}" maxlength="200"/>
+        <m:datePicker id="inicio" label="#{msg['inicio']}" value="#{orcamentoController.searchForm.inicio}"/>
+        <m:datePicker id="fim" label="#{msg['fim']}" value="#{orcamentoController.searchForm.fim}"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['cliente']}" value="#{item.cliente}" sortBy="#{item.cliente}"/>
+            <t:column headerText="#{msg['campo.origem']}" value="#{item.origem.nome}" sortBy="#{item.origem.nome}"/>
+            <t:column headerText="#{msg['campo.destino']}" value="#{item.destino}" sortBy="#{item.destino}"/>
+            <t:column headerText="#{msg['inicio']}" value="#{item.inicio}" sortBy="#{item.inicio}"/>
+            <t:column headerText="#{msg['fim']}" value="#{item.fim}" sortBy="#{item.fim}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="cliente" label="#{msg['cliente']}" value="#{orcamentoController.editForm.cliente}" required="true" maxlength="200"/>
+            <m:autoComplete id="origem" label="#{msg['campo.origem']}"
+                            value="#{orcamentoController.editForm.origem}"
+                            completeMethod="#{orcamentoController.completeCidade}"
+                            var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
+                            converter="#{cidadeConverter}" required="true" minQueryLength="1"/>
+            <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{orcamentoController.editForm.destino}" required="true" maxlength="200"/>
+            <m:datePicker id="inicio" label="#{msg['inicio']}" value="#{orcamentoController.editForm.inicio}" required="true"/>
+            <m:datePicker id="fim" label="#{msg['fim']}" value="#{orcamentoController.editForm.fim}" required="true"/>
+            <m:inputNumber id="adultos" label="#{msg['adultos']}" value="#{orcamentoController.editForm.adultos}" required="true" minValue="0"/>
+            <m:inputNumber id="criancas" label="#{msg['criancas']}" value="#{orcamentoController.editForm.criancas}" required="true" minValue="0"/>
+            <m:inputNumber id="bebes" label="#{msg['bebes']}" value="#{orcamentoController.editForm.bebes}" required="true" minValue="0"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>
