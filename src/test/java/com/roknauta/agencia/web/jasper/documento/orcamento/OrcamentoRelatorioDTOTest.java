@@ -26,7 +26,7 @@ class OrcamentoRelatorioDTOTest {
         assertEquals("Família Exemplo", relatorio.getCliente());
         assertEquals("Ana Consultora", relatorio.getConsultor());
         assertEquals("Belo Horizonte, MG, Brasil", relatorio.getOrigem());
-        assertEquals("Lisboa, Lisboa, Brasil", relatorio.getDestino());
+        assertEquals("Lisboa, Portugal", relatorio.getDestino());
         assertEquals("Apresentar-se com antecedência e conferir os documentos.", relatorio.getObservacoes());
         assertEquals(4, relatorio.getQuantidadePassageiros());
         assertEquals(2, relatorio.getTrajetosAereos().getFirst().getVoos().size());

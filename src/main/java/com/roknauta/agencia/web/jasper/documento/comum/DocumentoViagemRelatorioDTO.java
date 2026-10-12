@@ -43,7 +43,7 @@ public class DocumentoViagemRelatorioDTO {
         consultor = documento.getConsultor();
         dataDocumento = documento.getDataDocumento();
         origem = new CidadeRelatorioDTO(documento.getOrigem()).getNome();
-        destino = new CidadeRelatorioDTO(documento.getDestino()).getNome();
+        destino = documento.getDestino();
         inicio = documento.getInicio();
         fim = documento.getFim();
         observacoes = documento.getObservacoes();

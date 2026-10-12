@@ -26,7 +26,7 @@ public abstract class DocumentoViagemDTO extends BaseDTO {
     private List<SeguroViagemDTO> segurosViagem = new ArrayList<>();
     private List<ESimDTO> eSims = new ArrayList<>();
     private CidadeDTO origem;
-    private CidadeDTO destino;
+    private String destino;
     private LocalDate inicio;
     private LocalDate fim;
     private String observacoes;

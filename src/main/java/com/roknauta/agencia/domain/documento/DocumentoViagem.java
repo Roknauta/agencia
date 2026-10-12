@@ -1,10 +1,10 @@
 package com.roknauta.agencia.domain.documento;
 
-import com.roknauta.agencia.domain.Cidade;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roknauta.agencia.domain.Cidade;
 import com.roknauta.agencia.domain.EntidadeBase;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -46,8 +46,8 @@ public abstract class DocumentoViagem extends EntidadeBase {
     private List<ESim> eSims = new ArrayList<>();
     @ManyToOne(fetch = FetchType.LAZY)
     private Cidade origem;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Cidade destino;
+    @Column(length = 200)
+    private String destino;
     private LocalDate inicio;
     private LocalDate fim;
     @Column(columnDefinition = "clob")

@@ -67,7 +67,7 @@ public final class DadosRelatoriosTeste {
         documento.setConsultor("Ana Consultora");
         documento.setDataDocumento(LocalDate.of(2026, 10, 9));
         documento.setOrigem(cidade("Belo Horizonte", "MG"));
-        documento.setDestino(cidade("Lisboa", "Lisboa"));
+        documento.setDestino("Lisboa, Portugal");
         documento.setInicio(DATA_PARTIDA);
         documento.setFim(DATA_PARTIDA.plusDays(8));
         documento.setObservacoes("Apresentar-se com antecedência e conferir os documentos.");
