@@ -53,9 +53,6 @@ public final class DadosRelatoriosTeste {
         orcamento.setCriancas(1);
         orcamento.setBebes(1);
         orcamento.setPagamento("Pix ou cartão em até 6 vezes");
-        orcamento.setTarifa("Econômica promocional");
-        orcamento.setValorAereo(new BigDecimal("4500.00"));
-        orcamento.setTaxas(new BigDecimal("250.00"));
         orcamento.setServicos(new BigDecimal("100.00"));
         orcamento.setDesconto(new BigDecimal("50.00"));
         return orcamento;

@@ -43,8 +43,8 @@ class OrcamentoRelatorioDTOTest {
         assertEquals(new BigDecimal("1050.00"), relatorio.getValorAlugueis());
         assertEquals(new BigDecimal("120.00"), relatorio.getValorSeguros());
         assertEquals(new BigDecimal("60.00"), relatorio.getValorESims());
-        assertEquals(new BigDecimal("8255.00"), relatorio.getTotal());
-        assertEquals(new BigDecimal("2063.75"), relatorio.getValorPorPessoa());
+        assertEquals(new BigDecimal("8005.00"), relatorio.getTotal());
+        assertEquals(new BigDecimal("2001.25"), relatorio.getValorPorPessoa());
         assertTrue(relatorio.getRegras().contains("Cancelamento sujeito a multa"));
     }
 
@@ -77,13 +77,12 @@ class OrcamentoRelatorioDTOTest {
     @Test
     void deveSuportarOrcamentoSomenteAereo() {
         OrcamentoDTO somenteAereo = new OrcamentoDTO();
-        somenteAereo.setValorAereo(new BigDecimal("1250.00"));
         somenteAereo.setAdultos(1);
         somenteAereo.setTrajetosAereos(List.of(DadosRelatoriosTeste.trajetoIda()));
 
         OrcamentoRelatorioDTO relatorio = new OrcamentoRelatorioDTO(somenteAereo);
 
-        assertEquals(new BigDecimal("1250.00"), relatorio.getTotal());
+        assertEquals(new BigDecimal("2600.00"), relatorio.getTotal());
         assertEquals(2, relatorio.getIda().getVoos().size());
         assertNull(relatorio.getVolta());
         assertTrue(relatorio.getHospedagens().isEmpty());

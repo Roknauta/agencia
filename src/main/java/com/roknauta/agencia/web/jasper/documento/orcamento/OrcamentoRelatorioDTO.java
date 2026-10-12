@@ -27,7 +27,6 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private String perfilPassageiros;
     private int quantidadePassageiros;
     private String pagamento;
-    private String tarifa;
     private BigDecimal valorAereo = BigDecimal.ZERO;
     private BigDecimal valorRodoviario = BigDecimal.ZERO;
     private BigDecimal valorHospedagem = BigDecimal.ZERO;
@@ -35,7 +34,6 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private BigDecimal valorAlugueis = BigDecimal.ZERO;
     private BigDecimal valorSeguros = BigDecimal.ZERO;
     private BigDecimal valorESims = BigDecimal.ZERO;
-    private BigDecimal taxas = BigDecimal.ZERO;
     private BigDecimal servicos = BigDecimal.ZERO;
     private BigDecimal desconto = BigDecimal.ZERO;
     private BigDecimal total = BigDecimal.ZERO;
@@ -53,19 +51,18 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         consultaPrecosEm = elaboradoEm;
         validade = orcamento.getValidadeAte() == null ? null : orcamento.getValidadeAte().format(DATA);
         pagamento = orcamento.getPagamento();
-        tarifa = orcamento.getTarifa();
-        valorAereo = valor(orcamento.getValorAereo());
+        valorAereo = soma(getTrajetosAereos().stream()
+                .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO::getValorTotal));
         valorRodoviario = totalRodoviario();
         valorHospedagem = soma(getHospedagens().stream().map(com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO::getValorTotal));
         valorTransfer = soma(getTransfers().stream().map(com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO::getValorTotal));
         valorAlugueis = soma(getAlugueis().stream().map(com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO::getValorTotal));
         valorSeguros = soma(getSegurosViagem().stream().map(com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO::getValorTotal));
         valorESims = soma(getESims().stream().map(com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO::getValorTotal));
-        taxas = valor(orcamento.getTaxas());
         servicos = valor(orcamento.getServicos());
         desconto = valor(orcamento.getDesconto());
         total = valorAereo.add(valorRodoviario).add(valorHospedagem).add(valorTransfer)
-                .add(valorAlugueis).add(valorSeguros).add(valorESims).add(taxas).add(servicos).subtract(desconto);
+                .add(valorAlugueis).add(valorSeguros).add(valorESims).add(servicos).subtract(desconto);
         quantidadePassageiros = quantidade(orcamento.getAdultos())
                 + quantidade(orcamento.getCriancas()) + quantidade(orcamento.getBebes());
         perfilPassageiros = Stream.of(

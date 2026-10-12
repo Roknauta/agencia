@@ -21,9 +21,6 @@ public class OrcamentoDTO extends DocumentoViagemDTO {
     private Integer criancas = 0;
     private Integer bebes = 0;
     private String pagamento;
-    private String tarifa;
-    private BigDecimal valorAereo;
-    private BigDecimal taxas;
     private BigDecimal servicos;
     private BigDecimal desconto;
 }

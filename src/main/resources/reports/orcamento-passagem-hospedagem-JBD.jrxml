@@ -42,7 +42,6 @@
 	<field name="validade" class="java.lang.String"/>
 	<field name="perfilPassageiros" class="java.lang.String"/>
 	<field name="pagamento" class="java.lang.String"/>
-	<field name="tarifa" class="java.lang.String"/>
 	<field name="quantidadePassageiros" class="java.lang.Integer"/>
 	<field name="ida" class="com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO"/>
 	<field name="volta" class="com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO"/>
@@ -52,7 +51,6 @@
 <field name="passagensRodoviarias" class="java.util.List"/>
 <field name="valorAereo" class="java.math.BigDecimal"/>
 	<field name="valorHospedagem" class="java.math.BigDecimal"/>
-	<field name="taxas" class="java.math.BigDecimal"/>
 	<field name="servicos" class="java.math.BigDecimal"/>
 	<field name="desconto" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
@@ -645,16 +643,13 @@
 				<expression><![CDATA["Transfer (todos os passageiros): " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorTransfer})]]></expression>
 			</element>
 		<element kind="textField" uuid="dac15faa-9ff8-4140-ae21-7b2d9d15ed1c" positionType="Float" x="0" y="115" width="523" height="24" forecolor="#003366" fontName="DejaVu Sans" fontSize="10" textAdjust="StretchHeight" blankWhenNull="true" removeLineWhenBlank="true" vTextAlign="Middle"><printWhenExpression><![CDATA[$F{aluguelCarro} != null]]></printWhenExpression><expression><![CDATA["Aluguel de carro: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{aluguelCarro}.getValorTotal())]]></expression></element>
-		<element kind="textField" positionType="Float" x="0" y="143" width="523" height="60" fontSize="10" textAdjust="StretchHeight"><expression><![CDATA["Passagem rodoviária: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorRodoviario}) + "\nSeguro viagem: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorSeguros}) + "\neSIM: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorESims}) + "\nTaxas: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{taxas}) + "\nServiços: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{servicos})]]></expression></element></band>
+		<element kind="textField" positionType="Float" x="0" y="143" width="523" height="60" fontSize="10" textAdjust="StretchHeight"><expression><![CDATA["Passagem rodoviária: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorRodoviario}) + "\nSeguro viagem: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorSeguros}) + "\neSIM: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{valorESims}) + "\nServiços: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{servicos})]]></expression></element></band>
 		<band height="283" splitType="Stretch">
 			<element kind="staticText" uuid="1e1ca93f-28b4-41ea-9965-ac0bd8edd197" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="14.0" bold="true" vTextAlign="Middle">
 				<text><![CDATA[CONDIÇÕES DO ORÇAMENTO]]></text>
 			</element>
 			<element kind="textField" uuid="bcf56ad6-0de0-4b15-9d8f-53efc2bc48d2" positionType="Float" x="0" y="34" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
 				<expression><![CDATA["Pagamento: " + $F{pagamento}]]></expression>
-			</element>
-			<element kind="textField" uuid="a1bfd9cf-fc61-4b3b-92f6-7af0131ed992" positionType="Float" x="0" y="66" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
-				<expression><![CDATA["Tarifa aérea: " + $F{tarifa}]]></expression>
 			</element>
 			<element kind="textField" uuid="dffc148f-680e-4cf3-b939-7260cd7a9509" positionType="Float" x="0" y="98" width="523" height="30" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
 				<expression><![CDATA["Alteração e cancelamento: " + $F{regras}]]></expression>
