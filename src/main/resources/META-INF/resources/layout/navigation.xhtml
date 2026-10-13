@@ -32,6 +32,11 @@
                 <p:menuitem value="#{msg['orcamento']}" outcome="/crud/orcamento" icon="pi pi-file-edit"
                             styleClass="#{view.viewId eq '/crud/orcamento.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/orcamento.xhtml' ? 'page' : null}"/>
+                <p:submenu label="#{msg['servicos.menu']}" expanded="true">
+                    <p:menuitem value="#{msg['trajeto.aereo']}" outcome="/crud/trajeto-aereo" icon="pi pi-send"
+                                styleClass="#{view.viewId eq '/crud/trajeto-aereo.xhtml' ? 'menu-atual' : ''}"
+                                pt:aria-current="#{view.viewId eq '/crud/trajeto-aereo.xhtml' ? 'page' : null}"/>
+                </p:submenu>
             </p:submenu>
             <p:submenu label="#{msg['agencia']}" expanded="true">
                 <p:menuitem value="#{msg['agencia.configuracao']}" outcome="/crud/agencia" icon="pi pi-building"

@@ -6,11 +6,11 @@ import com.roknauta.agencia.dto.PaisDTO;
 import com.roknauta.agencia.service.PaisService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class PaisController extends CrudControllerBase<PaisDTO, PaisService> {
 
     public PaisController(PaisService service) {

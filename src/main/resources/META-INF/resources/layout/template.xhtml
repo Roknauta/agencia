@@ -21,7 +21,7 @@
                     <p:menuitem value="#{layoutController.paginaAtual}" rendered="#{not empty layoutController.paginaAtual}" disabled="true"/>
                 </p:breadCrumb>-->
                 <p:panel styleClass="page-panel">
-                    <p:messages id="mensagens" showDetail="false">
+                    <p:messages id="mensagens" showDetail="false" globalOnly="true">
                         <p:autoUpdate/>
                     </p:messages>
                     <ui:insert name="conteudo"/>

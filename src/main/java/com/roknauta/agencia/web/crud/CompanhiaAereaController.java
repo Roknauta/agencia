@@ -6,11 +6,11 @@ import com.roknauta.agencia.dto.CompanhiaAereaDTO;
 import com.roknauta.agencia.service.CompanhiaAereaService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class CompanhiaAereaController extends CrudControllerBase<CompanhiaAereaDTO, CompanhiaAereaService> {
 
     public CompanhiaAereaController(CompanhiaAereaService service) {

@@ -6,11 +6,11 @@ import com.roknauta.agencia.dto.AeroportoDTO;
 import com.roknauta.agencia.service.AeroportoService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class AeroportoController extends CrudControllerBase<AeroportoDTO, AeroportoService> {
 
     public AeroportoController(AeroportoService service) {

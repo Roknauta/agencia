@@ -23,4 +23,8 @@ public class OrcamentoDTO extends DocumentoViagemDTO {
     private String pagamento;
     private BigDecimal servicos;
     private BigDecimal desconto;
+
+    public String autoCompleteLabel(){
+        return getNumero().concat(" - ").concat(getCliente());
+    }
 }

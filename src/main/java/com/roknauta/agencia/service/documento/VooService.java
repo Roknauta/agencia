@@ -88,9 +88,9 @@ public class VooService extends CrudServiceBase<Voo, VooDTO> {
                 .stream().map(this::toDTO).toList();
     }
 
-    public List<VooDTO> findByNumero(String numero) {
+    public List<VooDTO> findByNumeroCompanhiaAerea(String numero, Long idCompanhiaAerea) {
         String filtro = StringUtils.defaultString(StringUtils.trimToNull(numero));
-        return repository.buscar(filtro, null, null, null, null)
+        return repository.buscar(filtro, idCompanhiaAerea, null, null, null)
                 .stream().map(this::toDTO).toList();
     }
 

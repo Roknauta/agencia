@@ -6,11 +6,11 @@ import com.roknauta.agencia.dto.TarifaAereaDTO;
 import com.roknauta.agencia.service.TarifaAereaService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class TarifaAereaController extends CrudControllerBase<TarifaAereaDTO, TarifaAereaService> {
 
     public TarifaAereaController(TarifaAereaService service) {
@@ -23,6 +23,6 @@ public class TarifaAereaController extends CrudControllerBase<TarifaAereaDTO, Ta
     }
 
     public List<TarifaAereaDTO> completeTarifaAerea(String texto) {
-        return service.findByNome(texto);
+        return service.findByNomeCompanhiaAerea(texto, null);
     }
 }

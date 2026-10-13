@@ -1,5 +1,6 @@
 package com.roknauta.agencia.dto;
 
+import com.roknauta.agencia.util.AppUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,6 @@ public class AeroportoDTO extends BaseDTO {
     private String codigoIata;
 
     public String getCidadeAndIata() {
-        return this.cidadeAtendida.getNome()+" - "+this.codigoIata;
+        return AppUtils.aeroportoLabel(this);
     }
 }

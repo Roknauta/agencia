@@ -8,10 +8,10 @@ import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.service.CidadeService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 @Component
-@SessionScope
+@ViewScoped
 public class OrcamentoController extends CrudControllerBase<OrcamentoDTO, OrcamentoService> {
 
     private final CidadeService cidadeService;
@@ -24,9 +24,5 @@ public class OrcamentoController extends CrudControllerBase<OrcamentoDTO, Orcame
     @Override
     public String pageTitle() {
         return Msg.get("orcamento");
-    }
-
-    public List<CidadeDTO> completeCidade(String texto) {
-        return cidadeService.findByTexto(texto);
     }
 }

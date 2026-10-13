@@ -22,14 +22,12 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     private final OrcamentoRepository repository;
     private final ContratoRepository contratoRepository;
     private final OrcamentoMapper mapper;
-    private final TrechoAereoService trechoAereoService;
 
     public OrcamentoService(OrcamentoRepository repository, ContratoRepository contratoRepository,
                             OrcamentoMapper mapper, TrechoAereoService trechoAereoService) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
-        this.trechoAereoService = trechoAereoService;
     }
 
     @Transactional(readOnly = true)
@@ -47,6 +45,12 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
                 .stream().map(mapper::toDTO).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<OrcamentoDTO> findByTexto(String texto) {
+        String filtro = StringUtils.defaultString(StringUtils.trimToNull(texto));
+        return repository.buscar(filtro, null, "", null, null).stream().map(mapper::toDTO).toList();
+    }
+
     @Transactional
     public OrcamentoDTO salvar(OrcamentoDTO dto) {
         Orcamento entidade;
@@ -62,7 +66,6 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
             }
             mapper.updateEntity(dto, entidade);
         }
-        trechoAereoService.resolverReferencias(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 

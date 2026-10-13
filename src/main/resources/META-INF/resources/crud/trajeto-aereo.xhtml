@@ -1,0 +1,56 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{trajetoAereoController}"/>
+    <ui:param name="formId" value="trajetoAereo"/>
+    <ui:define name="searchField">
+        <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
+                        value="#{trajetoAereoController.orcamentoSelecionado}"
+                        completeMethod="#{trajetoAereoController.completeOrcamento}"
+                        var="orcamento" itemLabel="#{orcamento.numero} #{orcamento.cliente}" itemValue="#{orcamento}"
+                        converter="#{orcamentoConverter}" required="false" minQueryLength="0">
+            <p:ajax event="itemSelect" listener="#{trajetoAereoController.selecionarOrcamento}" process="@this" update=":crudContent"/>
+        </m:autoComplete>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['sentido']}" value="#{item.sentido}"/>
+            <t:column headerText="#{msg['voos']}" value="#{item.trechos.size()}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="orcamento" label="#{msg['orcamento']}" value="#{trajetoAereoController.orcamentoSelecionado}"
+                            completeMethod="#{trajetoAereoController.completeOrcamento}" var="orcamento"
+                            itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
+                            converter="#{orcamentoConverter}" required="true" minQueryLength="0">
+                <p:ajax event="itemSelect" listener="#{trajetoAereoController.selecionarOrcamento}" process="@this" update=":trajetoAereoEditForm:adicionarVoo"/>
+            </m:autoComplete>
+            <m:selectOneMenu id="sentido" label="#{msg['sentido']}" value="#{trajetoAereoController.editForm.sentido}" required="true">
+                <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                <f:selectItems value="#{trajetoAereoController.sentidos}" var="sentido" itemValue="#{sentido}" itemLabel="#{sentido}"/>
+                <p:ajax event="change" process="@this" update=":trajetoAereoEditForm:adicionarVoo"/>
+            </m:selectOneMenu>
+        </p:panelGrid>
+        <p:commandButton id="adicionarVoo" value="#{msg['adicionar.voo']}" icon="pi pi-plus" action="#{trajetoAereoController.novoTrecho}"
+                         process="@this" update=":trechoForm"
+                         disabled="#{empty trajetoAereoController.idOrcamento or empty trajetoAereoController.editForm.sentido}"/>
+        <p:dataTable id="trechos" value="#{trajetoAereoController.editForm.trechos}" var="trecho" emptyMessage="#{msg['nenhum.registro.encontrado']}">
+            <p:column headerText="#{msg['numero.voo']}"><h:outputText value="#{trecho.voo.numero}"/></p:column>
+            <p:column headerText="#{msg['campo.origem']}"><h:outputText value="#{trecho.voo.origem.getCidadeAndIata()}"/></p:column>
+            <p:column headerText="#{msg['campo.destino']}"><h:outputText value="#{trecho.voo.destino.getCidadeAndIata()}"/></p:column>
+            <p:column headerText="#{msg['campo.partida']}"><h:outputText value="#{trecho.dataPartida}"/></p:column>
+            <p:column headerText="#{msg['campo.chegada']}"><h:outputText value="#{trecho.dataChegada}"/></p:column>
+            <p:column headerText="#{msg['interface.acoes']}">
+                <p:commandButton value="#{msg['editar']}" action="#{trajetoAereoController.editarTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
+                                 process="@this" update=":trechoForm" oncomplete="PF('trechoDialogWidget').show()"/>
+                <p:commandButton value="#{msg['excluir']}" action="#{trajetoAereoController.removerTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
+                                 process="@this" update="@form"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <ui:include src="aereo/inclusao-voo.xhtml"/>
+    </ui:define>
+</ui:composition>

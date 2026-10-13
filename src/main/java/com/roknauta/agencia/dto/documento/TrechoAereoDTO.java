@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TrechoAereoDTO extends BaseDTO {
+
     private VooDTO voo;
     private LocalDate dataPartida;
     private LocalDate dataChegada;

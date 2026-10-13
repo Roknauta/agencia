@@ -1,6 +1,6 @@
 <ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
                 xmlns:t="http://agencia.com/jsf"
-                template="/layout/crud.xhtml" xmlns:p="http://primefaces.org/ui">
+                template="/layout/crud.xhtml" xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core">
     <ui:param name="crudController" value="#{cidadeController}"/>
     <ui:param name="formId" value="cidade"/>
     <ui:define name="searchField">
@@ -24,7 +24,10 @@
         <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
             <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{cidadeController.editForm.nome}" required="true" maxlength="100"/>
             <m:inputText id="estado" label="#{msg['estado']}" value="#{cidadeController.editForm.estado}" maxlength="50"/>
-            <m:inputText id="fusoHorario" label="#{msg['cidade.fuso.horario']}" value="#{cidadeController.editForm.fusoHorario}" maxlength="50"/>
+            <m:selectOneMenu id="fusoHorario" label="#{msg['cidade.fuso.horario']}" value="#{cidadeController.editForm.fusoHorario}" filter="true" filterMatchMode="contains">
+                <f:selectItem itemLabel="#{msg['selecione']}" itemValue="" noSelectionOption="true"/>
+                <f:selectItems value="#{jsfHelper.fusosHorarios}" var="fuso" itemValue="#{fuso}" itemLabel="#{fuso}"/>
+            </m:selectOneMenu>
             <m:autoComplete id="pais" label="#{msg['pais']}"
                             value="#{cidadeController.editForm.pais}"
                             completeMethod="#{paisController.completePais}"

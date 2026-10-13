@@ -1,0 +1,44 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                xmlns:f="jakarta.faces.core" xmlns:h="jakarta.faces.html">
+    <p:dialog id="trechoDialog" widgetVar="trechoDialogWidget" modal="true" header="#{msg['trecho.aereo']}" width="850">
+        <h:form id="trechoForm">
+            <p:panelGrid columns="2" layout="grid" styleClass="form-grid" rendered="#{trajetoAereoController.trechoForm != null}">
+                <m:autoComplete id="companhiaAerea" label="#{msg['companhia.aerea']}"
+                                value="#{trajetoAereoController.companhiaAerea}"
+                                completeMethod="#{companhiaAereaController.completeCompanhiaAerea}"
+                                var="companhia" itemLabel="#{companhia.nome}" itemValue="#{companhia}"
+                                converter="#{companhiaAereaConverter}" required="true" minQueryLength="1">
+                    <p:ajax event="itemSelect" listener="#{trajetoAereoController.companhiaAereaEvent}" process="@this" update=":trechoForm:bagagens"/>
+                </m:autoComplete>
+                <m:autoComplete id="voo" label="#{msg['voo']}" value="#{trajetoAereoController.trechoForm.voo}"
+                                completeMethod="#{trajetoAereoController.completeVoo}" var="voo"
+                                itemLabel="#{voo.autoCompleteLabel()}" itemValue="#{voo}"
+                                converter="#{vooConverter}" required="true"/>
+                <m:datePicker id="dataPartida" label="#{msg['campo.partida']}" value="#{trajetoAereoController.trechoForm.dataPartida}" required="true"/>
+                <m:datePicker id="dataChegada" label="#{msg['campo.chegada']}" value="#{trajetoAereoController.trechoForm.dataChegada}" required="true"/>
+                <m:autoComplete id="tarifa" label="#{msg['tarifa.aerea']}" value="#{trajetoAereoController.trechoForm.tarifaAerea}"
+                                completeMethod="#{trajetoAereoController.completeTarifaAerea}" var="tarifa" itemLabel="#{tarifa.nome}"
+                                itemValue="#{tarifa}" converter="#{tarifaAereaConverter}" required="true">
+                    <p:ajax event="itemSelect" listener="#{trajetoAereoController.carregarBagagens}" process="@this" update=":trechoForm:bagagens"/>
+                </m:autoComplete>
+                <m:selectOneMenu id="cabine" label="#{msg['cabine.aerea']}" value="#{trajetoAereoController.trechoForm.cabine}">
+                    <f:selectItems value="#{trajetoAereoController.cabines}" var="cabine" itemValue="#{cabine}" itemLabel="#{cabine.descricao}"/>
+                </m:selectOneMenu>
+                <m:inputText id="localizador" label="#{msg['localizador']}" value="#{trajetoAereoController.trechoForm.localizador}" maxlength="50"/>
+            </p:panelGrid>
+            <p:dataTable id="bagagens" value="#{trajetoAereoController.bagagensForm}" var="bagagem" emptyMessage="#{msg['nenhum.registro.encontrado']}">
+                <p:column headerText="#{msg['tipo.bagagem']}"><h:outputText value="#{bagagem.bagagemCompanhiaAerea.tipoBagagem}"/></p:column>
+                <p:column headerText="#{msg['dimensoes']}"><h:outputText
+                        value="#{bagagem.bagagemCompanhiaAerea.alturaCm} X #{bagagem.bagagemCompanhiaAerea.larguraCm} X #{bagagem.bagagemCompanhiaAerea.profundidadeCm}"/></p:column>
+                <p:column headerText="#{msg['peso.maximo']}"><h:outputText value="#{bagagem.bagagemCompanhiaAerea.pesoMaximo}"/></p:column>
+                <p:column headerText="#{msg['quantidade.inclusa']}"><m:inputNumber id="quantidade" label="" value="#{bagagem.quantidade}"
+                                                                                   minValue="0"/></p:column>
+            </p:dataTable>
+            <p:outputPanel styleClass="crud-footer">
+                <p:commandButton value="#{msg['confirmar']}" action="#{trajetoAereoController.confirmarTrecho}" process="@form" update="@form, :trajetoAereoEditForm:trechos"/>
+                <p:commandButton value="#{msg['cancelar']}" type="button" onclick="PF('trechoDialogWidget').hide()"/>
+            </p:outputPanel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

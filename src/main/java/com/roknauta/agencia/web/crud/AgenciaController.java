@@ -5,10 +5,10 @@ import com.roknauta.agencia.service.AgenciaService;
 import com.roknauta.agencia.web.Msg;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 @Component("agenciaController")
-@SessionScope
+@ViewScoped
 public class AgenciaController extends CrudControllerBase<AgenciaDTO, AgenciaService> {
 
     public AgenciaController(AgenciaService service) {

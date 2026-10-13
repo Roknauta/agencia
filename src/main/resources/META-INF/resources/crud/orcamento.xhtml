@@ -7,7 +7,7 @@
         <m:inputText id="cliente" label="#{msg['cliente']}" value="#{orcamentoController.searchForm.cliente}" maxlength="200"/>
         <m:autoComplete id="origem" label="#{msg['campo.origem']}"
                         value="#{orcamentoController.searchForm.origem}"
-                        completeMethod="#{orcamentoController.completeCidade}"
+                        completeMethod="#{cidadeController.completeCidade}"
                         var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
                         converter="#{cidadeConverter}" required="false" minQueryLength="1"/>
         <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{orcamentoController.searchForm.destino}" maxlength="200"/>
@@ -28,7 +28,7 @@
             <m:inputText id="cliente" label="#{msg['cliente']}" value="#{orcamentoController.editForm.cliente}" required="true" maxlength="200"/>
             <m:autoComplete id="origem" label="#{msg['campo.origem']}"
                             value="#{orcamentoController.editForm.origem}"
-                            completeMethod="#{orcamentoController.completeCidade}"
+                            completeMethod="#{cidadeController.completeCidade}"
                             var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"
                             converter="#{cidadeConverter}" required="true" minQueryLength="1"/>
             <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{orcamentoController.editForm.destino}" required="true" maxlength="200"/>

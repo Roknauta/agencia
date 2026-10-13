@@ -5,10 +5,10 @@ import com.roknauta.agencia.dto.HotelDTO;
 import com.roknauta.agencia.service.HotelService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 @Component
-@SessionScope
+@ViewScoped
 public class HotelController extends CrudControllerBase<HotelDTO, HotelService> {
 
     public HotelController(HotelService service) {

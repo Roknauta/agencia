@@ -7,6 +7,7 @@ import com.roknauta.agencia.dto.CompanhiaAereaDTO;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.roknauta.agencia.util.AppUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +23,8 @@ public class VooDTO extends BaseDTO {
     private AeroportoDTO destino;
     private LocalTime partida;
     private LocalTime chegada;
+
+    public String autoCompleteLabel(){
+        return getNumero().concat(" - ").concat(AppUtils.aeroportoLabel(origem)).concat(" - ").concat(AppUtils.aeroportoLabel(destino));
+    }
 }

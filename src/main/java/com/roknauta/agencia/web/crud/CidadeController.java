@@ -1,16 +1,18 @@
 package com.roknauta.agencia.web.crud;
 
 import com.roknauta.agencia.dto.CidadeDTO;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 
 import com.roknauta.agencia.service.CidadeService;
 import com.roknauta.agencia.web.Msg;
+import jakarta.faces.view.ViewScoped;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class CidadeController extends CrudControllerBase<CidadeDTO, CidadeService> {
 
     public CidadeController(CidadeService service) {

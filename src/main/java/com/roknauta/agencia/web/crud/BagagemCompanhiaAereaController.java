@@ -7,11 +7,11 @@ import com.roknauta.agencia.domain.TipoBagagem;
 import com.roknauta.agencia.service.BagagemCompanhiaAereaService;
 import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import jakarta.faces.view.ViewScoped;
 
 
 @Component
-@SessionScope
+@ViewScoped
 public class BagagemCompanhiaAereaController
         extends CrudControllerBase<BagagemCompanhiaAereaDTO, BagagemCompanhiaAereaService> {
 

@@ -86,9 +86,9 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
                 .stream().map(this::toDTO).toList();
     }
 
-    public List<TarifaAereaDTO> findByNome(String nome) {
+    public List<TarifaAereaDTO> findByNomeCompanhiaAerea(String nome, Long idCompanhiaAerea) {
         String filtro = StringUtils.defaultString(StringUtils.trimToNull(nome));
-        return repository.buscar(filtro, null, null).stream().map(this::toDTO).toList();
+        return repository.buscar(filtro, idCompanhiaAerea, null).stream().map(this::toDTO).toList();
     }
 
     private void setReferences(TarifaAereaDTO dto, TarifaAerea entity) {

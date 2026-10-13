@@ -11,6 +11,7 @@ import com.roknauta.agencia.dto.documento.DocumentoViagemDTO;
 import com.roknauta.agencia.dto.documento.TrajetoAereoDTO;
 import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import com.roknauta.agencia.repository.TarifaAereaRepository;
+import com.roknauta.agencia.repository.BagagemCompanhiaAereaRepository;
 import com.roknauta.agencia.repository.documento.TrechoAereoRepository;
 import com.roknauta.agencia.repository.documento.VooRepository;
 import com.roknauta.agencia.service.mapper.TrechoAereoMapper;
@@ -24,13 +25,16 @@ public class TrechoAereoService {
     private final TrechoAereoRepository repository;
     private final VooRepository vooRepository;
     private final TarifaAereaRepository tarifaRepository;
+    private final BagagemCompanhiaAereaRepository bagagemRepository;
     private final TrechoAereoMapper mapper;
 
     public TrechoAereoService(TrechoAereoRepository repository, VooRepository vooRepository,
-                              TarifaAereaRepository tarifaRepository, TrechoAereoMapper mapper) {
+                              TarifaAereaRepository tarifaRepository,
+                              BagagemCompanhiaAereaRepository bagagemRepository, TrechoAereoMapper mapper) {
         this.repository = repository;
         this.vooRepository = vooRepository;
         this.tarifaRepository = tarifaRepository;
+        this.bagagemRepository = bagagemRepository;
         this.mapper = mapper;
     }
 
@@ -102,5 +106,19 @@ public class TrechoAereoService {
         }
         trecho.setVoo(voo);
         trecho.setTarifaAerea(tarifa);
+        if (dto.getBagagens() != null && trecho.getBagagens() != null) {
+            if (dto.getBagagens().size() != trecho.getBagagens().size()) {
+                throw new IllegalArgumentException("A lista de bagagens do trecho aéreo está inconsistente.");
+            }
+            for (int i = 0; i < dto.getBagagens().size(); i++) {
+                var bagagemDTO = dto.getBagagens().get(i);
+                if (bagagemDTO.getBagagemCompanhiaAerea() == null
+                        || bagagemDTO.getBagagemCompanhiaAerea().getId() == null) {
+                    throw new IllegalArgumentException("A bagagem da companhia aérea é obrigatória.");
+                }
+                trecho.getBagagens().get(i).setBagagemCompanhiaAerea(
+                        bagagemRepository.getReferenceById(bagagemDTO.getBagagemCompanhiaAerea().getId()));
+            }
+        }
     }
 }
