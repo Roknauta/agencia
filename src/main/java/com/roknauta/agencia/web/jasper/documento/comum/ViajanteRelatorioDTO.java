@@ -13,6 +13,7 @@ import lombok.Setter;
 public class ViajanteRelatorioDTO {
 
     private String nome;
+    private String tipoDocumento;
     private String documento;
     private LocalDate dataNascimento;
 
@@ -21,6 +22,7 @@ public class ViajanteRelatorioDTO {
             return;
         }
         nome = viajante.getNome();
+        tipoDocumento = viajante.getTipoDocumento() == null ? null : viajante.getTipoDocumento().name();
         documento = viajante.getDocumento();
         dataNascimento = viajante.getDataNascimento();
     }

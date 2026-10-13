@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +32,9 @@ public class ContratoController extends CrudControllerBase<ContratoDTO, Contrato
     private final OrcamentoService orcamentoService;
     private final AgenciaService agenciaService;
     private OrcamentoDTO orcamentoSelecionado;
-    private boolean carregandoOrcamento;
     private LocalDateTime dataConsultaPrecos;
     private LocalDateTime preReservaValidaAte;
-    private ViajanteDTO viajanteForm;
+    private ViajanteDTO viajanteForm = new ViajanteDTO();
 
     public ContratoController(ContratoService service, OrcamentoService orcamentoService,
         AgenciaService agenciaService) {
@@ -68,28 +68,23 @@ public class ContratoController extends CrudControllerBase<ContratoDTO, Contrato
         if (orcamentoSelecionado == null) {
             return;
         }
-        carregandoOrcamento = true;
-        try {
-            editForm.setCliente(orcamentoSelecionado.getCliente());
-            editForm.setConsultor(orcamentoSelecionado.getConsultor());
-            editForm.setOrigem(orcamentoSelecionado.getOrigem());
-            editForm.setDestino(orcamentoSelecionado.getDestino());
-            editForm.setInicio(orcamentoSelecionado.getInicio());
-            editForm.setFim(orcamentoSelecionado.getFim());
-            editForm.setMoeda(orcamentoSelecionado.getMoeda());
-            editForm.setViajantes(orcamentoSelecionado.getViajantes());
-            editForm.setTrajetosAereos(orcamentoSelecionado.getTrajetosAereos());
-            editForm.setTrajetosRodoviarios(orcamentoSelecionado.getTrajetosRodoviarios());
-            editForm.setHospedagens(orcamentoSelecionado.getHospedagens());
-            editForm.setTransfers(orcamentoSelecionado.getTransfers());
-            editForm.setAlugueis(orcamentoSelecionado.getAlugueis());
-            editForm.setSegurosViagem(orcamentoSelecionado.getSegurosViagem());
-            editForm.setESims(orcamentoSelecionado.getESims());
-            editForm.setObservacoes(orcamentoSelecionado.getObservacoes());
-            editForm.setDataDocumento(LocalDate.now());
-        } finally {
-            carregandoOrcamento = false;
-        }
+        editForm.setCliente(orcamentoSelecionado.getCliente());
+        editForm.setConsultor(orcamentoSelecionado.getConsultor());
+        editForm.setOrigem(orcamentoSelecionado.getOrigem());
+        editForm.setDestino(orcamentoSelecionado.getDestino());
+        editForm.setInicio(orcamentoSelecionado.getInicio());
+        editForm.setFim(orcamentoSelecionado.getFim());
+        editForm.setMoeda(orcamentoSelecionado.getMoeda());
+        editForm.setViajantes(new ArrayList<>(orcamentoSelecionado.getViajantes()));
+        editForm.setTrajetosAereos(orcamentoSelecionado.getTrajetosAereos());
+        editForm.setTrajetosRodoviarios(orcamentoSelecionado.getTrajetosRodoviarios());
+        editForm.setHospedagens(orcamentoSelecionado.getHospedagens());
+        editForm.setTransfers(orcamentoSelecionado.getTransfers());
+        editForm.setAlugueis(orcamentoSelecionado.getAlugueis());
+        editForm.setSegurosViagem(orcamentoSelecionado.getSegurosViagem());
+        editForm.setESims(orcamentoSelecionado.getESims());
+        editForm.setObservacoes(orcamentoSelecionado.getObservacoes());
+        editForm.setDataDocumento(LocalDate.now());
     }
 
     @Override
@@ -142,11 +137,7 @@ public class ContratoController extends CrudControllerBase<ContratoDTO, Contrato
     }
 
     public void adicionarViajante() {
-        if (viajanteForm == null || viajanteForm.getNome() == null || viajanteForm.getNome().isBlank()) {
-            throw new IllegalArgumentException("Informe o nome do viajante.");
-        }
         editForm.getViajantes().add(viajanteForm);
-        novoViajante();
     }
 
     public void removerViajante(int indice) {
@@ -185,9 +176,6 @@ public class ContratoController extends CrudControllerBase<ContratoDTO, Contrato
 
     public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
         this.orcamentoSelecionado = orcamentoSelecionado;
-        if (!carregandoOrcamento && editing && orcamentoSelecionado != null) {
-            selecionarOrcamento();
-        }
     }
 
     private ZoneId obterFusoHorario() {

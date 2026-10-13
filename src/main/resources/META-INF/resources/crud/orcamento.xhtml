@@ -1,6 +1,7 @@
 <ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
                 xmlns:m="jakarta.faces.composite/resources/components"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+                xmlns:t="http://agencia.com/jsf"
                 template="/layout/crud.xhtml">
     <ui:param name="crudController" value="#{orcamentoController}"/>
     <ui:param name="formId" value="orcamento"/>
@@ -78,5 +79,53 @@
             <m:inputNumber id="criancas" label="#{msg['criancas']}" value="#{orcamentoController.editForm.criancas}" required="true" minValue="0"/>
             <m:inputNumber id="bebes" label="#{msg['bebes']}" value="#{orcamentoController.editForm.bebes}" required="true" minValue="0"/>
         </p:panelGrid>
+        <p:panel header="#{msg['viajantes']}" styleClass="form-field">
+            <p:commandButton id="novoViajante" value="#{msg['adicionar.viajante']}" icon="pi pi-plus"
+                             action="#{orcamentoController.novoViajante}" process="@this"
+                             update=":viajanteDialogForm:viajanteCampos"
+                             oncomplete="PF('viajanteDialogWidget').show()"/>
+            <p:dataTable id="viajantesTabela" value="#{orcamentoController.editForm.viajantes}" var="viajante"
+                         rowIndexVar="indiceViajante" emptyMessage="#{msg['nenhum.registro.encontrado']}"
+                         style="margin-top: 10px" showGridlines="true">
+                <p:column headerText="#{msg['interface.acoes']}" style="width: 70px">
+                    <p:commandButton action="#{orcamentoController.removerViajante(indiceViajante)}"
+                                     process="@this" update="viajantesTabela" icon="pi pi-trash"/>
+                </p:column>
+                <t:column headerText="#{msg['viajante.nome']}" value="#{viajante.nome}"/>
+                <t:column headerText="#{msg['tipo.documento']}" value="#{viajante.tipoDocumento}"/>
+                <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
+                <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
+                          converter="localDateGridConverter"/>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <p:dialog id="viajanteDialog" widgetVar="viajanteDialogWidget" modal="true"
+                  header="#{msg['adicionar.viajante']}" width="700">
+            <h:form id="viajanteDialogForm">
+                <p:panelGrid id="viajanteCampos" columns="2" layout="grid" styleClass="form-grid">
+                    <m:inputText id="nomeViajante" label="#{msg['viajante.nome']}"
+                                 value="#{orcamentoController.viajanteForm.nome}" required="true" maxlength="200"/>
+                    <m:selectOneMenu id="tipoDocumentoViajante" label="#{msg['tipo.documento']}"
+                                     value="#{orcamentoController.viajanteForm.tipoDocumento}">
+                        <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{orcamentoController.tiposDocumentoViajante}" var="tipo"
+                                       itemValue="#{tipo}" itemLabel="#{tipo}"/>
+                    </m:selectOneMenu>
+                    <m:inputText id="documentoViajante" label="#{msg['documento']}"
+                                 value="#{orcamentoController.viajanteForm.documento}" maxlength="50"/>
+                    <m:datePicker id="nascimentoViajante" label="#{msg['data.nascimento']}"
+                                  value="#{orcamentoController.viajanteForm.dataNascimento}"/>
+                </p:panelGrid>
+                <p:outputPanel styleClass="crud-footer">
+                    <p:commandButton id="adicionarViajante" value="#{msg['adicionar.viajante']}"
+                                     icon="pi pi-check" action="#{orcamentoController.adicionarViajante}"
+                                     process="@form" update=":orcamentoEditForm:viajantesTabela"
+                                     oncomplete="if (!args.validationFailed) PF('viajanteDialogWidget').hide()"/>
+                    <p:commandButton value="#{msg['cancelar']}" type="button" icon="pi pi-times"
+                                     onclick="PF('viajanteDialogWidget').hide()"/>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>

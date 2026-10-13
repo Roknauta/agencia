@@ -76,5 +76,10 @@ class ContratoRelatorioDTOTest {
         assertTrue(relatorio.getConteudoContrato().stream()
             .anyMatch(bloco -> bloco.getTitulo().equals("Consulta de preços e pré-reserva")
                 && bloco.getTexto().contains("PR-123456")));
+        assertTrue(relatorio.getConteudoContrato().stream()
+            .anyMatch(bloco -> bloco.getTitulo().equals("Viajantes") && bloco.getTexto().contains("Nome: Joana Exemplo")
+                && bloco.getTexto().contains("Tipo de documento: CPF")
+                && bloco.getTexto().contains("Documento: 12345678900")
+                && bloco.getTexto().contains("Data de nascimento: 14/03/1988")));
     }
 }

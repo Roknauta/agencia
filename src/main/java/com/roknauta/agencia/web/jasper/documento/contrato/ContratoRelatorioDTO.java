@@ -98,8 +98,11 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Endereço", enderecoAgencia), linha("Representante", representanteAgencia),
                 linha("CADASTUR", cadasturAgencia), linha("E-mail", emailAgencia), linha("Telefone", telefoneAgencia),
                 linha("Horário de atendimento", horarioAgencia), linha("Urgência", urgenciaAgencia)));
-        adicionar(blocos, "Viajantes", getViajantes().stream().map(ViajanteRelatorioDTO::getNome)
-            .filter(Objects::nonNull).collect(java.util.stream.Collectors.joining("\n")));
+        adicionar(blocos, "Viajantes",
+            getViajantes().stream().map(viajante -> juntar(linha("Nome", viajante.getNome()),
+                linha("Tipo de documento", viajante.getTipoDocumento()), linha("Documento", viajante.getDocumento()),
+                linha("Data de nascimento", viajante.getDataNascimento()))).filter(texto -> !texto.isBlank())
+                .collect(java.util.stream.Collectors.joining("\n\n")));
         adicionar(blocos, "Consulta de preços e pré-reserva",
             juntar(linha("Preços consultados em", dataConsultaPrecos),
                 linha("Referência da pré-reserva", referenciaPreReserva),

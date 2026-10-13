@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport name="contrato_blocos_jbd" language="java" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="42" rightMargin="42" topMargin="0" bottomMargin="36">
+<jasperReport name="contrato_blocos_jbd" language="java" pageWidth="511" pageHeight="842" columnWidth="511" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="36">
  <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
  <style name="Base" default="true" fontName="DejaVu Sans" fontSize="9" forecolor="#243246"/>
  <field name="titulo" class="java.lang.String"/>
