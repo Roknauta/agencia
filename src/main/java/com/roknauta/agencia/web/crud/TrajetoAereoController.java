@@ -5,6 +5,7 @@ import com.roknauta.agencia.domain.SentidoVoo;
 import com.roknauta.agencia.dto.CompanhiaAereaDTO;
 import com.roknauta.agencia.dto.TarifaAereaDTO;
 import com.roknauta.agencia.dto.documento.*;
+import com.roknauta.agencia.service.BagagemCompanhiaAereaService;
 import com.roknauta.agencia.service.TarifaAereaService;
 import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.service.documento.TrajetoAereoService;
@@ -13,8 +14,10 @@ import com.roknauta.agencia.web.Msg;
 import jakarta.faces.view.ViewScoped;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -42,6 +45,8 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     @Getter
     @Setter
     private List<BagagemTrechoAereoDTO> bagagensForm = new ArrayList<>();
+    @Autowired
+    private BagagemCompanhiaAereaService bagagemCompanhiaAereaService;
 
     public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService, VooService vooService,
         TarifaAereaService tarifaAereaService) {
@@ -97,7 +102,6 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
 
     public void selecionarOrcamento() {
         idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
-        pesquisar();
     }
 
     public List<TrajetoAereoDTO> getTrajetosDoOrcamento() {
@@ -114,14 +118,12 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     }
 
     public void carregarBagagens() {
-        bagagensForm = trechoForm == null || trechoForm.getTarifaAerea() == null
-            || trechoForm.getTarifaAerea().getBagagensInclusas() == null ? List.of()
-                : trechoForm.getTarifaAerea().getBagagensInclusas().stream().map(bagagem -> {
-                    BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
-                    item.setBagagemCompanhiaAerea(bagagem);
-                    item.setQuantidade(0);
-                    return item;
-                }).toList();
+        bagagemCompanhiaAereaService.findByCompanhiaId(companhiaAerea.getId()).forEach(bagagem->{
+            BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
+            item.setBagagemCompanhiaAerea(bagagem);
+            item.setQuantidade(0);
+            bagagensForm.add(item);
+        });
     }
 
     public void confirmarTrecho() {
@@ -159,6 +161,7 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     @Override
     protected void atualizarResultados() {
         setResult(getTrajetosDoOrcamento());
+        pesquisaRealizada = CollectionUtils.isNotEmpty(getResult());
     }
 
     public void excluir(Long id) {

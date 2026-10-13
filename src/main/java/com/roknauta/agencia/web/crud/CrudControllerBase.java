@@ -28,7 +28,7 @@ public abstract class CrudControllerBase<T extends BaseDTO, S extends CrudServic
     @Getter
     protected boolean editing;
     @Getter
-    private boolean pesquisaRealizada;
+    protected boolean pesquisaRealizada;
 
     protected final S service;
     private Class<T> dtoClass;

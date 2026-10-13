@@ -36,17 +36,23 @@
         <p:commandButton id="adicionarVoo" value="#{msg['adicionar.voo']}" icon="pi pi-plus" action="#{trajetoAereoController.novoTrecho}"
                          process="@this" update=":trechoForm"
                          disabled="#{empty trajetoAereoController.idOrcamento or empty trajetoAereoController.editForm.sentido}"/>
-        <p:dataTable id="trechos" value="#{trajetoAereoController.editForm.trechos}" var="trecho" emptyMessage="#{msg['nenhum.registro.encontrado']}">
-            <p:column headerText="#{msg['numero.voo']}"><h:outputText value="#{trecho.voo.numero}"/></p:column>
-            <p:column headerText="#{msg['campo.origem']}"><h:outputText value="#{trecho.voo.origem.getCidadeAndIata()}"/></p:column>
-            <p:column headerText="#{msg['campo.destino']}"><h:outputText value="#{trecho.voo.destino.getCidadeAndIata()}"/></p:column>
-            <p:column headerText="#{msg['campo.partida']}"><h:outputText value="#{trecho.dataPartida}"/></p:column>
-            <p:column headerText="#{msg['campo.chegada']}"><h:outputText value="#{trecho.dataChegada}"/></p:column>
-            <p:column headerText="#{msg['interface.acoes']}">
-                <p:commandButton value="#{msg['editar']}" action="#{trajetoAereoController.editarTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
-                                 process="@this" update=":trechoForm" oncomplete="PF('trechoDialogWidget').show()"/>
-                <p:commandButton value="#{msg['excluir']}" action="#{trajetoAereoController.removerTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
-                                 process="@this" update="@form"/>
+        <p:dataTable id="trechos" value="#{trajetoAereoController.editForm.trechos}" var="trecho" emptyMessage="#{msg['nenhum.registro.encontrado']}"
+                     style="margin-top: 10px" showGridlines="true">
+            <p:column headerText="#{msg['interface.acoes']}" style="width: 85px">
+                <p:commandButton action="#{trajetoAereoController.editarTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
+                                 process="@this" update=":trechoForm" oncomplete="PF('trechoDialogWidget').show()" icon="pi pi-pencil" style="margin-right: 3px"/>
+                <p:commandButton action="#{trajetoAereoController.removerTrecho(trajetoAereoController.editForm.trechos.indexOf(trecho))}"
+                                 process="@this" update="@form" icon="pi pi-trash"/>
+            </p:column>
+            <p:column headerText="#{msg['numero.voo']}"><h:outputText value="#{trecho.voo.numero}"/>
+            </p:column>
+            <p:column headerText="#{msg['campo.origem']}"><h:outputText value="#{trecho.voo.origem.getCidadeAndIata()}"/>
+            </p:column>
+            <p:column headerText="#{msg['campo.destino']}"><h:outputText value="#{trecho.voo.destino.getCidadeAndIata()}"/>
+            </p:column>
+            <p:column headerText="#{msg['campo.partida']}"><h:outputText value="#{trecho.dataPartida}"/>
+            </p:column>
+            <p:column headerText="#{msg['campo.chegada']}"><h:outputText value="#{trecho.dataChegada}"/>
             </p:column>
         </p:dataTable>
     </ui:define>
