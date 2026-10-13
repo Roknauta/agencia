@@ -1,5 +1,6 @@
 package com.roknauta.agencia.web.jasper;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import com.roknauta.agencia.web.jasper.documento.orcamento.OrcamentoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.contrato.ContratoRelatorioDTO;
+import javax.imageio.ImageIO;
 
 public final class JasperUtils {
 
@@ -61,6 +64,22 @@ public final class JasperUtils {
         Map<String, Object> parametrosContrato = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
         parametrosContrato.putIfAbsent("RELATORIO_BLOCOS", compilar("contrato-blocos-JBD.jrxml"));
         return gerarPdf("contrato-JBD.jrxml", new JRBeanCollectionDataSource(List.of(contrato)), parametrosContrato);
+    }
+
+    public static byte[] gerarOrcamentoPdf(OrcamentoRelatorioDTO orcamento, Map<String, Object> parametros)
+        throws IOException, JRException {
+        if (orcamento == null) {
+            throw new IllegalArgumentException("Os dados do orçamento são obrigatórios.");
+        }
+        Map<String, Object> parametrosOrcamento = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
+        parametrosOrcamento.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("hospedagens-JBD.jrxml"));
+        if (!parametrosOrcamento.containsKey("LOGO")) {
+            try (InputStream recurso = abrirRecurso("logo-jbd.png")) {
+                Image logo = ImageIO.read(recurso);
+                parametrosOrcamento.put("LOGO", logo);
+            }
+        }
+        return gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml", orcamento, parametrosOrcamento);
     }
 
     public static InputStream abrirRecurso(String nomeArquivo) {

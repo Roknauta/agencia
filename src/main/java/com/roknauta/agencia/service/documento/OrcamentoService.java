@@ -46,8 +46,7 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     @Transactional(readOnly = true)
     public byte[] gerarPdf(Long id, Map<String, Object> parametros) throws IOException, JRException {
         OrcamentoDTO orcamento = buscarPorId(id);
-        return JasperUtils.gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml",
-            new OrcamentoRelatorioDTO(orcamento), parametros);
+        return JasperUtils.gerarOrcamentoPdf(new OrcamentoRelatorioDTO(orcamento), parametros);
     }
 
     @Transactional(readOnly = true)

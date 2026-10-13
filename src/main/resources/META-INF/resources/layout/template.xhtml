@@ -1,7 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="jakarta.faces.facelets" xmlns:p="http://primefaces.org/ui" xmlns:h="jakarta.faces.html"
       xmlns:f="jakarta.faces.core" xmlns:m="jakarta.faces.composite/resources/components" lang="pt-BR">
 <f:view locale="pt_BR">
-<!--    <f:event type="preRenderView" listener="#{layoutController.prepararSessao}"/>-->
     <h:head>
         <title>#{msg['interface.agencia']}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -15,21 +14,15 @@
                 <ui:include src="/layout/navigation.xhtml"/>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="app-workspace">
-                <!--<p:breadCrumb>
-                    <p:menuitem value="#{msg['interface.dashboard']}" outcome="/dashboard"/>
-                    <p:menuitem value="#{layoutController.grupoAtual}" rendered="#{not empty layoutController.grupoAtual}" disabled="true"/>
-                    <p:menuitem value="#{layoutController.paginaAtual}" rendered="#{not empty layoutController.paginaAtual}" disabled="true"/>
-                </p:breadCrumb>-->
                 <p:panel styleClass="page-panel">
                     <p:messages id="mensagens" showDetail="false" globalOnly="true">
                         <p:autoUpdate/>
                     </p:messages>
                     <ui:insert name="conteudo"/>
                 </p:panel>
-                <!--<h:panelGroup layout="block" styleClass="app-footer"> #{msg['interface.agencia.controle.de.pontos.e.milhas']}
-                </h:panelGroup>-->
             </h:panelGroup>
         </p:panelGrid>
-        <m:confirmation/></h:body>
+        <m:confirmation/>
+    </h:body>
 </f:view>
 </html>

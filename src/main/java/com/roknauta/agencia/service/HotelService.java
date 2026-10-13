@@ -57,6 +57,11 @@ public class HotelService extends CrudServiceBase<Hotel, HotelDTO> {
         return repository.buscar(nome, cidadeId).stream().map(this::toDTO).toList();
     }
 
+    public List<HotelDTO> findByTexto(String texto) {
+        String nome = StringUtils.defaultString(StringUtils.trimToNull(texto));
+        return repository.buscar(nome, null).stream().map(this::toDTO).toList();
+    }
+
     private Cidade cidadeReference(HotelDTO dto) {
         if (dto.getCidade() == null || dto.getCidade().getId() == null) {
             throw new IllegalArgumentException("Cidade é obrigatória.");

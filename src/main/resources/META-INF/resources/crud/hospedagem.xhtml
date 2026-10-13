@@ -1,0 +1,87 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{hospedagemController}"/>
+    <ui:param name="formId" value="hospedagem"/>
+    <ui:define name="searchField">
+        <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
+                        value="#{hospedagemController.orcamentoSelecionado}"
+                        completeMethod="#{hospedagemController.completeOrcamento}"
+                        var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
+                        converter="#{orcamentoConverter}" required="false" minQueryLength="0">
+            <p:ajax event="itemSelect" listener="#{hospedagemController.selecionarOrcamento}"
+                    process="@this" update=":crudContent"/>
+        </m:autoComplete>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['hotel']}" value="#{item.hotelSelecionado.nome}"/>
+            <t:column headerText="#{msg['campo.check.in']}" value="#{item.checkIn}"
+                      converter="localDateTimeGridConverter"/>
+            <t:column headerText="#{msg['campo.check.out']}" value="#{item.checkOut}"
+                      converter="localDateTimeGridConverter"/>
+            <t:column headerText="#{msg['localizador']}" value="#{item.localizador}"/>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
+                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
+            </t:column>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
+                            value="#{hospedagemController.orcamentoSelecionado}"
+                            completeMethod="#{hospedagemController.completeOrcamento}"
+                            var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
+                            converter="#{orcamentoConverter}" required="true" minQueryLength="0"/>
+            <m:autoComplete id="hotel" label="#{msg['hotel']}"
+                            value="#{hospedagemController.editForm.hotelSelecionado}"
+                            completeMethod="#{hotelController.completeHotel}"
+                            var="hotel" itemLabel="#{hotel.nome} - #{hotel.cidade.nome}" itemValue="#{hotel}"
+                            converter="#{hotelConverter}" required="true" minQueryLength="0"/>
+            <m:inputText id="localizador" label="#{msg['localizador']}"
+                         value="#{hospedagemController.editForm.localizador}" maxlength="100"/>
+            <m:datePicker id="checkIn" label="#{msg['campo.check.in']}"
+                          value="#{hospedagemController.editForm.checkIn}" pattern="dd/MM/yyyy HH:mm"
+                          showTime="true" required="true"/>
+            <m:datePicker id="checkOut" label="#{msg['campo.check.out']}"
+                          value="#{hospedagemController.editForm.checkOut}" pattern="dd/MM/yyyy HH:mm"
+                          showTime="true" required="true"/>
+            <m:inputText id="acomodacao" label="#{msg['acomodacao']}"
+                         value="#{hospedagemController.editForm.acomodacao}" maxlength="500"/>
+            <m:inputNumber id="quartos" label="#{msg['quartos']}"
+                           value="#{hospedagemController.editForm.quartos}" minValue="1" required="true"/>
+            <m:selectOneMenu id="regime" label="#{msg['regime.hospedagem']}"
+                             value="#{hospedagemController.editForm.regime}">
+                <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                <f:selectItems value="#{hospedagemController.regimes}" var="regime"
+                               itemValue="#{regime}" itemLabel="#{regime.descricao}"/>
+            </m:selectOneMenu>
+            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
+                           value="#{hospedagemController.editForm.valorTotal}" minValue="0"
+                           decimalPlaces="2"/>
+            <m:inputTextarea id="cancelamento" label="#{msg['regra.cancelamento']}"
+                             value="#{hospedagemController.editForm.cancelamento}" rows="3"/>
+            <m:inputTextarea id="incluidos" label="#{msg['incluidos']}"
+                             value="#{hospedagemController.editForm.incluidos}" rows="3"/>
+            <m:inputTextarea id="naoIncluidos" label="#{msg['nao.incluidos']}"
+                             value="#{hospedagemController.editForm.naoIncluidos}" rows="3"/>
+            <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                             value="#{hospedagemController.editForm.observacoes}" rows="3"/>
+        </p:panelGrid>
+        <p:outputPanel id="fotosPanel">
+            <p:fileUpload id="uploadFoto" mode="advanced" auto="true" multiple="true"
+                          listener="#{hospedagemController.adicionarFoto}" update="fotosTabela"
+                          allowTypes="/(\\.|\\/)(gif|jpe?g|png)$/" label="#{msg['adicionar.fotos']}"/>
+            <p:dataTable id="fotosTabela" value="#{hospedagemController.editForm.fotos}" var="foto"
+                         rowIndexVar="indiceFoto" emptyMessage="#{msg['nenhuma.foto.adicionada']}">
+                <t:column headerText="#{msg['foto']}" value="#{msg['foto']} #{indiceFoto + 1}"/>
+                <t:column headerText="#{msg['tamanho']}" value="#{foto.conteudo.length} #{msg['bytes']}"/>
+                <p:column headerText="#{msg['interface.acoes']}" styleClass="coluna-opcoes">
+                    <p:commandButton icon="pi pi-trash" action="#{hospedagemController.removerFoto(indiceFoto)}"
+                                     process="@this" update="fotosTabela"/>
+                </p:column>
+            </p:dataTable>
+        </p:outputPanel>
+    </ui:define>
+</ui:composition>

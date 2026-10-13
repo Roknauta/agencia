@@ -36,6 +36,9 @@
                     <p:menuitem value="#{msg['trajeto.aereo']}" outcome="/crud/trajeto-aereo" icon="pi pi-send"
                                 styleClass="#{view.viewId eq '/crud/trajeto-aereo.xhtml' ? 'menu-atual' : ''}"
                                 pt:aria-current="#{view.viewId eq '/crud/trajeto-aereo.xhtml' ? 'page' : null}"/>
+                    <p:menuitem value="#{msg['hospedagem']}" outcome="/crud/hospedagem" icon="pi pi-home"
+                                styleClass="#{view.viewId eq '/crud/hospedagem.xhtml' ? 'menu-atual' : ''}"
+                                pt:aria-current="#{view.viewId eq '/crud/hospedagem.xhtml' ? 'page' : null}"/>
                 </p:submenu>
             </p:submenu>
             <p:submenu label="#{msg['agencia']}" expanded="true">
