@@ -22,7 +22,8 @@
         <m:crudDataTable readOnly="true">
             <t:column headerText="#{msg['companhia.aerea']}" value="#{item.companhiaAerea.nome}" sortBy="#{item.companhiaAerea.nome}"/>
             <t:column headerText="#{msg['tipo.bagagem']}" value="#{item.tipoBagagem.label}" sortBy="#{item.tipoBagagem}"/>
-            <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}" sortBy="#{item.dataReferencia}"/>
+            <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}"
+                      sortBy="#{item.dataReferencia}" converter="localDateGridConverter"/>
             <t:column headerText="#{msg['altura.cm']}" value="#{item.alturaCm}" sortBy="#{item.alturaCm}"/>
             <t:column headerText="#{msg['largura.cm']}" value="#{item.larguraCm}" sortBy="#{item.larguraCm}"/>
             <t:column headerText="#{msg['profundidade.cm']}" value="#{item.profundidadeCm}" sortBy="#{item.profundidadeCm}"/>

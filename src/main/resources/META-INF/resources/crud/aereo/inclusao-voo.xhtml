@@ -28,14 +28,11 @@
                 <m:inputText id="localizador" label="#{msg['localizador']}" value="#{trajetoAereoController.trechoForm.localizador}" maxlength="50"/>
             </p:panelGrid>
             <p:dataTable id="bagagens" value="#{trajetoAereoController.bagagensForm}" var="bagagem" emptyMessage="#{msg['nenhum.registro.encontrado']}">
-                <p:column headerText="#{msg['tipo.bagagem']}"><h:outputText value="#{bagagem.bagagemCompanhiaAerea.tipoBagagem.label}"/>
-                </p:column>
-                <p:column headerText="#{msg['dimensoes']}">
-                    <h:outputText
-                            value="#{bagagem.bagagemCompanhiaAerea.alturaCm} X #{bagagem.bagagemCompanhiaAerea.larguraCm} X #{bagagem.bagagemCompanhiaAerea.profundidadeCm}"/></p:column>
-                <p:column headerText="#{msg['peso.maximo']}">
-                    <h:outputText value="#{bagagem.bagagemCompanhiaAerea.pesoMaximo}"/>
-                </p:column>
+                <t:column headerText="#{msg['tipo.bagagem']}"
+                          value="#{bagagem.bagagemCompanhiaAerea.tipoBagagem.label}"/>
+                <t:column headerText="#{msg['dimensoes']}"
+                          value="#{bagagem.bagagemCompanhiaAerea.alturaCm} X #{bagagem.bagagemCompanhiaAerea.larguraCm} X #{bagagem.bagagemCompanhiaAerea.profundidadeCm}"/>
+                <t:column headerText="#{msg['peso.maximo']}" value="#{bagagem.bagagemCompanhiaAerea.pesoMaximo}"/>
                 <p:column headerText="#{msg['quantidade.inclusa']}">
                     <m:inputNumber id="quantidade" label="" value="#{bagagem.quantidade}" minValue="0"/>
                 </p:column>
