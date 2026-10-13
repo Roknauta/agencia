@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import jakarta.faces.view.ViewScoped;
 
 
-@Component
+@Component("paisController")
 @ViewScoped
 public class PaisController extends CrudControllerBase<PaisDTO, PaisService> {
 

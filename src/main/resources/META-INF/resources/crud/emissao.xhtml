@@ -1,0 +1,128 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+                xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+                xmlns:t="http://agencia.com/jsf" template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{emissaoController}"/>
+    <ui:param name="formId" value="emissao"/>
+    <ui:define name="searchField">
+        <m:inputText id="numeroPesquisa" label="#{msg['campo.numero']}"
+                     value="#{emissaoController.searchForm.numero}" maxlength="50"/>
+        <m:inputText id="clientePesquisa" label="#{msg['cliente']}"
+                     value="#{emissaoController.searchForm.cliente}" maxlength="200"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <p:dataTable id="registros" rendered="#{emissaoController.pesquisaRealizada}"
+                     value="#{emissaoController.result}" var="item" reflow="true" showGridlines="true"
+                     emptyMessage="#{msg['nenhum.registro.encontrado']}">
+            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
+                <p:menuButton id="options" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}"
+                              ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
+                    <p:menuitem id="edit" value="#{msg['editar']}" icon="pi pi-pencil"
+                                action="#{emissaoController.edit(item.id)}" process="@this"
+                                update=":crudContent" resetValues="true"/>
+                    <p:menuitem id="remove" value="#{msg['excluir']}" icon="pi pi-trash"
+                                action="#{emissaoController.delete(item.id)}" process="@this" update=":crudContent">
+                        <p:confirm header="#{msg['interface.excluir.registro']}"
+                                   message="#{msg['interface.confirma.esta.acao']}"/>
+                    </p:menuitem>
+                    <p:menuitem id="gerarPdf" value="#{msg['gerar.pdf']}" icon="pi pi-file-pdf"
+                                action="#{emissaoController.gerarPdf(item.id)}" ajax="false" process="@this"/>
+                </p:menuButton>
+            </p:column>
+            <t:column headerText="#{msg['campo.numero']}" value="#{item.numero}"/>
+            <t:column headerText="#{msg['contrato']}" value="#{item.contrato.numero}"/>
+            <t:column headerText="#{msg['cliente']}" value="#{item.cliente}"/>
+            <t:column headerText="#{msg['campo.origem']}" value="#{item.origem.nome}"/>
+            <t:column headerText="#{msg['campo.destino']}" value="#{item.destino}"/>
+            <t:column headerText="#{msg['data.documento']}" value="#{item.dataDocumento}"
+                      converter="localDateGridConverter"/>
+        </p:dataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="contrato" label="#{msg['contrato']}"
+                            value="#{emissaoController.contratoSelecionado}"
+                            completeMethod="#{emissaoController.completeContrato}"
+                            var="contrato" itemLabel="#{contrato.numero} - #{contrato.cliente}"
+                            itemValue="#{contrato}" converter="#{contratoConverter}"
+                            required="true" disabled="#{emissaoController.editForm.id ne null}"
+                            minQueryLength="0">
+                <p:ajax event="itemSelect" listener="#{emissaoController.selecionarContrato}"
+                        process="@this" update=":crudContent"/>
+            </m:autoComplete>
+            <m:inputText id="cliente" label="#{msg['cliente']}" value="#{emissaoController.editForm.cliente}"
+                         readonly="true"/>
+            <m:inputText id="origem" label="#{msg['campo.origem']}" value="#{emissaoController.editForm.origem.nome}"
+                         readonly="true"/>
+            <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{emissaoController.editForm.destino}"
+                         readonly="true"/>
+            <m:datePicker id="inicio" label="#{msg['inicio']}" value="#{emissaoController.editForm.inicio}"
+                          disabled="true"/>
+            <m:datePicker id="fim" label="#{msg['fim']}" value="#{emissaoController.editForm.fim}"
+                          disabled="true"/>
+            <m:datePicker id="dataDocumento" label="#{msg['data.documento']}"
+                          value="#{emissaoController.editForm.dataDocumento}" required="true"/>
+        </p:panelGrid>
+        <p:panel header="#{msg['viajantes']}" styleClass="form-field">
+            <p:dataTable id="viajantesTabela" value="#{emissaoController.editForm.viajantes}" var="viajante"
+                         emptyMessage="#{msg['nenhum.registro.encontrado']}" showGridlines="true">
+                <t:column headerText="#{msg['viajante.nome']}" value="#{viajante.nome}"/>
+                <t:column headerText="#{msg['tipo.documento']}" value="#{viajante.tipoDocumento}"/>
+                <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
+                <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
+                          converter="localDateGridConverter"/>
+            </p:dataTable>
+        </p:panel>
+        <p:panel header="#{msg['bilhetes.aereos']}" styleClass="form-field">
+            <p:commandButton id="novoBilhete" value="#{msg['adicionar.bilhete']}" icon="pi pi-plus"
+                             action="#{emissaoController.novoBilhete}" process="@this"
+                             update=":bilheteDialogForm:bilheteCampos"
+                             oncomplete="PF('bilheteDialogWidget').show()"/>
+            <p:dataTable id="bilhetesTabela" value="#{emissaoController.editForm.bilhetesAereos}" var="bilhete"
+                         rowIndexVar="indiceBilhete" emptyMessage="#{msg['nenhum.registro.encontrado']}"
+                         style="margin-top: 10px" showGridlines="true">
+                <p:column headerText="#{msg['interface.acoes']}" style="width: 70px">
+                    <p:commandButton action="#{emissaoController.removerBilhete(indiceBilhete)}"
+                                     process="@this" update="bilhetesTabela" icon="pi pi-trash"/>
+                </p:column>
+                <t:column headerText="#{msg['viajante.nome']}" value="#{bilhete.viajante.nome}"/>
+                <t:column headerText="#{msg['numero.voo']}" value="#{bilhete.trechoAereo.voo.numero}"/>
+                <t:column headerText="#{msg['campo.partida']}" value="#{bilhete.trechoAereo.dataPartida}"
+                          converter="localDateTimeGridConverter"/>
+                <t:column headerText="#{msg['numero.bilhete']}" value="#{bilhete.numeroBilhete}"/>
+                <t:column headerText="#{msg['assento']}" value="#{bilhete.assento}"/>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <p:dialog id="bilheteDialog" widgetVar="bilheteDialogWidget" modal="true"
+                  header="#{msg['adicionar.bilhete']}" width="700">
+            <h:form id="bilheteDialogForm">
+                <p:panelGrid id="bilheteCampos" columns="2" layout="grid" styleClass="form-grid">
+                    <m:selectOneMenu id="viajanteBilhete" label="#{msg['viajante.nome']}"
+                                     value="#{emissaoController.indiceViajanteBilhete}" required="true">
+                        <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{emissaoController.viajantesOptions}"/>
+                    </m:selectOneMenu>
+                    <m:selectOneMenu id="trechoBilhete" label="#{msg['trecho.aereo']}"
+                                     value="#{emissaoController.indiceTrechoBilhete}" required="true">
+                        <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{emissaoController.trechosOptions}"/>
+                    </m:selectOneMenu>
+                    <m:inputText id="numeroBilhete" label="#{msg['numero.bilhete']}"
+                                 value="#{emissaoController.bilheteForm.numeroBilhete}" required="true" maxlength="30"/>
+                    <m:inputText id="assentoBilhete" label="#{msg['assento']}"
+                                 value="#{emissaoController.bilheteForm.assento}" maxlength="20"/>
+                </p:panelGrid>
+                <p:outputPanel styleClass="crud-footer">
+                    <p:commandButton id="adicionarBilhete" value="#{msg['adicionar.bilhete']}"
+                                     icon="pi pi-check" action="#{emissaoController.adicionarBilhete}"
+                                     process="@form" update=":emissaoEditForm:bilhetesTabela"
+                                     oncomplete="if (!args.validationFailed) PF('bilheteDialogWidget').hide()"/>
+                    <p:commandButton value="#{msg['cancelar']}" type="button" icon="pi pi-times"
+                                     onclick="PF('bilheteDialogWidget').hide()"/>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

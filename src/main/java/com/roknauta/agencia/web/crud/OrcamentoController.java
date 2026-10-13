@@ -16,7 +16,7 @@ import net.sf.jasperreports.engine.JRException;
 import org.springframework.stereotype.Component;
 import jakarta.faces.view.ViewScoped;
 
-@Component
+@Component("orcamentoController")
 @ViewScoped
 public class OrcamentoController extends CrudControllerBase<OrcamentoDTO, OrcamentoService> {
 

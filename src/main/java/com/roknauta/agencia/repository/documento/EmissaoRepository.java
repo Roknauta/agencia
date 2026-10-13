@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface EmissaoRepository extends JpaRepository<Emissao, Long> {
 
+    boolean existsByContratoId(Long contratoId);
+
     @Query("select e from Emissao e where (:numero = '' or lower(e.numero) like lower(concat('%', :numero, '%'))) and (:cliente = '' or lower(e.cliente) like lower(concat('%', :cliente, '%')))")
     List<Emissao> buscar(@Param("numero") String numero, @Param("cliente") String cliente);
 }

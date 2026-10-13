@@ -35,6 +35,9 @@
                 <p:menuitem value="#{msg['contrato']}" outcome="/crud/contrato" icon="pi pi-file-check"
                             styleClass="#{view.viewId eq '/crud/contrato.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/contrato.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['emissao']}" outcome="/crud/emissao" icon="pi pi-ticket"
+                            styleClass="#{view.viewId eq '/crud/emissao.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/emissao.xhtml' ? 'page' : null}"/>
                 <p:submenu label="#{msg['servicos.menu']}" expanded="true">
                     <p:menuitem value="#{msg['trajeto.aereo']}" outcome="/crud/trajeto-aereo" icon="pi pi-send"
                                 styleClass="#{view.viewId eq '/crud/trajeto-aereo.xhtml' ? 'menu-atual' : ''}"
@@ -42,6 +45,12 @@
                     <p:menuitem value="#{msg['hospedagem']}" outcome="/crud/hospedagem" icon="pi pi-home"
                                 styleClass="#{view.viewId eq '/crud/hospedagem.xhtml' ? 'menu-atual' : ''}"
                                 pt:aria-current="#{view.viewId eq '/crud/hospedagem.xhtml' ? 'page' : null}"/>
+                    <p:menuitem value="#{msg['seguro.viagem']}" outcome="/crud/seguro-viagem" icon="pi pi-shield"
+                                styleClass="#{view.viewId eq '/crud/seguro-viagem.xhtml' ? 'menu-atual' : ''}"
+                                pt:aria-current="#{view.viewId eq '/crud/seguro-viagem.xhtml' ? 'page' : null}"/>
+                    <p:menuitem value="#{msg['e.sim']}" outcome="/crud/e-sim" icon="pi pi-mobile"
+                                styleClass="#{view.viewId eq '/crud/e-sim.xhtml' ? 'menu-atual' : ''}"
+                                pt:aria-current="#{view.viewId eq '/crud/e-sim.xhtml' ? 'page' : null}"/>
                 </p:submenu>
             </p:submenu>
             <p:submenu label="#{msg['agencia']}" expanded="true">

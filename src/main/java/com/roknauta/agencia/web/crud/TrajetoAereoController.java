@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Component("trajetoAereoController")
 @ViewScoped
 public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, TrajetoAereoService> {
 

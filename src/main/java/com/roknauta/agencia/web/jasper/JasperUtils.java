@@ -18,6 +18,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import com.roknauta.agencia.web.jasper.documento.orcamento.OrcamentoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.contrato.ContratoRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.emissao.EmissaoRelatorioDTO;
 import javax.imageio.ImageIO;
 
 public final class JasperUtils {
@@ -80,6 +81,22 @@ public final class JasperUtils {
             }
         }
         return gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml", orcamento, parametrosOrcamento);
+    }
+
+    public static byte[] gerarEmissaoPdf(EmissaoRelatorioDTO emissao, Map<String, Object> parametros)
+        throws IOException, JRException {
+        if (emissao == null) {
+            throw new IllegalArgumentException("Os dados da emissão são obrigatórios.");
+        }
+        Map<String, Object> parametrosEmissao = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
+        parametrosEmissao.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("hospedagens-JBD.jrxml"));
+        if (!parametrosEmissao.containsKey("LOGO")) {
+            try (InputStream recurso = abrirRecurso("logo-jbd.png")) {
+                Image logo = ImageIO.read(recurso);
+                parametrosEmissao.put("LOGO", logo);
+            }
+        }
+        return gerarPdf("emissao-passagem-JBD.jrxml", emissao, parametrosEmissao);
     }
 
     public static InputStream abrirRecurso(String nomeArquivo) {

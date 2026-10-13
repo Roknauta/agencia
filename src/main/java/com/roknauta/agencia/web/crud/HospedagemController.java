@@ -14,7 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("hospedagemController")
 @ViewScoped
 public class HospedagemController extends CrudControllerBase<HospedagemDTO, HospedagemService> {
 

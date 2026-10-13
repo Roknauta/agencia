@@ -11,7 +11,7 @@ import jakarta.faces.view.ViewScoped;
 import org.springframework.stereotype.Component;
 
 
-@Component
+@Component("cidadeController")
 @ViewScoped
 public class CidadeController extends CrudControllerBase<CidadeDTO, CidadeService> {
 

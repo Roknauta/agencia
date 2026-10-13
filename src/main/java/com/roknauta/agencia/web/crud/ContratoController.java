@@ -25,7 +25,7 @@ import jakarta.faces.view.ViewScoped;
 import net.sf.jasperreports.engine.JRException;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("contratoController")
 @ViewScoped
 public class ContratoController extends CrudControllerBase<ContratoDTO, ContratoService> {
 

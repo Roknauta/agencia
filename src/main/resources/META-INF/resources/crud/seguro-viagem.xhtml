@@ -1,0 +1,84 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{seguroViagemController}"/>
+    <ui:param name="formId" value="seguroViagem"/>
+    <ui:define name="searchField">
+        <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
+                        value="#{seguroViagemController.orcamentoSelecionado}"
+                        completeMethod="#{seguroViagemController.completeOrcamento}"
+                        var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
+                        converter="#{orcamentoConverter}" required="false" minQueryLength="0">
+            <p:ajax event="itemSelect" listener="#{seguroViagemController.selecionarOrcamento}"
+                    process="@this" update=":crudContent"/>
+        </m:autoComplete>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
+                <p:menuButton id="optionsSeguro" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}"
+                              ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
+                    <p:menuitem id="editSeguro" value="#{msg['editar']}" icon="pi pi-pencil"
+                                action="#{seguroViagemController.editarSeguro(item.id)}" process="@this"
+                                update=":crudContent" resetValues="true"/>
+                    <p:menuitem id="removeSeguro" value="#{msg['excluir']}" icon="pi pi-trash"
+                                action="#{seguroViagemController.delete(item.id)}" process="@this" update=":crudContent">
+                        <p:confirm header="#{msg['interface.excluir.registro']}"
+                                   message="#{msg['interface.confirma.esta.acao']}"/>
+                    </p:menuitem>
+                </p:menuButton>
+            </p:column>
+            <t:column headerText="#{msg['seguradora']}" value="#{item.seguradora}"/>
+            <t:column headerText="#{msg['plano']}" value="#{item.plano}"/>
+            <t:column headerText="#{msg['numero.apolice']}" value="#{item.numeroApolice}"/>
+            <t:column headerText="#{msg['inicio.vigencia']}" value="#{item.inicioVigencia}"
+                      converter="localDateGridConverter"/>
+            <t:column headerText="#{msg['fim.vigencia']}" value="#{item.fimVigencia}"
+                      converter="localDateGridConverter"/>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
+                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
+            </t:column>
+            <t:column headerText="#{msg['viajantes']}" value="#{item.viajantesCobertos.size()}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
+                            value="#{seguroViagemController.orcamentoSelecionado}"
+                            completeMethod="#{seguroViagemController.completeOrcamento}"
+                            var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
+                            converter="#{orcamentoConverter}" required="true" minQueryLength="0">
+                <p:ajax event="itemSelect" listener="#{seguroViagemController.selecionarOrcamento}"
+                        process="@this" update=":seguroViagemEditForm:viajantesCobertos :seguroViagemEditForm:viajantesTabela"/>
+            </m:autoComplete>
+            <m:inputText id="seguradora" label="#{msg['seguradora']}"
+                         value="#{seguroViagemController.editForm.seguradora}" required="true" maxlength="200"/>
+            <m:inputText id="plano" label="#{msg['plano']}"
+                         value="#{seguroViagemController.editForm.plano}" maxlength="200"/>
+            <m:inputText id="numeroApolice" label="#{msg['numero.apolice']}"
+                         value="#{seguroViagemController.editForm.numeroApolice}" maxlength="100"/>
+            <m:datePicker id="inicioVigencia" label="#{msg['inicio.vigencia']}"
+                          value="#{seguroViagemController.editForm.inicioVigencia}" required="true"/>
+            <m:datePicker id="fimVigencia" label="#{msg['fim.vigencia']}"
+                          value="#{seguroViagemController.editForm.fimVigencia}" required="true"/>
+            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
+                           value="#{seguroViagemController.editForm.valorTotal}" minValue="0" decimalPlaces="2"/>
+        </p:panelGrid>
+        <m:inputTextarea id="resumoCobertura" label="#{msg['resumo.cobertura']}"
+                         value="#{seguroViagemController.editForm.resumoCobertura}" rows="4"/>
+        <p:panel header="#{msg['viajantes.cobertos']}" styleClass="form-field">
+            <m:autoComplete id="viajantesCobertos" label="#{msg['viajantes.cobertos']}"
+                            value="#{seguroViagemController.editForm.viajantesCobertos}"
+                            completeMethod="#{seguroViagemController.completeViajante}"
+                            var="viajante" itemLabel="#{viajante.nome} (#{viajante.documento})" itemValue="#{viajante}"
+                            converter="#{viajanteDTOConverter}" multiple="true" required="false" minQueryLength="0"/>
+            <p:dataTable id="viajantesTabela" value="#{seguroViagemController.editForm.viajantesCobertos}"
+                         var="viajante" emptyMessage="#{msg['nenhum.registro.encontrado']}" showGridlines="true">
+                <t:column headerText="#{msg['viajante.nome']}" value="#{viajante.nome}"/>
+                <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
+                <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
+                          converter="localDateGridConverter"/>
+            </p:dataTable>
+        </p:panel>
+    </ui:define>
+</ui:composition>

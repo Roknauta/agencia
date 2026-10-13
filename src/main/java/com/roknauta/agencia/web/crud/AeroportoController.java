@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import jakarta.faces.view.ViewScoped;
 
 
-@Component
+@Component("aeroportoController")
 @ViewScoped
 public class AeroportoController extends CrudControllerBase<AeroportoDTO, AeroportoService> {
 

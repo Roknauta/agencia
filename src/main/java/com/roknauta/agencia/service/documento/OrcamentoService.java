@@ -6,6 +6,8 @@ import java.util.Map;
 import com.roknauta.agencia.domain.documento.Orcamento;
 import com.roknauta.agencia.domain.documento.StatusOrcamento;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import com.roknauta.agencia.dto.documento.ViajanteDTO;
+import com.roknauta.agencia.service.mapper.ViajanteMapper;
 import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.repository.documento.OrcamentoRepository;
 import com.roknauta.agencia.service.crud.CrudService;
@@ -22,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import com.roknauta.agencia.domain.documento.Orcamento;
 
 @Service
 public class OrcamentoService implements CrudService<OrcamentoDTO> {
@@ -29,12 +32,14 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     private final OrcamentoRepository repository;
     private final ContratoRepository contratoRepository;
     private final OrcamentoMapper mapper;
+    private final ViajanteMapper viajanteMapper;
 
     public OrcamentoService(OrcamentoRepository repository, ContratoRepository contratoRepository,
-        OrcamentoMapper mapper, TrechoAereoService trechoAereoService) {
+        OrcamentoMapper mapper, TrechoAereoService trechoAereoService, ViajanteMapper viajanteMapper) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
+        this.viajanteMapper = viajanteMapper;
     }
 
     @Transactional(readOnly = true)
@@ -62,6 +67,19 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     public List<OrcamentoDTO> findByTexto(String texto) {
         String filtro = StringUtils.defaultString(StringUtils.trimToNull(texto));
         return repository.buscar(filtro, null, "", null, null).stream().map(mapper::toDTO).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ViajanteDTO> findViajantes(Long idOrcamento, String texto) {
+        String filtro = StringUtils.defaultString(StringUtils.trimToNull(texto));
+        Orcamento orcamento = repository.findById(idOrcamento)
+            .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        return orcamento.getViajantes().stream()
+            .filter(viajante -> filtro.isEmpty() || (viajante.getNome() != null
+                && viajante.getNome().toLowerCase().contains(filtro.toLowerCase())) || (viajante.getDocumento() != null
+                && viajante.getDocumento().toLowerCase().contains(filtro.toLowerCase())))
+            .map(viajanteMapper::toDTO)
+            .toList();
     }
 
     @Transactional

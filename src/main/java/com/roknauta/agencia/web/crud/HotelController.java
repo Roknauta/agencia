@@ -9,7 +9,7 @@ import com.roknauta.agencia.web.Msg;
 import org.springframework.stereotype.Component;
 import jakarta.faces.view.ViewScoped;
 
-@Component
+@Component("hotelController")
 @ViewScoped
 public class HotelController extends CrudControllerBase<HotelDTO, HotelService> {
 

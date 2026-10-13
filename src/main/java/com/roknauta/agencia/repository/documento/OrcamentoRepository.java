@@ -17,4 +17,10 @@ public interface OrcamentoRepository extends JpaRepository<Orcamento, Long> {
         + "and (:inicio is null or e.inicio = :inicio) and (:fim is null or e.fim = :fim)")
     List<Orcamento> buscar(@Param("cliente") String cliente, @Param("origemId") Long origemId,
         @Param("destino") String destino, @Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
+
+    @Query("select distinct o from Orcamento o join o.segurosViagem s where s.id = :seguroId")
+    java.util.Optional<Orcamento> findBySeguroViagemId(@Param("seguroId") Long seguroId);
+
+    @Query("select distinct o from Orcamento o join o.eSims e where e.id = :eSimId")
+    java.util.Optional<Orcamento> findByESimId(@Param("eSimId") Long eSimId);
 }

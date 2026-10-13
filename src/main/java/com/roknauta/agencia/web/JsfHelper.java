@@ -7,7 +7,7 @@ import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
+@Component("jsfHelper")
 @ViewScoped
 public class JsfHelper {
 

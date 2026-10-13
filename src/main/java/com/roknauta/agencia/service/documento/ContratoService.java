@@ -65,6 +65,13 @@ public class ContratoService implements CrudService<ContratoDTO> {
         return repository.buscar(numero, cliente, orcamentoId).stream().map(mapper::toDTO).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<ContratoDTO> buscarDisponiveisParaEmissao(String texto) {
+        String filtro = StringUtils.defaultString(StringUtils.trimToNull(texto));
+        return repository.buscarDisponiveisParaEmissao(filtro, StatusContrato.PAGAMENTO_CONFIRMADO).stream()
+            .map(mapper::toDTO).toList();
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<ContratoDTO> find(ContratoDTO filtro) {

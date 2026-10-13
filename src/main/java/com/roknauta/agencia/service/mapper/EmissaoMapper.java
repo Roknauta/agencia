@@ -1,6 +1,7 @@
 package com.roknauta.agencia.service.mapper;
 
 import com.roknauta.agencia.domain.documento.Emissao;
+import com.roknauta.agencia.dto.documento.ContratoDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,6 +18,13 @@ public interface EmissaoMapper {
 
     @Mapping(target = "contrato", ignore = true)
     Emissao toEntity(EmissaoDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "numero", ignore = true)
+    @Mapping(target = "dataDocumento", ignore = true)
+    @Mapping(target = "contrato", ignore = true)
+    @Mapping(target = "bilhetesAereos", ignore = true)
+    EmissaoDTO fromContrato(ContratoDTO contrato);
 
     @Mapping(target = "contrato", ignore = true)
     void updateEntity(EmissaoDTO dto, @MappingTarget Emissao entity);
