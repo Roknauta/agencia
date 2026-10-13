@@ -19,9 +19,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {
-        "nome", "companhia_aerea_id", "data_referencia"
-}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"nome", "companhia_aerea_id", "data_referencia"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,9 +35,8 @@ public class TarifaAerea extends EntidadeBase {
     private LocalDate dataReferencia;
 
     @ManyToMany
-    @JoinTable(name = "tarifa_aerea_bagagens_inclusas",
-            joinColumns = @JoinColumn(name = "tarifa_aerea_id"),
-            inverseJoinColumns = @JoinColumn(name = "bagagem_companhia_aerea_id"))
+    @JoinTable(name = "tarifa_aerea_bagagens_inclusas", joinColumns = @JoinColumn(name = "tarifa_aerea_id"),
+        inverseJoinColumns = @JoinColumn(name = "bagagem_companhia_aerea_id"))
     private List<BagagemCompanhiaAerea> bagagensInclusas = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "clob")

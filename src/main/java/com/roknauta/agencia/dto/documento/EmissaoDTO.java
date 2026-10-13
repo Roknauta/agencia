@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class EmissaoDTO extends DocumentoViagemDTO {
+
     private ContratoDTO contrato;
     private List<BilheteAereoDTO> bilhetesAereos = new ArrayList<>();
 }

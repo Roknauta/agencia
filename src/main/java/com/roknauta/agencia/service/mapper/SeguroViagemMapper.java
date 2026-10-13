@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {ViajanteMapper.class})
 public interface SeguroViagemMapper {
+
     SeguroViagemDTO toDTO(SeguroViagem entity);
 
     SeguroViagem toEntity(SeguroViagemDTO dto);

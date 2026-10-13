@@ -17,6 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AluguelVeiculoDTO extends BaseDTO {
+
     private LocadoraVeiculo locadora;
     private CategoriaVeiculo categoria;
     private List<String> condutores = new ArrayList<>();

@@ -32,23 +32,20 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             return;
         }
         numeroContrato = emissao.getContrato() == null ? null : emissao.getContrato().getNumero();
-        emitidoEm = emissao.getDataDocumento() == null
-                ? LocalDateTimeProvider.agora()
-                : emissao.getDataDocumento().atStartOfDay().format(DATA_HORA);
-        List<BilheteAereoDTO> bilhetes = emissao.getBilhetesAereos() == null
-                ? List.of() : emissao.getBilhetesAereos();
+        emitidoEm = emissao.getDataDocumento() == null ? LocalDateTimeProvider.agora()
+            : emissao.getDataDocumento().atStartOfDay().format(DATA_HORA);
+        List<BilheteAereoDTO> bilhetes = emissao.getBilhetesAereos() == null ? List.of() : emissao.getBilhetesAereos();
         if (bilhetes.isEmpty()) {
-            passageiros = emissao.getViajantes() == null ? List.of() : emissao.getViajantes().stream()
-                    .map(this::viajanteSemBilhete).toList();
+            passageiros = emissao.getViajantes() == null ? List.of()
+                : emissao.getViajantes().stream().map(this::viajanteSemBilhete).toList();
         } else {
             passageiros = bilhetes.stream().map(BilheteAereoRelatorioDTO::new).toList();
         }
     }
 
     public List<VooRelatorioDTO> getTrechosAereos() {
-        return getTrajetosAereos().stream()
-                .filter(Objects::nonNull)
-                .flatMap(trajeto -> trajeto.getVoos().stream()).toList();
+        return getTrajetosAereos().stream().filter(Objects::nonNull).flatMap(trajeto -> trajeto.getVoos().stream())
+            .toList();
     }
 
     public String getOrientacoes() {
@@ -56,13 +53,10 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     public String getRegras() {
-        return getTrajetosAereos().stream()
-                .flatMap(trajeto -> trajeto.getVoos().stream())
-                .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
-                        voo.getOutrasInformacoesTarifarias()))
-                .filter(texto -> texto != null && !texto.isBlank())
-                .distinct()
-                .collect(Collectors.joining("\n"));
+        return getTrajetosAereos().stream().flatMap(trajeto -> trajeto.getVoos().stream())
+            .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
+                voo.getOutrasInformacoesTarifarias()))
+            .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
     }
 
     private BilheteAereoRelatorioDTO viajanteSemBilhete(ViajanteDTO viajante) {
@@ -72,6 +66,7 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     private static final class LocalDateTimeProvider {
+
         private static String agora() {
             return java.time.LocalDateTime.now().format(DATA_HORA);
         }

@@ -23,8 +23,7 @@ public class AluguelVeiculo extends EntidadeBase {
     @Enumerated(EnumType.STRING)
     private CategoriaVeiculo categoria;
     @ElementCollection
-    @CollectionTable(name = "aluguel_veiculo_condutores",
-            joinColumns = @JoinColumn(name = "aluguel_veiculo_id"))
+    @CollectionTable(name = "aluguel_veiculo_condutores", joinColumns = @JoinColumn(name = "aluguel_veiculo_id"))
     @Column(name = "condutor", nullable = false, length = 200)
     private List<String> condutores = new ArrayList<>();
     @Column(length = 50)

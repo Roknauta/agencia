@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OrcamentoDTO extends DocumentoViagemDTO {
+
     private LocalDate validadeAte;
     private StatusOrcamento status;
     private Instant dataEnvio;
@@ -24,7 +25,7 @@ public class OrcamentoDTO extends DocumentoViagemDTO {
     private BigDecimal servicos;
     private BigDecimal desconto;
 
-    public String autoCompleteLabel(){
+    public String autoCompleteLabel() {
         return getNumero().concat(" - ").concat(getCliente());
     }
 }

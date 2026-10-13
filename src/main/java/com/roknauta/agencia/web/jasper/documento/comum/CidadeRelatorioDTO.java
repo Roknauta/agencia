@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CidadeRelatorioDTO {
+
     private String nome;
     private String codigoIata;
 
@@ -19,9 +20,8 @@ public class CidadeRelatorioDTO {
         if (cidade == null) {
             return;
         }
-        nome = Stream.of(cidade.getNome(), cidade.getEstado(),
-                        cidade.getPais() == null ? null : cidade.getPais().getNome())
-                .filter(valor -> valor != null && !valor.isBlank())
-                .collect(Collectors.joining(", "));
+        nome = Stream
+            .of(cidade.getNome(), cidade.getEstado(), cidade.getPais() == null ? null : cidade.getPais().getNome())
+            .filter(valor -> valor != null && !valor.isBlank()).collect(Collectors.joining(", "));
     }
 }

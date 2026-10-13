@@ -22,7 +22,7 @@ public class CompanhiaAereaService extends CrudServiceBase<CompanhiaAerea, Compa
     private final CompanhiaAereaMapper mapper;
 
     public CompanhiaAereaService(CompanhiaAereaRepository repository, PaisRepository paisRepository,
-                                 CompanhiaAereaMapper mapper) {
+        CompanhiaAereaMapper mapper) {
         this.repository = repository;
         this.paisRepository = paisRepository;
         this.mapper = mapper;

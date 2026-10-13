@@ -19,12 +19,13 @@ import java.util.UUID;
 
 @Service
 public class OrcamentoService implements CrudService<OrcamentoDTO> {
+
     private final OrcamentoRepository repository;
     private final ContratoRepository contratoRepository;
     private final OrcamentoMapper mapper;
 
     public OrcamentoService(OrcamentoRepository repository, ContratoRepository contratoRepository,
-                            OrcamentoMapper mapper, TrechoAereoService trechoAereoService) {
+        OrcamentoMapper mapper, TrechoAereoService trechoAereoService) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
@@ -33,7 +34,7 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     @Transactional(readOnly = true)
     public OrcamentoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -41,8 +42,8 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
         String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
         String destino = StringUtils.defaultString(StringUtils.trimToNull(filtro.getDestino()));
         Long origemId = filtro.getOrigem() == null ? null : filtro.getOrigem().getId();
-        return repository.buscar(cliente, origemId, destino, filtro.getInicio(), filtro.getFim())
-                .stream().map(mapper::toDTO).toList();
+        return repository.buscar(cliente, origemId, destino, filtro.getInicio(), filtro.getFim()).stream()
+            .map(mapper::toDTO).toList();
     }
 
     @Transactional(readOnly = true)
@@ -55,12 +56,12 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     public OrcamentoDTO salvar(OrcamentoDTO dto) {
         Orcamento entidade;
         if (dto.getId() == null) {
-            dto.setNumero("ORC-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")
-                    .format(LocalDateTime.now()) + "-" + UUID.randomUUID().toString().substring(0, 8));
+            dto.setNumero("ORC-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + "-"
+                + UUID.randomUUID().toString().substring(0, 8));
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
             if (entidade.getStatus() == StatusOrcamento.CONVERTIDO_EM_CONTRATO) {
                 throw new IllegalStateException("Orçamento vinculado a contrato não pode ser editado.");
             }
@@ -127,7 +128,6 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     }
 
     private Orcamento buscarEntidade(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
     }
 }

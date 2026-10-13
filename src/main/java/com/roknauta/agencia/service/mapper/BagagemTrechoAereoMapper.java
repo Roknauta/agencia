@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = BagagemCompanhiaAereaMapper.class)
 public interface BagagemTrechoAereoMapper {
+
     BagagemTrechoAereoDTO toDTO(BagagemTrechoAereo entity);
 
     BagagemTrechoAereo toEntity(BagagemTrechoAereoDTO dto);

@@ -19,6 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class SeguroViagem extends EntidadeBase {
+
     @Column(length = 200)
     private String seguradora;
     @Column(length = 200)
@@ -33,8 +34,7 @@ public class SeguroViagem extends EntidadeBase {
     private BigDecimal valorTotal;
 
     @ManyToMany
-    @JoinTable(name = "seguro_viagem_viajantes",
-            joinColumns = @JoinColumn(name = "seguro_viagem_id"),
-            inverseJoinColumns = @JoinColumn(name = "viajante_id"))
+    @JoinTable(name = "seguro_viagem_viajantes", joinColumns = @JoinColumn(name = "seguro_viagem_id"),
+        inverseJoinColumns = @JoinColumn(name = "viajante_id"))
     private List<Viajante> viajantesCobertos = new ArrayList<>();
 }

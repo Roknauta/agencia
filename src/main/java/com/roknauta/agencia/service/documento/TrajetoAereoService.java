@@ -13,13 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
+
     private final TrajetoAereoRepository repository;
     private final TrajetoAereoMapper mapper;
     private final TrechoAereoService trechoAereoService;
     private final OrcamentoRepository orcamentoRepository;
 
     public TrajetoAereoService(TrajetoAereoRepository repository, TrajetoAereoMapper mapper,
-                               TrechoAereoService trechoAereoService, OrcamentoRepository orcamentoRepository) {
+        TrechoAereoService trechoAereoService, OrcamentoRepository orcamentoRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.trechoAereoService = trechoAereoService;
@@ -29,7 +30,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
     @Transactional(readOnly = true)
     public TrajetoAereoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("TrajetoAereo não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("TrajetoAereo não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -45,7 +46,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("TrajetoAereo não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("TrajetoAereo não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         trechoAereoService.resolverReferencias(dto, entidade);
@@ -54,45 +55,53 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
 
     @Override
     @Transactional(readOnly = true)
-    public TrajetoAereoDTO findById(Long id) { return buscarPorId(id); }
+    public TrajetoAereoDTO findById(Long id) {
+        return buscarPorId(id);
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TrajetoAereoDTO> find(TrajetoAereoDTO filtro) { return buscar(filtro); }
+    public List<TrajetoAereoDTO> find(TrajetoAereoDTO filtro) {
+        return buscar(filtro);
+    }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TrajetoAereoDTO> findAll() { return repository.findAll().stream().map(mapper::toDTO).toList(); }
+    public List<TrajetoAereoDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toDTO).toList();
+    }
 
     @Override
     @Transactional
-    public TrajetoAereoDTO save(TrajetoAereoDTO dto) { return salvar(dto); }
+    public TrajetoAereoDTO save(TrajetoAereoDTO dto) {
+        return salvar(dto);
+    }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        if (!repository.existsById(id)) throw new IllegalArgumentException("Trajeto aéreo não encontrado.");
+        if (!repository.existsById(id))
+            throw new IllegalArgumentException("Trajeto aéreo não encontrado.");
         repository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public List<TrajetoAereoDTO> findByOrcamento(Long idOrcamento) {
-        return orcamentoRepository.findById(idOrcamento).map(orcamento -> orcamento.getTrajetosAereos()
-                .stream().map(mapper::toDTO).toList()).orElse(List.of());
+        return orcamentoRepository.findById(idOrcamento)
+            .map(orcamento -> orcamento.getTrajetosAereos().stream().map(mapper::toDTO).toList()).orElse(List.of());
     }
 
     @Transactional
     public TrajetoAereoDTO salvarNoOrcamento(Long idOrcamento, TrajetoAereoDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
-                .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
         TrajetoAereo trajeto;
         if (dto.getId() == null) {
             trajeto = mapper.toEntity(dto);
             orcamento.getTrajetosAereos().add(trajeto);
         } else {
-            trajeto = orcamento.getTrajetosAereos().stream()
-                    .filter(item -> dto.getId().equals(item.getId())).findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Trajeto não pertence ao orçamento."));
+            trajeto = orcamento.getTrajetosAereos().stream().filter(item -> dto.getId().equals(item.getId()))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Trajeto não pertence ao orçamento."));
             mapper.updateEntity(dto, trajeto);
         }
         trechoAereoService.resolverReferencias(dto, trajeto);
@@ -103,7 +112,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
     @Transactional
     public void excluirDoOrcamento(Long idOrcamento, Long idTrajeto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
-                .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
         if (!orcamento.getTrajetosAereos().removeIf(item -> idTrajeto.equals(item.getId())))
             throw new IllegalArgumentException("Trajeto não pertence ao orçamento.");
         orcamentoRepository.save(orcamento);

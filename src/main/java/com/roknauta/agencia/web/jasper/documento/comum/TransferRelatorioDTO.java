@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TransferRelatorioDTO {
+
     private String prestador;
     private String tipo;
     private String localizador;
@@ -52,25 +53,25 @@ public class TransferRelatorioDTO {
         }
         List<TransferRelatorioDTO> itens = transfers.stream().filter(java.util.Objects::nonNull).toList();
         quantidade = itens.size();
-        prestador = itens.stream().map(TransferRelatorioDTO::getPrestador).filter(java.util.Objects::nonNull)
-                .distinct().collect(Collectors.joining(", "));
-        tipo = itens.stream().map(TransferRelatorioDTO::getTipo).filter(java.util.Objects::nonNull)
-                .distinct().collect(Collectors.joining(", "));
+        prestador = itens.stream().map(TransferRelatorioDTO::getPrestador).filter(java.util.Objects::nonNull).distinct()
+            .collect(Collectors.joining(", "));
+        tipo = itens.stream().map(TransferRelatorioDTO::getTipo).filter(java.util.Objects::nonNull).distinct()
+            .collect(Collectors.joining(", "));
         localizador = itens.stream().map(TransferRelatorioDTO::getLocalizador).filter(java.util.Objects::nonNull)
-                .collect(Collectors.joining(", "));
+            .collect(Collectors.joining(", "));
         origem = itens.stream().map(TransferRelatorioDTO::getOrigem).filter(java.util.Objects::nonNull)
-                .collect(Collectors.joining(" • "));
+            .collect(Collectors.joining(" • "));
         destino = itens.stream().map(TransferRelatorioDTO::getDestino).filter(java.util.Objects::nonNull)
-                .collect(Collectors.joining(" • "));
+            .collect(Collectors.joining(" • "));
         passageiros = itens.stream().mapToInt(TransferRelatorioDTO::getPassageiros).sum();
         observacoes = itens.stream().map(TransferRelatorioDTO::getObservacoes).filter(java.util.Objects::nonNull)
-                .collect(Collectors.joining("\n"));
+            .collect(Collectors.joining("\n"));
         valorTotal = itens.stream().map(TransferRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
-                .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
+            .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add);
         resumoPercursos = itens.stream().map(item -> item.getOrigem() + " para " + item.getDestino())
-                .collect(Collectors.joining(" • "));
+            .collect(Collectors.joining(" • "));
         resumoDatas = itens.stream().filter(item -> item.getDataHora() != null)
-                .map(item -> item.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
-                .collect(Collectors.joining(" • "));
+            .map(item -> item.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
+            .collect(Collectors.joining(" • "));
     }
 }

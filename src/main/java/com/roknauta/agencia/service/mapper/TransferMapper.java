@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface TransferMapper {
+
     TransferDTO toDTO(Transfer entity);
 
     Transfer toEntity(TransferDTO dto);

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class SeguroViagemService {
+
     private final SeguroViagemRepository repository;
     private final SeguroViagemMapper mapper;
 
@@ -23,7 +24,7 @@ public class SeguroViagemService {
     @Transactional(readOnly = true)
     public SeguroViagemDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("SeguroViagem não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("SeguroViagem não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class SeguroViagemService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("SeguroViagem não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("SeguroViagem não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

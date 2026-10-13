@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FotoHospedagemRelatorioDTO {
+
     private InputStream esquerda;
     private InputStream direita;
 

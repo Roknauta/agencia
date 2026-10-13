@@ -25,11 +25,9 @@ public class HsqlServerLifecycle {
     private final String databaseName;
     private Server server;
 
-    public HsqlServerLifecycle(
-            @Value("${agencia.hsql.enabled:true}") boolean enabled,
-            @Value("${agencia.hsql.port:9061}") int port,
-            @Value("${agencia.hsql.database-path}") String databasePath,
-            @Value("${agencia.hsql.database-name:agencia}") String databaseName) {
+    public HsqlServerLifecycle(@Value("${agencia.hsql.enabled:true}") boolean enabled,
+        @Value("${agencia.hsql.port:9061}") int port, @Value("${agencia.hsql.database-path}") String databasePath,
+        @Value("${agencia.hsql.database-name:agencia}") String databaseName) {
         this.enabled = enabled;
         this.port = port;
         this.databasePath = Path.of(databasePath).toAbsolutePath().normalize();

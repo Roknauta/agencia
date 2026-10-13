@@ -10,7 +10,9 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
-/** Identidade comum das entidades; associações com @MapsId derivam a chave da entidade vinculada. */
+/**
+ * Identidade comum das entidades; associações com @MapsId derivam a chave da entidade vinculada.
+ */
 @MappedSuperclass
 @Getter
 @Setter

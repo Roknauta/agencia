@@ -1,13 +1,9 @@
 package com.roknauta.agencia.domain;
 
 public enum ServicoDocumento {
-    AEREO("Passagem aérea"),
-    HOSPEDAGEM("Hospedagem"),
-    RODOVIARIO("Passagem rodoviária"),
-    TRANSFER("Transfer"),
-    SEGURO_VIAGEM("Seguro viagem"),
-    ALUGUEL_CARRO("Aluguel de carro"),
-    CHIP("Chip internacional");
+
+    AEREO("Passagem aérea"), HOSPEDAGEM("Hospedagem"), RODOVIARIO("Passagem rodoviária"), TRANSFER(
+        "Transfer"), SEGURO_VIAGEM("Seguro viagem"), ALUGUEL_CARRO("Aluguel de carro"), CHIP("Chip internacional");
 
     private final String label;
 

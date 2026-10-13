@@ -10,8 +10,12 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring", uses = {TransferMapper.class, HospedagemMapper.class, AluguelVeiculoMapper.class, SeguroViagemMapper.class, ESimMapper.class, ViajanteMapper.class, TrajetoAereoMapper.class, TrajetoRodoviarioMapper.class, CidadeMapper.class})
+@Mapper(componentModel = "spring",
+    uses = {TransferMapper.class, HospedagemMapper.class, AluguelVeiculoMapper.class, SeguroViagemMapper.class,
+        ESimMapper.class, ViajanteMapper.class, TrajetoAereoMapper.class, TrajetoRodoviarioMapper.class,
+        CidadeMapper.class})
 public interface ContratoMapper {
+
     ContratoDTO toDTO(Contrato entity);
 
     @Mapping(target = "orcamento", ignore = true)

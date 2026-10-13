@@ -17,6 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HospedagemDTO extends BaseDTO {
+
     private HotelDTO hotelSelecionado;
     private List<FotoHospedagemDTO> fotos = new ArrayList<>();
     private LocalDateTime checkIn;

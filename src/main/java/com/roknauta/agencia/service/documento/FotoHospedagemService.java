@@ -13,12 +13,13 @@ import com.roknauta.agencia.repository.documento.HospedagemRepository;
 
 @Service
 public class FotoHospedagemService {
+
     private final FotoHospedagemRepository repository;
     private final FotoHospedagemMapper mapper;
     private final HospedagemRepository hospedagemRepository;
 
     public FotoHospedagemService(FotoHospedagemRepository repository, FotoHospedagemMapper mapper,
-                           HospedagemRepository hospedagemRepository) {
+        HospedagemRepository hospedagemRepository) {
         this.repository = repository;
         this.mapper = mapper;
         this.hospedagemRepository = hospedagemRepository;
@@ -27,7 +28,7 @@ public class FotoHospedagemService {
     @Transactional(readOnly = true)
     public FotoHospedagemDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("FotoHospedagem não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("FotoHospedagem não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +44,7 @@ public class FotoHospedagemService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("FotoHospedagem não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("FotoHospedagem não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         entidade.setHospedagem(hospedagemReference(dto));

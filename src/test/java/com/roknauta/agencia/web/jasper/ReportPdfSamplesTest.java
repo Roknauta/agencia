@@ -47,7 +47,7 @@ class ReportPdfSamplesTest {
 
         OrcamentoDTO orcamento = DadosRelatoriosTeste.orcamentoCompleto();
         byte[] pdfOrcamento = JasperUtils.gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml",
-                new OrcamentoRelatorioDTO(orcamento), parametros);
+            new OrcamentoRelatorioDTO(orcamento), parametros);
         gravar(diretorio.resolve("orcamento-teste.pdf"), pdfOrcamento);
 
         EmissaoDTO emissao = new EmissaoDTO();
@@ -58,19 +58,19 @@ class ReportPdfSamplesTest {
         emissao.setContrato(contratoEmissao);
         BilheteAereoDTO bilheteIda = new BilheteAereoDTO();
         bilheteIda.setViajante(emissao.getViajantes().getFirst());
-        bilheteIda.setTrechoAereo(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU",
-                LocalTime.of(8, 0), LocalTime.of(9, 15), LocalDate.of(2027, 2, 10)));
+        bilheteIda.setTrechoAereo(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0),
+            LocalTime.of(9, 15), LocalDate.of(2027, 2, 10)));
         bilheteIda.setNumeroBilhete("9571234567890");
         bilheteIda.setAssento("12A");
         BilheteAereoDTO bilheteVolta = new BilheteAereoDTO();
         bilheteVolta.setViajante(emissao.getViajantes().get(1));
-        bilheteVolta.setTrechoAereo(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF",
-                LocalTime.of(10, 0), LocalTime.of(18, 20), LocalDate.of(2027, 2, 18)));
+        bilheteVolta.setTrechoAereo(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0),
+            LocalTime.of(18, 20), LocalDate.of(2027, 2, 18)));
         bilheteVolta.setNumeroBilhete("0479876543210");
         bilheteVolta.setAssento("14C");
         emissao.setBilhetesAereos(java.util.List.of(bilheteIda, bilheteVolta));
-        byte[] pdfEmissao = JasperUtils.gerarPdf("emissao-passagem-JBD.jrxml",
-                new EmissaoRelatorioDTO(emissao), parametros);
+        byte[] pdfEmissao =
+            JasperUtils.gerarPdf("emissao-passagem-JBD.jrxml", new EmissaoRelatorioDTO(emissao), parametros);
         gravar(diretorio.resolve("emissao-teste.pdf"), pdfEmissao);
 
         ContratoDTO contrato = new ContratoDTO();
@@ -108,10 +108,13 @@ class ReportPdfSamplesTest {
         assertTrue(textoContratoNormalizado.contains("Alugueldeveículo"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("SeguradoraExemplo"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("eSIM"), textoContratoNormalizado);
-        assertTrue(textoContratoNormalizado.contains("Valor total dos serviços".replaceAll("\\s+", "")), textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("Valor total dos serviços".replaceAll("\\s+", "")),
+            textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("R$7.955,00"), textoContratoNormalizado);
-        assertTrue(textoContratoNormalizado.contains("regrasespecíficasaplicáveisaotransporteeaocasoconcreto."), textoContratoNormalizado);
-        assertTrue(textoContratoNormalizado.contains("Outrosserviçosrodoviáriosobservarãosuaregulamentaçãoprópria."), textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("regrasespecíficasaplicáveisaotransporteeaocasoconcreto."),
+            textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("Outrosserviçosrodoviáriosobservarãosuaregulamentaçãoprópria."),
+            textoContratoNormalizado);
     }
 
     private static void gravar(Path caminho, byte[] conteudo) throws Exception {

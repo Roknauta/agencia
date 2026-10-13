@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SeguroViagemRelatorioDTO {
+
     private String seguradora;
     private String plano;
     private String resumoCobertura;
@@ -35,9 +36,8 @@ public class SeguroViagemRelatorioDTO {
         fimVigencia = seguro.getFimVigencia();
         valorTotal = seguro.getValorTotal();
         List<com.roknauta.agencia.dto.documento.ViajanteDTO> viajantes = seguro.getViajantesCobertos();
-        viajantesCobertos = viajantes == null ? "" : viajantes.stream()
-                .filter(viajante -> viajante != null && viajante.getNome() != null)
-                .map(com.roknauta.agencia.dto.documento.ViajanteDTO::getNome)
-                .collect(Collectors.joining(", "));
+        viajantesCobertos = viajantes == null ? ""
+            : viajantes.stream().filter(viajante -> viajante != null && viajante.getNome() != null)
+                .map(com.roknauta.agencia.dto.documento.ViajanteDTO::getNome).collect(Collectors.joining(", "));
     }
 }

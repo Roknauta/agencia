@@ -79,10 +79,10 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     private ZoneId obterFusoHorario(AgenciaDTO agencia) {
-        String fuso = agencia == null || agencia.getCidade() == null
-                ? null : agencia.getCidade().getFusoHorario();
+        String fuso = agencia == null || agencia.getCidade() == null ? null : agencia.getCidade().getFusoHorario();
         if (fuso == null || fuso.isBlank()) {
-            throw new IllegalArgumentException("Configure uma cidade com fuso horário na agência para gerar o contrato.");
+            throw new IllegalArgumentException(
+                "Configure uma cidade com fuso horário na agência para gerar o contrato.");
         }
         return ZoneId.of(fuso);
     }
@@ -93,54 +93,55 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
 
     private List<BlocoTextoRelatorioDTO> montarConteudoContrato() {
         List<BlocoTextoRelatorioDTO> blocos = new ArrayList<>();
-        adicionar(blocos, "Dados da agência", juntar(
-                linha("Razão social", razaoSocialAgencia), linha("CNPJ", cnpjAgencia),
+        adicionar(blocos, "Dados da agência",
+            juntar(linha("Razão social", razaoSocialAgencia), linha("CNPJ", cnpjAgencia),
                 linha("Endereço", enderecoAgencia), linha("Representante", representanteAgencia),
-                linha("CADASTUR", cadasturAgencia), linha("E-mail", emailAgencia),
-                linha("Telefone", telefoneAgencia), linha("Horário de atendimento", horarioAgencia),
-                linha("Urgência", urgenciaAgencia)));
+                linha("CADASTUR", cadasturAgencia), linha("E-mail", emailAgencia), linha("Telefone", telefoneAgencia),
+                linha("Horário de atendimento", horarioAgencia), linha("Urgência", urgenciaAgencia)));
         adicionar(blocos, "Viajantes", getViajantes().stream().map(ViajanteRelatorioDTO::getNome)
-                .filter(Objects::nonNull).collect(java.util.stream.Collectors.joining("\n")));
-        adicionar(blocos, "Consulta de preços e pré-reserva", juntar(
-                linha("Preços consultados em", dataConsultaPrecos),
+            .filter(Objects::nonNull).collect(java.util.stream.Collectors.joining("\n")));
+        adicionar(blocos, "Consulta de preços e pré-reserva",
+            juntar(linha("Preços consultados em", dataConsultaPrecos),
                 linha("Referência da pré-reserva", referenciaPreReserva),
                 linha("Pré-reserva válida até", preReservaValidaAte)));
         adicionar(blocos, "Passagens aéreas", reservasAereas());
-        getTrajetosRodoviarios().forEach(trajeto -> adicionar(blocos, "Passagem rodoviária", juntar(
-                linha("Transportadora", trajeto.getTransportadora()),
+        getTrajetosRodoviarios().forEach(trajeto -> adicionar(blocos, "Passagem rodoviária",
+            juntar(linha("Transportadora", trajeto.getTransportadora()),
                 linha("Trecho", trajeto.getOrigem() + " → " + trajeto.getDestino()),
                 linha("Embarque", trajeto.getSaida()), linha("Chegada", trajeto.getChegada()),
                 linha("Categoria", trajeto.getCategoria()), linha("Localizador", trajeto.getLocalizador()),
-                linha("Terminais", formatarLista(" → ", trajeto.getTerminalEmbarque(), trajeto.getTerminalDesembarque())),
+                linha("Terminais",
+                    formatarLista(" → ", trajeto.getTerminalEmbarque(), trajeto.getTerminalDesembarque())),
                 linha("Bagagem", trajeto.getBagagem()), linha("Valor", trajeto.getValorTotal()))));
-        getHospedagens().forEach(hospedagem -> adicionar(blocos, "Hospedagem", juntar(
-                linha("Hotel", hospedagem.getNome()), linha("Cidade", hospedagem.getCidade()),
+        getHospedagens().forEach(hospedagem -> adicionar(blocos, "Hospedagem",
+            juntar(linha("Hotel", hospedagem.getNome()), linha("Cidade", hospedagem.getCidade()),
                 linha("Endereço", hospedagem.getEndereco()), linha("Check-in", hospedagem.getCheckIn()),
                 linha("Check-out", hospedagem.getCheckOut()), linha("Acomodação", hospedagem.getAcomodacao()),
                 linha("Quartos", hospedagem.getQuartos()), linha("Regime", hospedagem.getRegime()),
                 linha("Incluídos", hospedagem.getIncluidos()), linha("Não incluídos", hospedagem.getNaoIncluidos()),
                 linha("Cancelamento", hospedagem.getCancelamento()), linha("Localizador", hospedagem.getLocalizador()),
                 linha("Valor", hospedagem.getValorTotal()))));
-        getTransfers().forEach(transfer -> adicionar(blocos, "Transfer", juntar(
-                linha("Prestador", transfer.getPrestador()), linha("Modalidade", transfer.getTipo()),
+        getTransfers().forEach(transfer -> adicionar(blocos, "Transfer",
+            juntar(linha("Prestador", transfer.getPrestador()), linha("Modalidade", transfer.getTipo()),
                 linha("Percurso", transfer.getResumoPercursos()), linha("Data e hora", transfer.getResumoDatas()),
                 linha("Passageiros", transfer.getPassageiros()), linha("Localizador", transfer.getLocalizador()),
                 linha("Observações", transfer.getObservacoes()), linha("Valor", transfer.getValorTotal()))));
-        getAlugueis().forEach(aluguel -> adicionar(blocos, "Aluguel de veículo", juntar(
-                linha("Locadora", aluguel.getLocadora()), linha("Categoria", aluguel.getCategoria()),
+        getAlugueis().forEach(aluguel -> adicionar(blocos, "Aluguel de veículo",
+            juntar(linha("Locadora", aluguel.getLocadora()), linha("Categoria", aluguel.getCategoria()),
                 linha("Condutores", aluguel.getCondutor()), linha("Retirada", aluguel.getResumoRetirada()),
-                linha("Local de retirada", aluguel.getLocalRetirada()), linha("Devolução", aluguel.getResumoDevolucao()),
-                linha("Local de devolução", aluguel.getLocalDevolucao()), linha("Localizador", aluguel.getLocalizador()),
-                linha("Coberturas", aluguel.getCoberturas()), linha("Condições", aluguel.getCondicoes()),
-                linha("Valor", aluguel.getValorTotal()))));
-        getSegurosViagem().forEach(seguro -> adicionar(blocos, "Seguro viagem", juntar(
-                linha("Seguradora", seguro.getSeguradora()), linha("Plano", seguro.getPlano()),
+                linha("Local de retirada", aluguel.getLocalRetirada()),
+                linha("Devolução", aluguel.getResumoDevolucao()),
+                linha("Local de devolução", aluguel.getLocalDevolucao()),
+                linha("Localizador", aluguel.getLocalizador()), linha("Coberturas", aluguel.getCoberturas()),
+                linha("Condições", aluguel.getCondicoes()), linha("Valor", aluguel.getValorTotal()))));
+        getSegurosViagem().forEach(seguro -> adicionar(blocos, "Seguro viagem",
+            juntar(linha("Seguradora", seguro.getSeguradora()), linha("Plano", seguro.getPlano()),
                 linha("Vigência", formatarLista(" a ", seguro.getInicioVigencia(), seguro.getFimVigencia())),
                 linha("Viajantes cobertos", seguro.getViajantesCobertos()),
                 linha("Resumo da cobertura", seguro.getResumoCobertura()), linha("Apólice", seguro.getNumeroApolice()),
                 linha("Valor", seguro.getValorTotal()))));
-        getESims().forEach(esim -> adicionar(blocos, "eSIM", juntar(
-                linha("Operadora", esim.getOperadora()), linha("Plano", esim.getPlano()),
+        getESims().forEach(esim -> adicionar(blocos, "eSIM",
+            juntar(linha("Operadora", esim.getOperadora()), linha("Plano", esim.getPlano()),
                 linha("Franquia de dados", esim.getFranquiaDados()), linha("Cobertura", esim.getCobertura()),
                 linha("Duração", esim.getDuracaoDias() == null ? null : esim.getDuracaoDias() + " dias"),
                 linha("Quantidade", esim.getQuantidade()), linha("Valor", esim.getValorTotal()))));
@@ -158,14 +159,17 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             for (var voo : trajeto.getVoos()) {
                 StringJoiner trechoTexto = new StringJoiner("\n");
                 adicionarLinha(trechoTexto, "Sentido", trajeto.getSentido());
-                adicionarLinha(trechoTexto, "Companhia", voo.getCompanhia() == null ? null : voo.getCompanhia().getNome());
+                adicionarLinha(trechoTexto, "Companhia",
+                    voo.getCompanhia() == null ? null : voo.getCompanhia().getNome());
                 adicionarLinha(trechoTexto, "Localizador", voo.getLocalizador());
                 adicionarLinha(trechoTexto, "Cabine", voo.getCabine());
                 adicionarLinha(trechoTexto, "Tarifa", voo.getTarifa());
-                adicionarLinha(trechoTexto, "Voo", formatarLista(" ", voo.getNumero(), formatarLista(" → ", voo.getOrigem(), voo.getDestino()),
+                adicionarLinha(trechoTexto, "Voo",
+                    formatarLista(" ", voo.getNumero(), formatarLista(" → ", voo.getOrigem(), voo.getDestino()),
                         dataHora(voo.getSaida()), dataHora(voo.getChegada())));
                 if (voo.getBagagens() != null) {
-                    voo.getBagagens().forEach(bagagem -> adicionarLinha(trechoTexto, "Bagagem", bagagem.getDescricaoRelatorio()));
+                    voo.getBagagens()
+                        .forEach(bagagem -> adicionarLinha(trechoTexto, "Bagagem", bagagem.getDescricaoRelatorio()));
                 }
                 texto.add(trechoTexto.toString());
             }
@@ -196,22 +200,25 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
 
     private static String juntar(Object... valores) {
         return java.util.Arrays.stream(valores).filter(Objects::nonNull).map(Object::toString)
-                .filter(valor -> !valor.isBlank()).collect(java.util.stream.Collectors.joining("\n"));
+            .filter(valor -> !valor.isBlank()).collect(java.util.stream.Collectors.joining("\n"));
     }
 
     private static String formatarLista(String separador, Object... valores) {
         return java.util.Arrays.stream(valores).filter(Objects::nonNull).map(Object::toString)
-                .filter(valor -> !valor.isBlank()).collect(java.util.stream.Collectors.joining(separador));
+            .filter(valor -> !valor.isBlank()).collect(java.util.stream.Collectors.joining(separador));
     }
 
     private static String linha(String rotulo, Object valor) {
         if (valor == null || valor.toString().isBlank()) {
             return "";
         }
-        String texto = valor instanceof LocalDate data ? data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-                : valor instanceof LocalDateTime dataHora ? dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                : valor instanceof BigDecimal dinheiro ? java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(dinheiro)
-                : valor.toString();
+        String texto =
+            valor instanceof LocalDate data ? data.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                : valor instanceof LocalDateTime dataHora
+                    ? dataHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                    : valor instanceof BigDecimal dinheiro ? java.text.NumberFormat
+                        .getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(dinheiro)
+                        : valor.toString();
         if (valor instanceof String) {
             try {
                 texto = LocalDateTime.parse(texto).format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
@@ -236,13 +243,10 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     private List<BlocoTextoRelatorioDTO> carregarClausulas() throws IOException {
-        try (BufferedReader leitor = new BufferedReader(new InputStreamReader(
-                JasperUtils.abrirRecurso("contrato-clausulas.txt"), StandardCharsets.UTF_8))) {
-            return leitor.lines()
-                    .filter(linha -> !linha.isBlank())
-                    .map(this::parsearClausula)
-                    .filter(Objects::nonNull)
-                    .toList();
+        try (BufferedReader leitor = new BufferedReader(
+            new InputStreamReader(JasperUtils.abrirRecurso("contrato-clausulas.txt"), StandardCharsets.UTF_8))) {
+            return leitor.lines().filter(linha -> !linha.isBlank()).map(this::parsearClausula).filter(Objects::nonNull)
+                .toList();
         }
     }
 

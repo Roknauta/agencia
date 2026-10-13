@@ -63,9 +63,7 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
 
     @Transactional(readOnly = true)
     public AgenciaDTO configuracao() {
-        return repository.findFirstByOrderByIdAsc()
-                .map(mapper::toDTO)
-                .orElseGet(AgenciaDTO::new);
+        return repository.findFirstByOrderByIdAsc().map(mapper::toDTO).orElseGet(AgenciaDTO::new);
     }
 
     @Override
@@ -90,8 +88,7 @@ public class AgenciaService extends CrudServiceBase<Agencia, AgenciaDTO> {
     }
 
     private Cidade cidadeReference(AgenciaDTO dto) {
-        return dto.getCidade() == null || dto.getCidade().getId() == null
-                ? null
-                : cidadeRepository.getReferenceById(dto.getCidade().getId());
+        return dto.getCidade() == null || dto.getCidade().getId() == null ? null
+            : cidadeRepository.getReferenceById(dto.getCidade().getId());
     }
 }

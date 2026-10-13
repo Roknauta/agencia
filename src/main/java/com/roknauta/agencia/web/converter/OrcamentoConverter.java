@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component("orcamentoConverter")
 public class OrcamentoConverter extends CrudConverterBase<OrcamentoDTO, OrcamentoService> {
-    public OrcamentoConverter(OrcamentoService service) { super(service); }
+
+    public OrcamentoConverter(OrcamentoService service) {
+        super(service);
+    }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, OrcamentoDTO value) {

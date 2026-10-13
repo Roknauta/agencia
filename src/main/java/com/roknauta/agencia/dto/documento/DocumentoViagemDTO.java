@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public abstract class DocumentoViagemDTO extends BaseDTO {
+
     private String numero;
     private String cliente;
     private String consultor;

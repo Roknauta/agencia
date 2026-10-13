@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ESimRelatorioDTO {
+
     private String operadora;
     private String plano;
     private String franquiaDados;
@@ -34,9 +35,8 @@ public class ESimRelatorioDTO {
         duracaoDias = esim.getDuracaoDias();
         instrucoesInstalacao = esim.getInstrucoesInstalacao();
         List<String> codigos = esim.getCodigosAtivacao();
-        codigosAtivacao = codigos == null ? "" : codigos.stream()
-                .filter(codigo -> codigo != null && !codigo.isBlank())
-                .collect(Collectors.joining(", "));
+        codigosAtivacao = codigos == null ? ""
+            : codigos.stream().filter(codigo -> codigo != null && !codigo.isBlank()).collect(Collectors.joining(", "));
         quantidade = esim.getQuantidade();
         valorTotal = esim.getValorTotal();
     }

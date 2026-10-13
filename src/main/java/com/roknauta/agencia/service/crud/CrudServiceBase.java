@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 
-public abstract class CrudServiceBase<E, D extends BaseDTO>
-        implements CrudService<D> {
+public abstract class CrudServiceBase<E, D extends BaseDTO> implements CrudService<D> {
 
     protected abstract JpaRepository<E, Long> getRepository();
 
@@ -22,14 +21,8 @@ public abstract class CrudServiceBase<E, D extends BaseDTO>
     @Override
     @Transactional(readOnly = true)
     public D findById(Long id) {
-        return getRepository()
-                .findById(id)
-                .map(this::toDTO)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                Msg.get("crud.registro.nao.encontrado")
-                        )
-                );
+        return getRepository().findById(id).map(this::toDTO)
+            .orElseThrow(() -> new IllegalArgumentException(Msg.get("crud.registro.nao.encontrado")));
     }
 
     @Override
@@ -38,11 +31,7 @@ public abstract class CrudServiceBase<E, D extends BaseDTO>
     @Override
     @Transactional(readOnly = true)
     public List<D> findAll() {
-        return getRepository()
-                .findAll()
-                .stream()
-                .map(this::toDTO)
-                .toList();
+        return getRepository().findAll().stream().map(this::toDTO).toList();
     }
 
     @Override
@@ -59,13 +48,8 @@ public abstract class CrudServiceBase<E, D extends BaseDTO>
         } else {
 
             // UPDATE
-            entity = getRepository()
-                    .findById(dto.getId())
-                    .orElseThrow(() ->
-                            new IllegalArgumentException(
-                                    Msg.get("crud.registro.nao.encontrado")
-                            )
-                    );
+            entity = getRepository().findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException(Msg.get("crud.registro.nao.encontrado")));
 
             updateEntity(dto, entity);
         }
@@ -80,9 +64,7 @@ public abstract class CrudServiceBase<E, D extends BaseDTO>
     public void delete(Long id) {
 
         if (!getRepository().existsById(id)) {
-            throw new IllegalArgumentException(
-                    Msg.get("crud.registro.nao.encontrado")
-            );
+            throw new IllegalArgumentException(Msg.get("crud.registro.nao.encontrado"));
         }
 
         getRepository().deleteById(id);

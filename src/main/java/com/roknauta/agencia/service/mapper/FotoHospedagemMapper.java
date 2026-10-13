@@ -11,6 +11,7 @@ import org.mapstruct.BeanMapping;
 
 @Mapper(componentModel = "spring")
 public interface FotoHospedagemMapper {
+
     FotoHospedagemDTO toDTO(FotoHospedagem entity);
 
     @Mapping(target = "hospedagem", ignore = true)

@@ -19,6 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class ESim extends EntidadeBase {
+
     @Column(length = 200)
     private String operadora;
     @Column(length = 200)
@@ -31,8 +32,7 @@ public class ESim extends EntidadeBase {
     @Column(columnDefinition = "clob")
     private String instrucoesInstalacao;
     @ElementCollection
-    @CollectionTable(name = "esim_codigos_ativacao",
-            joinColumns = @JoinColumn(name = "esim_id"))
+    @CollectionTable(name = "esim_codigos_ativacao", joinColumns = @JoinColumn(name = "esim_id"))
     @Column(name = "codigo", nullable = false, length = 1000)
     @OrderColumn(name = "ordem")
     private List<String> codigosAtivacao = new ArrayList<>();

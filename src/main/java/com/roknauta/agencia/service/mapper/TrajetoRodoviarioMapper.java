@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {CidadeMapper.class})
 public interface TrajetoRodoviarioMapper {
+
     TrajetoRodoviarioDTO toDTO(TrajetoRodoviario entity);
 
     TrajetoRodoviario toEntity(TrajetoRodoviarioDTO dto);

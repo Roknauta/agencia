@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ViajanteMapper {
+
     ViajanteDTO toDTO(Viajante entity);
 
     Viajante toEntity(ViajanteDTO dto);

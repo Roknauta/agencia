@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TransferDTO extends BaseDTO {
+
     private String prestador;
     private TipoTransfer tipo;
     private String localizador;

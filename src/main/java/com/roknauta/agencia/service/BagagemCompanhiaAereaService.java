@@ -15,16 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class BagagemCompanhiaAereaService
-        extends CrudServiceBase<BagagemCompanhiaAerea, BagagemCompanhiaAereaDTO> {
+public class BagagemCompanhiaAereaService extends CrudServiceBase<BagagemCompanhiaAerea, BagagemCompanhiaAereaDTO> {
 
     private final BagagemCompanhiaAereaRepository repository;
     private final CompanhiaAereaRepository companhiaRepository;
     private final BagagemCompanhiaAereaMapper mapper;
 
     public BagagemCompanhiaAereaService(BagagemCompanhiaAereaRepository repository,
-                                        CompanhiaAereaRepository companhiaRepository,
-                                        BagagemCompanhiaAereaMapper mapper) {
+        CompanhiaAereaRepository companhiaRepository, BagagemCompanhiaAereaMapper mapper) {
         this.repository = repository;
         this.companhiaRepository = companhiaRepository;
         this.mapper = mapper;
@@ -34,8 +32,7 @@ public class BagagemCompanhiaAereaService
     @Transactional
     public BagagemCompanhiaAereaDTO save(BagagemCompanhiaAereaDTO dto) {
         if (dto.getId() != null) {
-            throw new UnsupportedOperationException(
-                    "Bagagem de companhia aérea é imutável; crie uma nova versão.");
+            throw new UnsupportedOperationException("Bagagem de companhia aérea é imutável; crie uma nova versão.");
         }
         if (dto.getDataReferencia() == null) {
             throw new IllegalArgumentException("Data de referência é obrigatória.");
@@ -46,8 +43,7 @@ public class BagagemCompanhiaAereaService
     @Override
     @Transactional
     public void delete(Long id) {
-        throw new UnsupportedOperationException(
-                "Versões de bagagem de companhia aérea não podem ser excluídas.");
+        throw new UnsupportedOperationException("Versões de bagagem de companhia aérea não podem ser excluídas.");
     }
 
     @Override
@@ -69,15 +65,14 @@ public class BagagemCompanhiaAereaService
 
     @Override
     protected void updateEntity(BagagemCompanhiaAereaDTO dto, BagagemCompanhiaAerea entity) {
-        throw new UnsupportedOperationException(
-                "Bagagem de companhia aérea é imutável; crie uma nova versão.");
+        throw new UnsupportedOperationException("Bagagem de companhia aérea é imutável; crie uma nova versão.");
     }
 
     @Override
     public List<BagagemCompanhiaAereaDTO> find(BagagemCompanhiaAereaDTO dto) {
         Long companhiaId = dto.getCompanhiaAerea() == null ? null : dto.getCompanhiaAerea().getId();
-        return repository.buscar(companhiaId, dto.getTipoBagagem(), dto.getDataReferencia())
-                .stream().map(this::toDTO).toList();
+        return repository.buscar(companhiaId, dto.getTipoBagagem(), dto.getDataReferencia()).stream().map(this::toDTO)
+            .toList();
     }
 
     public List<BagagemCompanhiaAereaDTO> findByTexto(String texto) {
@@ -86,10 +81,9 @@ public class BagagemCompanhiaAereaService
     }
 
     private void setReferences(BagagemCompanhiaAereaDTO dto, BagagemCompanhiaAerea entity) {
-        if (dto.getCompanhiaAerea() == null || dto.getCompanhiaAerea().getId() == null
-                || dto.getTipoBagagem() == null || dto.getAlturaCm() == null
-                || dto.getLarguraCm() == null || dto.getProfundidadeCm() == null
-                || dto.getPesoMaximo() == null || dto.getDataReferencia() == null) {
+        if (dto.getCompanhiaAerea() == null || dto.getCompanhiaAerea().getId() == null || dto.getTipoBagagem() == null
+            || dto.getAlturaCm() == null || dto.getLarguraCm() == null || dto.getProfundidadeCm() == null
+            || dto.getPesoMaximo() == null || dto.getDataReferencia() == null) {
             throw new IllegalArgumentException("Todos os campos da bagagem são obrigatórios.");
         }
         entity.setCompanhiaAerea(companhiaRepository.getReferenceById(dto.getCompanhiaAerea().getId()));

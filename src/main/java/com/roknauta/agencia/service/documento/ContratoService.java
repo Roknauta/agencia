@@ -28,6 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class ContratoService {
+
     private final ContratoRepository repository;
     private final OrcamentoRepository orcamentoRepository;
     private final ContratoMapper mapper;
@@ -35,8 +36,7 @@ public class ContratoService {
     private final AgenciaService agenciaService;
 
     public ContratoService(ContratoRepository repository, OrcamentoRepository orcamentoRepository,
-                           ContratoMapper mapper, TrechoAereoService trechoAereoService,
-                           AgenciaService agenciaService) {
+        ContratoMapper mapper, TrechoAereoService trechoAereoService, AgenciaService agenciaService) {
         this.repository = repository;
         this.orcamentoRepository = orcamentoRepository;
         this.mapper = mapper;
@@ -47,7 +47,7 @@ public class ContratoService {
     @Transactional(readOnly = true)
     public ContratoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -72,7 +72,7 @@ public class ContratoService {
         }
         entidadeOrcamentoObrigatorio(dto);
         Orcamento orcamento = orcamentoRepository.findById(dto.getOrcamento().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
         if (orcamento.getStatus() != StatusOrcamento.CLIENTE_INTERESSADO) {
             throw new IllegalStateException("O contrato exige um orçamento com interesse do cliente registrado.");
         }
@@ -80,8 +80,8 @@ public class ContratoService {
             throw new IllegalStateException("Este orçamento já está vinculado a um contrato.");
         }
         validarConsultaEPreReserva(dto);
-        dto.setNumero(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now())
-                + "-" + UUID.randomUUID().toString().substring(0, 8));
+        dto.setNumero(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + "-"
+            + UUID.randomUUID().toString().substring(0, 8));
         Contrato contrato = mapper.toEntity(dto);
         contrato.setOrcamento(orcamento);
         contrato.setStatus(StatusContrato.AGUARDANDO_ACEITE);
@@ -122,15 +122,14 @@ public class ContratoService {
     }
 
     private Contrato buscarEntidade(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
     }
 
     private void validarConsultaEPreReserva(ContratoDTO dto) {
         if (dto.getDataConsultaPrecos() == null || StringUtils.isBlank(dto.getReferenciaPreReserva())
-                || dto.getPreReservaValidaAte() == null) {
+            || dto.getPreReservaValidaAte() == null) {
             throw new IllegalArgumentException(
-                    "Data da consulta, referência e validade da pré-reserva são obrigatórias para gerar o contrato.");
+                "Data da consulta, referência e validade da pré-reserva são obrigatórias para gerar o contrato.");
         }
         if (!dto.getPreReservaValidaAte().isAfter(Instant.now())) {
             throw new IllegalArgumentException("A pré-reserva precisa estar vigente para gerar o contrato.");
@@ -138,8 +137,7 @@ public class ContratoService {
     }
 
     private void validarPreReservaVigente(Contrato contrato) {
-        if (contrato.getPreReservaValidaAte() == null
-                || !contrato.getPreReservaValidaAte().isAfter(Instant.now())) {
+        if (contrato.getPreReservaValidaAte() == null || !contrato.getPreReservaValidaAte().isAfter(Instant.now())) {
             throw new IllegalStateException("O prazo da pré-reserva expirou.");
         }
     }

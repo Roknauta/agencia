@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class TrajetoRodoviarioService {
+
     private final TrajetoRodoviarioRepository repository;
     private final TrajetoRodoviarioMapper mapper;
 
@@ -23,7 +24,7 @@ public class TrajetoRodoviarioService {
     @Transactional(readOnly = true)
     public TrajetoRodoviarioDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("TrajetoRodoviario não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("TrajetoRodoviario não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class TrajetoRodoviarioService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("TrajetoRodoviario não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("TrajetoRodoviario não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SeguroViagemDTO extends BaseDTO {
+
     private String seguradora;
     private String plano;
     private String resumoCobertura;

@@ -25,10 +25,8 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
     private final BagagemCompanhiaAereaRepository bagagemRepository;
     private final TarifaAereaMapper mapper;
 
-    public TarifaAereaService(TarifaAereaRepository repository,
-                              CompanhiaAereaRepository companhiaRepository,
-                              BagagemCompanhiaAereaRepository bagagemRepository,
-                              TarifaAereaMapper mapper) {
+    public TarifaAereaService(TarifaAereaRepository repository, CompanhiaAereaRepository companhiaRepository,
+        BagagemCompanhiaAereaRepository bagagemRepository, TarifaAereaMapper mapper) {
         this.repository = repository;
         this.companhiaRepository = companhiaRepository;
         this.bagagemRepository = bagagemRepository;
@@ -39,8 +37,7 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
     @Transactional
     public TarifaAereaDTO save(TarifaAereaDTO dto) {
         if (dto.getId() != null) {
-            throw new UnsupportedOperationException(
-                    "Tarifa aérea é imutável; crie uma nova versão.");
+            throw new UnsupportedOperationException("Tarifa aérea é imutável; crie uma nova versão.");
         }
         if (dto.getDataReferencia() == null) {
             throw new IllegalArgumentException("Data de referência é obrigatória.");
@@ -51,8 +48,7 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
     @Override
     @Transactional
     public void delete(Long id) {
-        throw new UnsupportedOperationException(
-                "Versões de tarifa aérea não podem ser excluídas.");
+        throw new UnsupportedOperationException("Versões de tarifa aérea não podem ser excluídas.");
     }
 
     @Override
@@ -74,16 +70,14 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
 
     @Override
     protected void updateEntity(TarifaAereaDTO dto, TarifaAerea entity) {
-        throw new UnsupportedOperationException(
-                "Tarifa aérea é imutável; crie uma nova versão.");
+        throw new UnsupportedOperationException("Tarifa aérea é imutável; crie uma nova versão.");
     }
 
     @Override
     public List<TarifaAereaDTO> find(TarifaAereaDTO dto) {
         String nome = StringUtils.defaultString(StringUtils.trimToNull(dto.getNome()));
         Long companhiaId = dto.getCompanhiaAerea() == null ? null : dto.getCompanhiaAerea().getId();
-        return repository.buscar(nome, companhiaId, dto.getDataReferencia())
-                .stream().map(this::toDTO).toList();
+        return repository.buscar(nome, companhiaId, dto.getDataReferencia()).stream().map(this::toDTO).toList();
     }
 
     public List<TarifaAereaDTO> findByNomeCompanhiaAerea(String nome, Long idCompanhiaAerea) {
@@ -93,18 +87,15 @@ public class TarifaAereaService extends CrudServiceBase<TarifaAerea, TarifaAerea
 
     private void setReferences(TarifaAereaDTO dto, TarifaAerea entity) {
         if (StringUtils.isBlank(dto.getNome()) || dto.getCompanhiaAerea() == null
-                || dto.getCompanhiaAerea().getId() == null || StringUtils.isBlank(dto.getRegraCancelamento())
-                || StringUtils.isBlank(dto.getRegraAlteracao()) || dto.getDataReferencia() == null) {
-            throw new IllegalArgumentException(
-                    "Nome, companhia aérea, data de referência e regras são obrigatórios.");
+            || dto.getCompanhiaAerea().getId() == null || StringUtils.isBlank(dto.getRegraCancelamento())
+            || StringUtils.isBlank(dto.getRegraAlteracao()) || dto.getDataReferencia() == null) {
+            throw new IllegalArgumentException("Nome, companhia aérea, data de referência e regras são obrigatórios.");
         }
         entity.setCompanhiaAerea(companhiaRepository.getReferenceById(dto.getCompanhiaAerea().getId()));
         List<BagagemCompanhiaAerea> bagagens = new ArrayList<>();
         if (dto.getBagagensInclusas() != null) {
-            dto.getBagagensInclusas().stream()
-                    .filter(bagagem -> bagagem != null && bagagem.getId() != null)
-                    .map(bagagem -> bagagemRepository.getReferenceById(bagagem.getId()))
-                    .forEach(bagagens::add);
+            dto.getBagagensInclusas().stream().filter(bagagem -> bagagem != null && bagagem.getId() != null)
+                .map(bagagem -> bagagemRepository.getReferenceById(bagagem.getId())).forEach(bagagens::add);
         }
         entity.setBagagensInclusas(bagagens);
     }

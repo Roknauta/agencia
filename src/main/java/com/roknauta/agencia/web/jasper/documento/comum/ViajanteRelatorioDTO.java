@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ViajanteRelatorioDTO {
+
     private String nome;
     private String documento;
     private LocalDate dataNascimento;

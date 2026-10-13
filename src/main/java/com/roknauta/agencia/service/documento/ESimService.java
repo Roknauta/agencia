@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class ESimService {
+
     private final ESimRepository repository;
     private final ESimMapper mapper;
 
@@ -23,7 +24,7 @@ public class ESimService {
     @Transactional(readOnly = true)
     public ESimDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("ESim não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("ESim não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class ESimService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("ESim não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("ESim não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

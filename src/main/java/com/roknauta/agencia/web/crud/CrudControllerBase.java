@@ -14,7 +14,7 @@ import org.springframework.core.GenericTypeResolver;
 
 
 public abstract class CrudControllerBase<T extends BaseDTO, S extends CrudService<T>> extends ControllerBase
-        implements Serializable {
+    implements Serializable {
 
     @Getter
     @Setter
@@ -43,12 +43,10 @@ public abstract class CrudControllerBase<T extends BaseDTO, S extends CrudServic
 
     @SuppressWarnings("unchecked")
     private void setDtoClass() {
-        Class<?>[] typeArguments = GenericTypeResolver.resolveTypeArguments(
-                getClass(), CrudControllerBase.class);
+        Class<?>[] typeArguments = GenericTypeResolver.resolveTypeArguments(getClass(), CrudControllerBase.class);
 
         if (typeArguments == null) {
-            throw new IllegalStateException(
-                    Msg.get("crud.tipo.formulario.nao.resolvido"));
+            throw new IllegalStateException(Msg.get("crud.tipo.formulario.nao.resolvido"));
         }
         dtoClass = (Class<T>) typeArguments[0];
     }
@@ -57,8 +55,7 @@ public abstract class CrudControllerBase<T extends BaseDTO, S extends CrudServic
         try {
             return dtoClass.getDeclaredConstructor().newInstance();
         } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(
-                    Msg.get("crud.formulario.erro.instanciar"), e);
+            throw new IllegalStateException(Msg.get("crud.formulario.erro.instanciar"), e);
         }
     }
 
@@ -112,5 +109,5 @@ public abstract class CrudControllerBase<T extends BaseDTO, S extends CrudServic
         pesquisaRealizada = true;
     }
 
-    protected void aposGravar() { }
+    protected void aposGravar() {}
 }

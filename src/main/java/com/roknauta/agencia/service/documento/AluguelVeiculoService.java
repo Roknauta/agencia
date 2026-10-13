@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class AluguelVeiculoService {
+
     private final AluguelVeiculoRepository repository;
     private final AluguelVeiculoMapper mapper;
 
@@ -23,7 +24,7 @@ public class AluguelVeiculoService {
     @Transactional(readOnly = true)
     public AluguelVeiculoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("AluguelVeiculo não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("AluguelVeiculo não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class AluguelVeiculoService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("AluguelVeiculo não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("AluguelVeiculo não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

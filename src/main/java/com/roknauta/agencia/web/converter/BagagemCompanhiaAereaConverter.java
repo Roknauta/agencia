@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component("bagagemCompanhiaAereaConverter")
 public class BagagemCompanhiaAereaConverter
-        extends CrudConverterBase<BagagemCompanhiaAereaDTO, BagagemCompanhiaAereaService> {
+    extends CrudConverterBase<BagagemCompanhiaAereaDTO, BagagemCompanhiaAereaService> {
 
     public BagagemCompanhiaAereaConverter(BagagemCompanhiaAereaService service) {
         super(service);

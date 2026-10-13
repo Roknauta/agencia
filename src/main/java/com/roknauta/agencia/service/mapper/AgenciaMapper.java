@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = CidadeMapper.class)
 public interface AgenciaMapper {
+
     AgenciaDTO toDTO(Agencia entity);
 
     Agencia toEntity(AgenciaDTO dto);

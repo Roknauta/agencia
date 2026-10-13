@@ -26,15 +26,15 @@ class EmissaoRelatorioDTOTest {
 
         BilheteAereoDTO bilheteIda = new BilheteAereoDTO();
         bilheteIda.setViajante(emissao.getViajantes().getFirst());
-        bilheteIda.setTrechoAereo(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU",
-                java.time.LocalTime.of(8, 0), java.time.LocalTime.of(9, 15), LocalDate.of(2027, 2, 10)));
+        bilheteIda.setTrechoAereo(DadosRelatoriosTeste.trecho("JJ1234", "CNF", "GRU", java.time.LocalTime.of(8, 0),
+            java.time.LocalTime.of(9, 15), LocalDate.of(2027, 2, 10)));
         bilheteIda.setNumeroBilhete("9571234567890");
         bilheteIda.setAssento("12A");
 
         BilheteAereoDTO bilheteVolta = new BilheteAereoDTO();
         bilheteVolta.setViajante(emissao.getViajantes().get(1));
-        bilheteVolta.setTrechoAereo(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF",
-                java.time.LocalTime.of(10, 0), java.time.LocalTime.of(18, 20), LocalDate.of(2027, 2, 18)));
+        bilheteVolta.setTrechoAereo(DadosRelatoriosTeste.trecho("TP1020", "LIS", "CNF", java.time.LocalTime.of(10, 0),
+            java.time.LocalTime.of(18, 20), LocalDate.of(2027, 2, 18)));
         bilheteVolta.setNumeroBilhete("0479876543210");
         bilheteVolta.setAssento("14C");
         emissao.setBilhetesAereos(List.of(bilheteIda, bilheteVolta));

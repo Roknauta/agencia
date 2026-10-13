@@ -39,7 +39,8 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private BigDecimal total = BigDecimal.ZERO;
     private BigDecimal valorPorPessoa = BigDecimal.ZERO;
     private String consultaPrecosEm;
-    private String aviso = "Esta cotação é preliminar: não representa reserva nem garante preço ou disponibilidade. Se o cliente desejar prosseguir, a agência fará nova consulta e poderá solicitar uma pré-reserva. Os valores e o prazo da pré-reserva serão confirmados no contrato antes do aceite e do pagamento.";
+    private String aviso =
+        "Esta cotação é preliminar: não representa reserva nem garante preço ou disponibilidade. Se o cliente desejar prosseguir, a agência fará nova consulta e poderá solicitar uma pré-reserva. Os valores e o prazo da pré-reserva serão confirmados no contrato antes do aceite e do pagamento.";
 
     public OrcamentoRelatorioDTO(OrcamentoDTO orcamento) {
         super(orcamento);
@@ -52,26 +53,30 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         validade = orcamento.getValidadeAte() == null ? null : orcamento.getValidadeAte().format(DATA);
         pagamento = orcamento.getPagamento();
         valorAereo = soma(getTrajetosAereos().stream()
-                .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO::getValorTotal));
+            .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO::getValorTotal));
         valorRodoviario = totalRodoviario();
-        valorHospedagem = soma(getHospedagens().stream().map(com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO::getValorTotal));
-        valorTransfer = soma(getTransfers().stream().map(com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO::getValorTotal));
-        valorAlugueis = soma(getAlugueis().stream().map(com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO::getValorTotal));
-        valorSeguros = soma(getSegurosViagem().stream().map(com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO::getValorTotal));
-        valorESims = soma(getESims().stream().map(com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO::getValorTotal));
+        valorHospedagem = soma(getHospedagens().stream()
+            .map(com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO::getValorTotal));
+        valorTransfer = soma(getTransfers().stream()
+            .map(com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO::getValorTotal));
+        valorAlugueis = soma(getAlugueis().stream()
+            .map(com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO::getValorTotal));
+        valorSeguros = soma(getSegurosViagem().stream()
+            .map(com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO::getValorTotal));
+        valorESims = soma(
+            getESims().stream().map(com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO::getValorTotal));
         servicos = valor(orcamento.getServicos());
         desconto = valor(orcamento.getDesconto());
-        total = valorAereo.add(valorRodoviario).add(valorHospedagem).add(valorTransfer)
-                .add(valorAlugueis).add(valorSeguros).add(valorESims).add(servicos).subtract(desconto);
-        quantidadePassageiros = quantidade(orcamento.getAdultos())
-                + quantidade(orcamento.getCriancas()) + quantidade(orcamento.getBebes());
-        perfilPassageiros = Stream.of(
-                        perfil(orcamento.getAdultos(), "adulto", "adultos"),
-                        perfil(orcamento.getCriancas(), "criança", "crianças"),
-                        perfil(orcamento.getBebes(), "bebê", "bebês"))
-                .collect(Collectors.joining(" • "));
+        total = valorAereo.add(valorRodoviario).add(valorHospedagem).add(valorTransfer).add(valorAlugueis)
+            .add(valorSeguros).add(valorESims).add(servicos).subtract(desconto);
+        quantidadePassageiros =
+            quantidade(orcamento.getAdultos()) + quantidade(orcamento.getCriancas()) + quantidade(orcamento.getBebes());
+        perfilPassageiros = Stream
+            .of(perfil(orcamento.getAdultos(), "adulto", "adultos"),
+                perfil(orcamento.getCriancas(), "criança", "crianças"), perfil(orcamento.getBebes(), "bebê", "bebês"))
+            .collect(Collectors.joining(" • "));
         valorPorPessoa = quantidadePassageiros == 0 ? BigDecimal.ZERO
-                : total.divide(BigDecimal.valueOf(quantidadePassageiros), 2, RoundingMode.HALF_UP);
+            : total.divide(BigDecimal.valueOf(quantidadePassageiros), 2, RoundingMode.HALF_UP);
     }
 
     public java.util.List<com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO> getPassagensRodoviarias() {
@@ -79,18 +84,15 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     public String getRegras() {
-        return getTrajetosAereos().stream()
-                .flatMap(trajeto -> trajeto.getVoos().stream())
-                .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
-                        voo.getOutrasInformacoesTarifarias()))
-                .filter(texto -> texto != null && !texto.isBlank())
-                .distinct()
-                .collect(Collectors.joining("\n"));
+        return getTrajetosAereos().stream().flatMap(trajeto -> trajeto.getVoos().stream())
+            .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
+                voo.getOutrasInformacoesTarifarias()))
+            .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
     }
 
     private BigDecimal totalRodoviario() {
         return soma(getTrajetosRodoviarios().stream()
-                .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO::getValorTotal));
+            .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO::getValorTotal));
     }
 
     private static BigDecimal soma(java.util.stream.Stream<BigDecimal> valores) {

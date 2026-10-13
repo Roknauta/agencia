@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class FotoHospedagemDTO extends BaseDTO {
+
     private byte[] conteudo;
     private HospedagemDTO hospedagem;
 }

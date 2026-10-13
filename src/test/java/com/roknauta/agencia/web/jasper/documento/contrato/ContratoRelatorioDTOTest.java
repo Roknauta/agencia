@@ -74,7 +74,7 @@ class ContratoRelatorioDTOTest {
         assertNotNull(relatorio.getClausulas().getFirst().getTexto());
         assertTrue(relatorio.getClausulas().stream().anyMatch(clausula -> clausula.getTexto().contains("Anexo I")));
         assertTrue(relatorio.getConteudoContrato().stream()
-                .anyMatch(bloco -> bloco.getTitulo().equals("Consulta de preços e pré-reserva")
-                        && bloco.getTexto().contains("PR-123456")));
+            .anyMatch(bloco -> bloco.getTitulo().equals("Consulta de preços e pré-reserva")
+                && bloco.getTexto().contains("PR-123456")));
     }
 }

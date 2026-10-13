@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BilheteAereoRelatorioDTO {
+
     private String nome;
     private String bilhete;
     private String assento;
@@ -21,7 +22,7 @@ public class BilheteAereoRelatorioDTO {
         nome = bilheteAereo.getViajante() == null ? null : bilheteAereo.getViajante().getNome();
         bilhete = bilheteAereo.getNumeroBilhete();
         assento = bilheteAereo.getAssento();
-        voo = bilheteAereo.getTrechoAereo() == null || bilheteAereo.getTrechoAereo().getVoo() == null
-                ? null : bilheteAereo.getTrechoAereo().getVoo().getNumero();
+        voo = bilheteAereo.getTrechoAereo() == null || bilheteAereo.getTrechoAereo().getVoo() == null ? null
+            : bilheteAereo.getTrechoAereo().getVoo().getNumero();
     }
 }

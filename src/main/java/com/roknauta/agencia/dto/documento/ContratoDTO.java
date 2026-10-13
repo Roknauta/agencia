@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ContratoDTO extends DocumentoViagemDTO {
+
     private OrcamentoDTO orcamento;
     private StatusContrato status;
     private Instant dataConsultaPrecos;

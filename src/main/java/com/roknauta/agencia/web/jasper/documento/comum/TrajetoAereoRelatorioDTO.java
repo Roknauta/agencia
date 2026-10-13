@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TrajetoAereoRelatorioDTO {
+
     private String sentido;
     private BigDecimal valorTotal;
     private List<VooRelatorioDTO> voos = new ArrayList<>();
@@ -30,19 +31,17 @@ public class TrajetoAereoRelatorioDTO {
     }
 
     public String getResumoCabine() {
-        return voos.stream().map(VooRelatorioDTO::getCabine)
-                .filter(texto -> texto != null && !texto.isBlank()).distinct()
-                .collect(Collectors.joining(" • "));
+        return voos.stream().map(VooRelatorioDTO::getCabine).filter(texto -> texto != null && !texto.isBlank())
+            .distinct().collect(Collectors.joining(" • "));
     }
 
     public String getResumoTarifa() {
-        return voos.stream().map(VooRelatorioDTO::getTarifa)
-                .filter(texto -> texto != null && !texto.isBlank()).distinct()
-                .collect(Collectors.joining(" • "));
+        return voos.stream().map(VooRelatorioDTO::getTarifa).filter(texto -> texto != null && !texto.isBlank())
+            .distinct().collect(Collectors.joining(" • "));
     }
 
     public List<BagagemRelatorioDTO> getBagagens() {
-        return voos.stream().filter(voo -> voo.getBagagens() != null)
-                .flatMap(voo -> voo.getBagagens().stream()).toList();
+        return voos.stream().filter(voo -> voo.getBagagens() != null).flatMap(voo -> voo.getBagagens().stream())
+            .toList();
     }
 }

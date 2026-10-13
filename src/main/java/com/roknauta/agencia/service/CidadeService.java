@@ -21,8 +21,7 @@ public class CidadeService extends CrudServiceBase<Cidade, CidadeDTO> {
     private final PaisRepository paisRepository;
     private final CidadeMapper mapper;
 
-    public CidadeService(CidadeRepository repository, PaisRepository paisRepository,
-                             CidadeMapper mapper) {
+    public CidadeService(CidadeRepository repository, PaisRepository paisRepository, CidadeMapper mapper) {
         this.repository = repository;
         this.paisRepository = paisRepository;
         this.mapper = mapper;
@@ -56,10 +55,7 @@ public class CidadeService extends CrudServiceBase<Cidade, CidadeDTO> {
         String nome = StringUtils.defaultString(StringUtils.trimToNull(dto.getNome()));
         String estado = StringUtils.defaultString(StringUtils.trimToNull(dto.getEstado()));
         Long paisId = dto.getPais() == null ? null : dto.getPais().getId();
-        return repository.buscar(nome, estado, paisId)
-                .stream()
-                .map(this::toDTO)
-                .toList();
+        return repository.buscar(nome, estado, paisId).stream().map(this::toDTO).toList();
     }
 
     public List<CidadeDTO> findByTexto(String texto) {
@@ -68,8 +64,7 @@ public class CidadeService extends CrudServiceBase<Cidade, CidadeDTO> {
     }
 
     private Pais paisReference(CidadeDTO dto) {
-        return dto.getPais() == null || dto.getPais().getId() == null
-                ? null
-                : paisRepository.getReferenceById(dto.getPais().getId());
+        return dto.getPais() == null || dto.getPais().getId() == null ? null
+            : paisRepository.getReferenceById(dto.getPais().getId());
     }
 }

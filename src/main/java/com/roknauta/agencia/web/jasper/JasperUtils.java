@@ -22,8 +22,7 @@ public final class JasperUtils {
 
     private static final String DIRETORIO_RELATORIOS = "/reports/";
 
-    private JasperUtils() {
-    }
+    private JasperUtils() {}
 
     public static JasperReport compilar(String nomeArquivo) throws IOException, JRException {
         try (InputStream recurso = abrirRelatorio(nomeArquivo)) {
@@ -32,7 +31,7 @@ public final class JasperUtils {
     }
 
     public static byte[] gerarPdf(String nomeArquivo, Object dados, Map<String, Object> parametros)
-            throws IOException, JRException {
+        throws IOException, JRException {
         if (dados == null) {
             throw new IllegalArgumentException("Os dados do relatório são obrigatórios.");
         }
@@ -40,40 +39,33 @@ public final class JasperUtils {
     }
 
     public static byte[] gerarPdf(String nomeArquivo, List<?> dados, Map<String, Object> parametros)
-            throws IOException, JRException {
+        throws IOException, JRException {
         if (dados == null) {
             throw new IllegalArgumentException("Os dados do relatório são obrigatórios.");
         }
         return gerarPdf(nomeArquivo, new JRBeanCollectionDataSource(dados), parametros);
     }
 
-    public static byte[] gerarPdf(String nomeArquivo, JRDataSource fonteDados,
-                                  Map<String, Object> parametros) throws IOException, JRException {
+    public static byte[] gerarPdf(String nomeArquivo, JRDataSource fonteDados, Map<String, Object> parametros)
+        throws IOException, JRException {
         JasperReport relatorio = compilar(nomeArquivo);
-        Map<String, Object> parametrosRelatorio = parametros == null
-                ? Collections.emptyMap()
-                : parametros;
+        Map<String, Object> parametrosRelatorio = parametros == null ? Collections.emptyMap() : parametros;
         JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametrosRelatorio, fonteDados);
         return JasperExportManager.exportReportToPdf(impressao);
     }
 
     public static byte[] gerarContratoPdf(ContratoRelatorioDTO contrato, Map<String, Object> parametros)
-            throws IOException, JRException {
+        throws IOException, JRException {
         if (contrato == null) {
             throw new IllegalArgumentException("Os dados do contrato são obrigatórios.");
         }
-        Map<String, Object> parametrosContrato = parametros == null
-                ? new HashMap<>()
-                : new HashMap<>(parametros);
+        Map<String, Object> parametrosContrato = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
         parametrosContrato.putIfAbsent("RELATORIO_BLOCOS", compilar("contrato-blocos-JBD.jrxml"));
-        return gerarPdf("contrato-JBD.jrxml",
-                new JRBeanCollectionDataSource(List.of(contrato)), parametrosContrato);
+        return gerarPdf("contrato-JBD.jrxml", new JRBeanCollectionDataSource(List.of(contrato)), parametrosContrato);
     }
 
     public static InputStream abrirRecurso(String nomeArquivo) {
-        String caminho = nomeArquivo.startsWith("/")
-                ? nomeArquivo
-                : DIRETORIO_RELATORIOS + nomeArquivo;
+        String caminho = nomeArquivo.startsWith("/") ? nomeArquivo : DIRETORIO_RELATORIOS + nomeArquivo;
         InputStream recurso = JasperUtils.class.getResourceAsStream(caminho);
         if (recurso == null) {
             throw new IllegalArgumentException("Recurso Jasper não encontrado: " + caminho);

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AgenciaDTO extends BaseDTO {
+
     private CidadeDTO cidade;
     private String razaoSocial;
     private String nomeFantasia;

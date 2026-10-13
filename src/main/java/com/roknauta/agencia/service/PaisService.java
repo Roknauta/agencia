@@ -47,17 +47,12 @@ public class PaisService extends CrudServiceBase<Pais, PaisDTO> {
     public List<PaisDTO> find(PaisDTO dto) {
         String nome = StringUtils.isNotBlank(dto.getNome()) ? dto.getNome().trim() : "";
         String sigla = StringUtils.isNotBlank(dto.getSigla()) ? dto.getSigla().trim() : "";
-        return repository.findByNomeContainingIgnoreCaseAndSiglaContainingIgnoreCaseOrderByNomeAsc(nome, sigla)
-                .stream()
-                .map(this::toDTO)
-                .toList();
+        return repository.findByNomeContainingIgnoreCaseAndSiglaContainingIgnoreCaseOrderByNomeAsc(nome, sigla).stream()
+            .map(this::toDTO).toList();
     }
 
     public List<PaisDTO> findByNome(String nome) {
         String filtro = StringUtils.defaultString(StringUtils.trimToNull(nome));
-        return repository.findByNome(filtro)
-                .stream()
-                .map(this::toDTO)
-                .toList();
+        return repository.findByNome(filtro).stream().map(this::toDTO).toList();
     }
 }

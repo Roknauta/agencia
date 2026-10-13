@@ -13,7 +13,7 @@ import jakarta.faces.view.ViewScoped;
 @Component
 @ViewScoped
 public class BagagemCompanhiaAereaController
-        extends CrudControllerBase<BagagemCompanhiaAereaDTO, BagagemCompanhiaAereaService> {
+    extends CrudControllerBase<BagagemCompanhiaAereaDTO, BagagemCompanhiaAereaService> {
 
     public BagagemCompanhiaAereaController(BagagemCompanhiaAereaService service) {
         super(service);

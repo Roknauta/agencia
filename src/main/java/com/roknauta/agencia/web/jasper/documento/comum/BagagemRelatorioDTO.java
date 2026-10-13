@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BagagemRelatorioDTO {
+
     private String descricaoRelatorio;
     private String dimensoes;
     private Double pesoMaximo;
@@ -25,14 +26,11 @@ public class BagagemRelatorioDTO {
         quantidade = bagagem.getQuantidade();
         var referencia = bagagem.getBagagemCompanhiaAerea();
         if (referencia != null) {
-            descricaoRelatorio = referencia.getTipoBagagem() == null
-                    ? bagagem.getDescricao()
-                    : referencia.getTipoBagagem().getLabel();
-            dimensoes = Stream.of(referencia.getAlturaCm(), referencia.getLarguraCm(),
-                            referencia.getProfundidadeCm())
-                    .map(valor -> valor == null ? null : String.valueOf(valor))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.joining(" x "));
+            descricaoRelatorio =
+                referencia.getTipoBagagem() == null ? bagagem.getDescricao() : referencia.getTipoBagagem().getLabel();
+            dimensoes = Stream.of(referencia.getAlturaCm(), referencia.getLarguraCm(), referencia.getProfundidadeCm())
+                .map(valor -> valor == null ? null : String.valueOf(valor)).filter(Objects::nonNull)
+                .collect(Collectors.joining(" x "));
             pesoMaximo = referencia.getPesoMaximo();
         } else {
             descricaoRelatorio = bagagem.getDescricao();

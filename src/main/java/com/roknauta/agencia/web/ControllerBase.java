@@ -8,7 +8,7 @@ import org.primefaces.PrimeFaces;
 public abstract class ControllerBase {
 
     @PostConstruct
-    public void postConstruct(){}
+    public void postConstruct() {}
 
     protected FacesContext getFacesContext() {
         return FacesContext.getCurrentInstance();
@@ -31,12 +31,12 @@ public abstract class ControllerBase {
     }
 
     protected void addMessage(final String clientId, final FacesMessage.Severity severity, final String messageKey,
-                              final Object... arguments) {
+        final Object... arguments) {
         getFacesContext().addMessage(clientId, new FacesMessage(severity, Msg.get(messageKey, arguments), null));
     }
 
     protected void addMessage(final FacesMessage.Severity severity, final String messageKey,
-                              final Object... arguments) {
+        final Object... arguments) {
         addMessage(null, severity, messageKey, arguments);
     }
 

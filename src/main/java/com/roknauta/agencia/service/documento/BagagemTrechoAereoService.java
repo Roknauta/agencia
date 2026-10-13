@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BagagemTrechoAereoService {
+
     private final BagagemTrechoAereoRepository repository;
     private final BagagemTrechoAereoMapper mapper;
 
@@ -23,14 +24,13 @@ public class BagagemTrechoAereoService {
     @Transactional(readOnly = true)
     public BagagemTrechoAereoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Bagagem do trecho aéreo não encontrada."));
+            .orElseThrow(() -> new IllegalArgumentException("Bagagem do trecho aéreo não encontrada."));
     }
 
     @Transactional(readOnly = true)
     public List<BagagemTrechoAereoDTO> buscar(BagagemTrechoAereoDTO filtro) {
         String texto = StringUtils.defaultString(StringUtils.trimToNull(filtro.getDescricao()));
-        Long bagagemId = filtro.getBagagemCompanhiaAerea() == null
-                ? null : filtro.getBagagemCompanhiaAerea().getId();
+        Long bagagemId = filtro.getBagagemCompanhiaAerea() == null ? null : filtro.getBagagemCompanhiaAerea().getId();
         return repository.buscar(texto, bagagemId).stream().map(mapper::toDTO).toList();
     }
 
@@ -41,7 +41,7 @@ public class BagagemTrechoAereoService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Bagagem do trecho aéreo não encontrada."));
+                .orElseThrow(() -> new IllegalArgumentException("Bagagem do trecho aéreo não encontrada."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

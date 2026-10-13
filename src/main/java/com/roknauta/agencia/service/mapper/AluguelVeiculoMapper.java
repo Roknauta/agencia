@@ -7,6 +7,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface AluguelVeiculoMapper {
+
     AluguelVeiculoDTO toDTO(AluguelVeiculo entity);
 
     AluguelVeiculo toEntity(AluguelVeiculoDTO dto);

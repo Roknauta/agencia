@@ -6,10 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CabineAerea {
-    ECONOMICA("Econômica"),
-    PREMIUM_ECONOMICA("Premium econômica"),
-    EXECUTIVA("Executiva"),
-    PRIMEIRA_CLASSE("Primeira classe");
+
+    ECONOMICA("Econômica"), PREMIUM_ECONOMICA("Premium econômica"), EXECUTIVA("Executiva"), PRIMEIRA_CLASSE(
+        "Primeira classe");
 
     private final String descricao;
 }

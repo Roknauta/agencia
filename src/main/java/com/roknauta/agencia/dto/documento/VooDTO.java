@@ -16,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class VooDTO extends BaseDTO {
+
     private String numero;
     private LocalDate dataReferencia;
     private CompanhiaAereaDTO companhiaAerea;
@@ -24,7 +25,8 @@ public class VooDTO extends BaseDTO {
     private LocalTime partida;
     private LocalTime chegada;
 
-    public String autoCompleteLabel(){
-        return getNumero().concat(" - ").concat(AppUtils.aeroportoLabel(origem)).concat(" - ").concat(AppUtils.aeroportoLabel(destino));
+    public String autoCompleteLabel() {
+        return getNumero().concat(" - ").concat(AppUtils.aeroportoLabel(origem)).concat(" - ")
+            .concat(AppUtils.aeroportoLabel(destino));
     }
 }

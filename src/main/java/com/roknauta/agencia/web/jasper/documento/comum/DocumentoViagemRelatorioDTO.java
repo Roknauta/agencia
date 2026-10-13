@@ -16,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DocumentoViagemRelatorioDTO {
+
     private String numero;
     private String cliente;
     private String consultor;
@@ -51,12 +52,11 @@ public class DocumentoViagemRelatorioDTO {
             viajantes = documento.getViajantes().stream().map(ViajanteRelatorioDTO::new).toList();
         }
         if (documento.getTrajetosAereos() != null) {
-            trajetosAereos = documento.getTrajetosAereos().stream()
-                    .map(TrajetoAereoRelatorioDTO::new).toList();
+            trajetosAereos = documento.getTrajetosAereos().stream().map(TrajetoAereoRelatorioDTO::new).toList();
         }
         if (documento.getTrajetosRodoviarios() != null) {
-            trajetosRodoviarios = documento.getTrajetosRodoviarios().stream()
-                    .map(TrajetoRodoviarioRelatorioDTO::new).toList();
+            trajetosRodoviarios =
+                documento.getTrajetosRodoviarios().stream().map(TrajetoRodoviarioRelatorioDTO::new).toList();
         }
         if (documento.getHospedagens() != null) {
             hospedagens = documento.getHospedagens().stream().map(HospedagemRelatorioDTO::new).toList();
@@ -84,24 +84,22 @@ public class DocumentoViagemRelatorioDTO {
     }
 
     private TrajetoAereoRelatorioDTO agregarTrajetos(SentidoVoo sentido) {
-        List<TrajetoAereoRelatorioDTO> trajetos = trajetosAereos.stream()
-                .filter(Objects::nonNull)
-                .filter(trajeto -> sentido.name().equals(trajeto.getSentido()))
-                .toList();
+        List<TrajetoAereoRelatorioDTO> trajetos = trajetosAereos.stream().filter(Objects::nonNull)
+            .filter(trajeto -> sentido.name().equals(trajeto.getSentido())).toList();
         if (trajetos.isEmpty()) {
             return null;
         }
         TrajetoAereoRelatorioDTO agregado = new TrajetoAereoRelatorioDTO();
         agregado.setSentido(sentido.name());
         agregado.setVoos(trajetos.stream().flatMap(trajeto -> trajeto.getVoos().stream()).toList());
-        agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal)
-                .filter(Objects::nonNull).reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
+        agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal).filter(Objects::nonNull)
+            .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         return agregado;
     }
 
     public String getNomesViajantes() {
-        return viajantes.stream().map(ViajanteRelatorioDTO::getNome)
-                .filter(Objects::nonNull).collect(Collectors.joining(" • "));
+        return viajantes.stream().map(ViajanteRelatorioDTO::getNome).filter(Objects::nonNull)
+            .collect(Collectors.joining(" • "));
     }
 
     public int getQuantidadeViajantes() {

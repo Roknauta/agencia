@@ -8,6 +8,7 @@ import org.mapstruct.AfterMapping;
 
 @Mapper(componentModel = "spring", uses = {HotelMapper.class, FotoHospedagemMapper.class})
 public interface HospedagemMapper {
+
     HospedagemDTO toDTO(Hospedagem entity);
 
     Hospedagem toEntity(HospedagemDTO dto);

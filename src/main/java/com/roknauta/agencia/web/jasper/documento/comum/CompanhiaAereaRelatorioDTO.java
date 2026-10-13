@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CompanhiaAereaRelatorioDTO {
+
     private String nome;
 
     public CompanhiaAereaRelatorioDTO(String nome) {

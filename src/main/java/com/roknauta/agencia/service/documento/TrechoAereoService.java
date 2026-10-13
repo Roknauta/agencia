@@ -29,8 +29,8 @@ public class TrechoAereoService {
     private final TrechoAereoMapper mapper;
 
     public TrechoAereoService(TrechoAereoRepository repository, VooRepository vooRepository,
-                              TarifaAereaRepository tarifaRepository,
-                              BagagemCompanhiaAereaRepository bagagemRepository, TrechoAereoMapper mapper) {
+        TarifaAereaRepository tarifaRepository, BagagemCompanhiaAereaRepository bagagemRepository,
+        TrechoAereoMapper mapper) {
         this.repository = repository;
         this.vooRepository = vooRepository;
         this.tarifaRepository = tarifaRepository;
@@ -41,13 +41,13 @@ public class TrechoAereoService {
     @Transactional(readOnly = true)
     public TrechoAereoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Trecho aéreo não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Trecho aéreo não encontrado."));
     }
 
     @Transactional(readOnly = true)
     public List<TrechoAereoDTO> buscar(TrechoAereoDTO filtro) {
-        String numeroVoo = filtro.getVoo() == null
-                ? "" : StringUtils.defaultString(StringUtils.trimToNull(filtro.getVoo().getNumero()));
+        String numeroVoo = filtro.getVoo() == null ? ""
+            : StringUtils.defaultString(StringUtils.trimToNull(filtro.getVoo().getNumero()));
         Long tarifaId = filtro.getTarifaAerea() == null ? null : filtro.getTarifaAerea().getId();
         return repository.buscar(numeroVoo, filtro.getDataPartida(), tarifaId).stream().map(mapper::toDTO).toList();
     }
@@ -59,7 +59,7 @@ public class TrechoAereoService {
             trecho = mapper.toEntity(dto);
         } else {
             trecho = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Trecho aéreo não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Trecho aéreo não encontrado."));
             mapper.updateEntity(dto, trecho);
         }
         setReferences(dto, trecho);
@@ -83,7 +83,7 @@ public class TrechoAereoService {
             return;
         }
         if (documento.getTrajetosAereos() == null
-                || documento.getTrajetosAereos().size() != dto.getTrajetosAereos().size()) {
+            || documento.getTrajetosAereos().size() != dto.getTrajetosAereos().size()) {
             throw new IllegalArgumentException("A lista de trajetos aéreos está inconsistente.");
         }
         for (int i = 0; i < dto.getTrajetosAereos().size(); i++) {
@@ -92,15 +92,14 @@ public class TrechoAereoService {
     }
 
     private void setReferences(TrechoAereoDTO dto, TrechoAereo trecho) {
-        if (dto.getVoo() == null || dto.getVoo().getId() == null
-                || dto.getDataPartida() == null || dto.getDataChegada() == null
-                || dto.getTarifaAerea() == null || dto.getTarifaAerea().getId() == null) {
+        if (dto.getVoo() == null || dto.getVoo().getId() == null || dto.getDataPartida() == null
+            || dto.getDataChegada() == null || dto.getTarifaAerea() == null || dto.getTarifaAerea().getId() == null) {
             throw new IllegalArgumentException("Voo, datas e tarifa são obrigatórios no trecho aéreo.");
         }
         Voo voo = vooRepository.findById(dto.getVoo().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Voo não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Voo não encontrado."));
         TarifaAerea tarifa = tarifaRepository.findById(dto.getTarifaAerea().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Tarifa aérea não encontrada."));
+            .orElseThrow(() -> new IllegalArgumentException("Tarifa aérea não encontrada."));
         if (!tarifa.getCompanhiaAerea().getId().equals(voo.getCompanhiaAerea().getId())) {
             throw new IllegalArgumentException("A tarifa deve pertencer à companhia aérea do voo.");
         }
@@ -113,11 +112,11 @@ public class TrechoAereoService {
             for (int i = 0; i < dto.getBagagens().size(); i++) {
                 var bagagemDTO = dto.getBagagens().get(i);
                 if (bagagemDTO.getBagagemCompanhiaAerea() == null
-                        || bagagemDTO.getBagagemCompanhiaAerea().getId() == null) {
+                    || bagagemDTO.getBagagemCompanhiaAerea().getId() == null) {
                     throw new IllegalArgumentException("A bagagem da companhia aérea é obrigatória.");
                 }
                 trecho.getBagagens().get(i).setBagagemCompanhiaAerea(
-                        bagagemRepository.getReferenceById(bagagemDTO.getBagagemCompanhiaAerea().getId()));
+                    bagagemRepository.getReferenceById(bagagemDTO.getBagagemCompanhiaAerea().getId()));
             }
         }
     }

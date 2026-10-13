@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class TransferService {
+
     private final TransferRepository repository;
     private final TransferMapper mapper;
 
@@ -23,7 +24,7 @@ public class TransferService {
     @Transactional(readOnly = true)
     public TransferDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Transfer não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Transfer não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class TransferService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Transfer não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Transfer não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

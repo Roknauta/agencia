@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class ViajanteService {
+
     private final ViajanteRepository repository;
     private final ViajanteMapper mapper;
 
@@ -23,7 +24,7 @@ public class ViajanteService {
     @Transactional(readOnly = true)
     public ViajanteDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Viajante não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Viajante não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class ViajanteService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Viajante não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Viajante não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

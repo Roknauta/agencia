@@ -1,6 +1,7 @@
 package com.roknauta.agencia.domain.documento;
 
 public enum Moeda {
+
     BRL("Real brasileiro", "R$");
 
     private final String descricao;

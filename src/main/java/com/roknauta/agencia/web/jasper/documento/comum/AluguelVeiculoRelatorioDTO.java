@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AluguelVeiculoRelatorioDTO {
+
     private String locadora;
     private String categoria;
     private String condutor;
@@ -38,9 +39,8 @@ public class AluguelVeiculoRelatorioDTO {
         locadora = aluguel.getLocadora() == null ? null : aluguel.getLocadora().getLabel();
         categoria = aluguel.getCategoria() == null ? null : aluguel.getCategoria().getDescricao();
         List<String> condutores = aluguel.getCondutores();
-        condutor = condutores == null ? null : condutores.stream()
-                .filter(nome -> nome != null && !nome.isBlank())
-                .collect(Collectors.joining(", "));
+        condutor = condutores == null ? null
+            : condutores.stream().filter(nome -> nome != null && !nome.isBlank()).collect(Collectors.joining(", "));
         localizador = aluguel.getLocalizador();
         localRetirada = aluguel.getLocalRetirada();
         localDevolucao = aluguel.getLocalDevolucao();
@@ -71,11 +71,11 @@ public class AluguelVeiculoRelatorioDTO {
         condicoes = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getCondicoes).toList());
         observacoes = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getObservacoes).toList());
         valorTotal = itens.stream().map(AluguelVeiculoRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
         resumoRetirada = itens.stream().map(item -> dataHora(item.getRetirada())).filter(texto -> !texto.isBlank())
-                .collect(Collectors.joining(" • "));
+            .collect(Collectors.joining(" • "));
         resumoDevolucao = itens.stream().map(item -> dataHora(item.getDevolucao())).filter(texto -> !texto.isBlank())
-                .collect(Collectors.joining(" • "));
+            .collect(Collectors.joining(" • "));
     }
 
     private static String juntar(List<String> valores) {

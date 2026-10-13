@@ -41,8 +41,7 @@ public final class DadosRelatoriosTeste {
 
     private static final LocalDate DATA_PARTIDA = LocalDate.of(2027, 2, 10);
 
-    private DadosRelatoriosTeste() {
-    }
+    private DadosRelatoriosTeste() {}
 
     public static OrcamentoDTO orcamentoCompleto() {
         OrcamentoDTO orcamento = new OrcamentoDTO();
@@ -75,18 +74,20 @@ public final class DadosRelatoriosTeste {
         documento.setTrajetosRodoviarios(List.of(trajetoRodoviario()));
         documento.setHospedagens(List.of(hospedagem()));
         documento.setTransfers(List.of(transfer("Aeroporto → hotel", new BigDecimal("180.00")),
-                transfer("Hotel → aeroporto", new BigDecimal("170.00"))));
-        documento.setAlugueis(List.of(aluguel("LOC-101", new BigDecimal("900.00")),
-                aluguel("LOC-102", new BigDecimal("150.00"))));
+            transfer("Hotel → aeroporto", new BigDecimal("170.00"))));
+        documento.setAlugueis(
+            List.of(aluguel("LOC-101", new BigDecimal("900.00")), aluguel("LOC-102", new BigDecimal("150.00"))));
         documento.setSegurosViagem(List.of(seguro(adulto, crianca)));
         documento.setESims(List.of(esim()));
     }
 
     public static TrajetoAereoDTO trajetoIda() {
-        TrechoAereoDTO primeiroTrecho = trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0), LocalTime.of(9, 15), DATA_PARTIDA);
+        TrechoAereoDTO primeiroTrecho =
+            trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0), LocalTime.of(9, 15), DATA_PARTIDA);
         primeiroTrecho.setLocalizador("ABC123");
         primeiroTrecho.setBagagens(List.of(bagagem("Despachada", 1)));
-        TrechoAereoDTO segundoTrecho = trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA);
+        TrechoAereoDTO segundoTrecho =
+            trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA);
         segundoTrecho.setLocalizador("ABC456");
         segundoTrecho.setBagagens(List.of(bagagem("Bagagem de mão", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
@@ -97,7 +98,8 @@ public final class DadosRelatoriosTeste {
     }
 
     public static TrajetoAereoDTO trajetoVolta() {
-        TrechoAereoDTO trecho = trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0), LocalTime.of(18, 20), DATA_PARTIDA.plusDays(8));
+        TrechoAereoDTO trecho =
+            trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0), LocalTime.of(18, 20), DATA_PARTIDA.plusDays(8));
         trecho.setLocalizador("XYZ789");
         trecho.setBagagens(List.of(bagagem("Despachada", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
@@ -107,8 +109,8 @@ public final class DadosRelatoriosTeste {
         return trajeto;
     }
 
-    public static TrechoAereoDTO trecho(String numero, String origem, String destino,
-                                    LocalTime partida, LocalTime chegada, LocalDate data) {
+    public static TrechoAereoDTO trecho(String numero, String origem, String destino, LocalTime partida,
+        LocalTime chegada, LocalDate data) {
         CompanhiaAereaDTO companhia = new CompanhiaAereaDTO();
         companhia.setNome("Companhia Exemplo");
         VooDTO voo = new VooDTO();
@@ -192,7 +194,8 @@ public final class DadosRelatoriosTeste {
         hospedagem.setValorTotal(new BigDecimal("1800.00"));
         hospedagem.setObservacoes("Quarto para dois adultos e duas crianças.");
         FotoHospedagemDTO foto = new FotoHospedagemDTO();
-        foto.setConteudo(Base64.getDecoder().decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l1sAAAAASUVORK5CYII="));
+        foto.setConteudo(Base64.getDecoder()
+            .decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l1sAAAAASUVORK5CYII="));
         hospedagem.setFotos(List.of(foto));
         return hospedagem;
     }

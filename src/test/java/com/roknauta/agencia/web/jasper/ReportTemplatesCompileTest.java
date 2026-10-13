@@ -12,14 +12,9 @@ class ReportTemplatesCompileTest {
 
     @Test
     void deveCompilarTemplatesDeRelatorios() throws Exception {
-        List<String> templates = List.of(
-                "orcamento-passagem-hospedagem-JBD.jrxml",
-                "emissao-passagem-JBD.jrxml",
-                "contrato-JBD.jrxml",
-                "contrato-blocos-JBD.jrxml",
-                "hospedagens-JBD.jrxml",
-                "orcamento-servicos-JBD.jrxml",
-                "tarifa-aerea-regras-JBD.jrxml");
+        List<String> templates = List.of("orcamento-passagem-hospedagem-JBD.jrxml", "emissao-passagem-JBD.jrxml",
+            "contrato-JBD.jrxml", "contrato-blocos-JBD.jrxml", "hospedagens-JBD.jrxml", "orcamento-servicos-JBD.jrxml",
+            "tarifa-aerea-regras-JBD.jrxml");
 
         for (String template : templates) {
             JasperReport report = JasperUtils.compilar(template);

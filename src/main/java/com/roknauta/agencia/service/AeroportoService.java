@@ -21,8 +21,7 @@ public class AeroportoService extends CrudServiceBase<Aeroporto, AeroportoDTO> {
     private final CidadeRepository cidadeRepository;
     private final AeroportoMapper mapper;
 
-    public AeroportoService(AeroportoRepository repository, CidadeRepository cidadeRepository,
-                            AeroportoMapper mapper) {
+    public AeroportoService(AeroportoRepository repository, CidadeRepository cidadeRepository, AeroportoMapper mapper) {
         this.repository = repository;
         this.cidadeRepository = cidadeRepository;
         this.mapper = mapper;

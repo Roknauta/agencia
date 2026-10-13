@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ViajanteDTO extends BaseDTO {
+
     private String nome;
     private TipoDocumentoViajante tipoDocumento;
     private String documento;

@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TrajetoRodoviarioDTO extends BaseDTO {
+
     private String transportadora;
     private CidadeDTO origem;
     private CidadeDTO destino;

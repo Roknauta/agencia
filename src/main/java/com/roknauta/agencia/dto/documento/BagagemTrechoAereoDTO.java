@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BagagemTrechoAereoDTO extends BaseDTO {
+
     private BagagemCompanhiaAereaDTO bagagemCompanhiaAerea;
     private int quantidade = 1;
     private String descricao;

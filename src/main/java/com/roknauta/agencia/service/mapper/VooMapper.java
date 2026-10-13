@@ -5,10 +5,9 @@ import com.roknauta.agencia.dto.documento.VooDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {
-        CompanhiaAereaMapper.class, AeroportoMapper.class
-})
+@Mapper(componentModel = "spring", uses = {CompanhiaAereaMapper.class, AeroportoMapper.class})
 public interface VooMapper {
+
     VooDTO toDTO(Voo entity);
 
     Voo toEntity(VooDTO dto);

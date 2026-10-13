@@ -18,9 +18,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {
-        "numero", "companhia_aerea_id", "data_referencia"
-}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"numero", "companhia_aerea_id", "data_referencia"}))
 @Getter
 @Setter
 @NoArgsConstructor

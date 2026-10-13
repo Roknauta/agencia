@@ -24,13 +24,14 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class EmissaoService {
+
     private final EmissaoRepository repository;
     private final ContratoRepository contratoRepository;
     private final EmissaoMapper mapper;
     private final TrechoAereoService trechoAereoService;
 
     public EmissaoService(EmissaoRepository repository, ContratoRepository contratoRepository, EmissaoMapper mapper,
-                          TrechoAereoService trechoAereoService) {
+        TrechoAereoService trechoAereoService) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
@@ -40,13 +41,13 @@ public class EmissaoService {
     @Transactional(readOnly = true)
     public EmissaoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Emissao não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Emissao não encontrado."));
     }
 
     @Transactional(readOnly = true)
     public List<EmissaoDTO> buscar(EmissaoDTO filtro) {
         String numero = StringUtils.defaultString(StringUtils.trimToNull(filtro.getNumero()));
-                String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
+        String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
         return repository.buscar(numero, cliente).stream().map(mapper::toDTO).toList();
     }
 
@@ -62,7 +63,7 @@ public class EmissaoService {
             entidade.setContrato(contrato);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Emissao não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Emissao não encontrado."));
             Contrato contrato = contratoObrigatorio(dto);
             if (!Objects.equals(entidade.getContrato().getId(), contrato.getId())) {
                 throw new IllegalArgumentException("O contrato vinculado à emissão não pode ser alterado.");
@@ -79,7 +80,7 @@ public class EmissaoService {
             throw new IllegalArgumentException("Contrato é obrigatório para criar uma emissão.");
         }
         return contratoRepository.findById(dto.getContrato().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
     }
 
     private void resolverBilhetesAereos(EmissaoDTO dto, Emissao emissao) {
@@ -88,7 +89,7 @@ public class EmissaoService {
             return;
         }
         if (emissao.getBilhetesAereos() == null
-                || emissao.getBilhetesAereos().size() != dto.getBilhetesAereos().size()) {
+            || emissao.getBilhetesAereos().size() != dto.getBilhetesAereos().size()) {
             throw new IllegalArgumentException("A lista de bilhetes aéreos está inconsistente.");
         }
         for (int i = 0; i < dto.getBilhetesAereos().size(); i++) {
@@ -104,26 +105,22 @@ public class EmissaoService {
             throw new IllegalArgumentException("O viajante do bilhete aéreo é obrigatório.");
         }
         return emissao.getViajantes().stream()
-                .filter(viajante -> dto.getId() != null
-                        ? Objects.equals(viajante.getId(), dto.getId())
-                        : Objects.equals(viajante.getDocumento(), dto.getDocumento())
-                                && Objects.equals(viajante.getNome(), dto.getNome()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Viajante do bilhete não pertence à emissão."));
+            .filter(viajante -> dto.getId() != null ? Objects.equals(viajante.getId(), dto.getId())
+                : Objects.equals(viajante.getDocumento(), dto.getDocumento())
+                    && Objects.equals(viajante.getNome(), dto.getNome()))
+            .findFirst().orElseThrow(() -> new IllegalArgumentException("Viajante do bilhete não pertence à emissão."));
     }
 
     private TrechoAereo localizarTrecho(Emissao emissao, TrechoAereoDTO dto) {
         if (dto == null || dto.getVoo() == null || dto.getVoo().getId() == null) {
             throw new IllegalArgumentException("O trecho do bilhete aéreo é obrigatório.");
         }
-        Stream<TrechoAereo> trechos = emissao.getTrajetosAereos().stream()
-                .filter(Objects::nonNull)
-                .flatMap(trajeto -> trajeto.getTrechos().stream())
-                .filter(Objects::nonNull);
-        return trechos.filter(trecho -> Objects.equals(trecho.getVoo().getId(), dto.getVoo().getId())
-                        && Objects.equals(trecho.getDataPartida(), dto.getDataPartida())
-                        && Objects.equals(trecho.getDataChegada(), dto.getDataChegada()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Trecho do bilhete não pertence à emissão."));
+        Stream<TrechoAereo> trechos = emissao.getTrajetosAereos().stream().filter(Objects::nonNull)
+            .flatMap(trajeto -> trajeto.getTrechos().stream()).filter(Objects::nonNull);
+        return trechos
+            .filter(trecho -> Objects.equals(trecho.getVoo().getId(), dto.getVoo().getId())
+                && Objects.equals(trecho.getDataPartida(), dto.getDataPartida())
+                && Objects.equals(trecho.getDataChegada(), dto.getDataChegada()))
+            .findFirst().orElseThrow(() -> new IllegalArgumentException("Trecho do bilhete não pertence à emissão."));
     }
 }

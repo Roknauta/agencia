@@ -43,8 +43,8 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     @Setter
     private List<BagagemTrechoAereoDTO> bagagensForm = new ArrayList<>();
 
-    public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService,
-                                  VooService vooService, TarifaAereaService tarifaAereaService) {
+    public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService, VooService vooService,
+        TarifaAereaService tarifaAereaService) {
         super(service);
         this.orcamentoService = orcamentoService;
         this.vooService = vooService;
@@ -78,11 +78,13 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     }
 
     public List<VooDTO> completeVoo(String texto) {
-        return companhiaAerea == null ? List.of() : vooService.findByNumeroCompanhiaAerea(texto, companhiaAerea.getId());
+        return companhiaAerea == null ? List.of()
+            : vooService.findByNumeroCompanhiaAerea(texto, companhiaAerea.getId());
     }
 
     public List<TarifaAereaDTO> completeTarifaAerea(String texto) {
-        return companhiaAerea == null ? List.of() : tarifaAereaService.findByNomeCompanhiaAerea(texto, companhiaAerea.getId());
+        return companhiaAerea == null ? List.of()
+            : tarifaAereaService.findByNomeCompanhiaAerea(texto, companhiaAerea.getId());
     }
 
     public SentidoVoo[] getSentidos() {
@@ -113,13 +115,13 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
 
     public void carregarBagagens() {
         bagagensForm = trechoForm == null || trechoForm.getTarifaAerea() == null
-                || trechoForm.getTarifaAerea().getBagagensInclusas() == null ? List.of()
+            || trechoForm.getTarifaAerea().getBagagensInclusas() == null ? List.of()
                 : trechoForm.getTarifaAerea().getBagagensInclusas().stream().map(bagagem -> {
-            BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
-            item.setBagagemCompanhiaAerea(bagagem);
-            item.setQuantidade(0);
-            return item;
-        }).toList();
+                    BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
+                    item.setBagagemCompanhiaAerea(bagagem);
+                    item.setQuantidade(0);
+                    return item;
+                }).toList();
     }
 
     public void confirmarTrecho() {
@@ -146,7 +148,8 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
 
     @Override
     public void save() {
-        if (idOrcamento == null) throw new IllegalArgumentException("Selecione um orçamento.");
+        if (idOrcamento == null)
+            throw new IllegalArgumentException("Selecione um orçamento.");
         service.salvarNoOrcamento(idOrcamento, editForm);
         atualizarResultados();
         voltarPesquisa();
@@ -159,7 +162,8 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     }
 
     public void excluir(Long id) {
-        if (idOrcamento == null) return;
+        if (idOrcamento == null)
+            return;
         service.excluirDoOrcamento(idOrcamento, id);
         atualizarResultados();
     }

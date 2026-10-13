@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class BlocoTextoRelatorioDTO {
+
     private String titulo;
     private String texto;
     private Boolean destaque;

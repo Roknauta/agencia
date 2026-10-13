@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HospedagemRelatorioDTO {
+
     private String nome;
     private String cidade;
     private String endereco;
@@ -45,8 +46,8 @@ public class HospedagemRelatorioDTO {
         checkIn = hospedagem.getCheckIn();
         checkOut = hospedagem.getCheckOut();
         if (checkIn != null && checkOut != null) {
-            noites = Math.max(0, java.time.temporal.ChronoUnit.DAYS.between(
-                    checkIn.toLocalDate(), checkOut.toLocalDate()));
+            noites =
+                Math.max(0, java.time.temporal.ChronoUnit.DAYS.between(checkIn.toLocalDate(), checkOut.toLocalDate()));
         }
         acomodacao = hospedagem.getAcomodacao();
         quartos = hospedagem.getQuartos();
@@ -59,8 +60,8 @@ public class HospedagemRelatorioDTO {
         valorTotal = hospedagem.getValorTotal();
         List<FotoHospedagemDTO> fotos = hospedagem.getFotos() == null ? List.of() : hospedagem.getFotos();
         for (int i = 0; i < fotos.size(); i += 2) {
-            FotoHospedagemRelatorioDTO foto = new FotoHospedagemRelatorioDTO(
-                    fotos.get(i), i + 1 < fotos.size() ? fotos.get(i + 1) : null);
+            FotoHospedagemRelatorioDTO foto =
+                new FotoHospedagemRelatorioDTO(fotos.get(i), i + 1 < fotos.size() ? fotos.get(i + 1) : null);
             paresFotos.add(foto);
             this.fotos.add(foto);
         }

@@ -19,6 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class TrajetoRodoviario extends EntidadeBase {
+
     @Column(length = 200)
     private String transportadora;
     @ManyToOne(fetch = FetchType.LAZY)

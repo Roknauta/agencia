@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TrajetoRodoviarioRelatorioDTO {
+
     private String transportadora;
     private String origem;
     private String destino;

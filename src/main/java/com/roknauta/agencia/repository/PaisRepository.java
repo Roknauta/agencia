@@ -10,15 +10,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface PaisRepository extends JpaRepository<Pais, Long> {
 
-    List<Pais> findByNomeContainingIgnoreCaseAndSiglaContainingIgnoreCaseOrderByNomeAsc(
-            String nome, String sigla);
+    List<Pais> findByNomeContainingIgnoreCaseAndSiglaContainingIgnoreCaseOrderByNomeAsc(String nome, String sigla);
 
     @Query("""
-            select pais
-            from Pais pais
-            where :nome = ''
-               or lower(pais.nome) like lower(concat('%', :nome, '%'))
-            order by pais.nome
-            """)
+        select pais
+        from Pais pais
+        where :nome = ''
+           or lower(pais.nome) like lower(concat('%', :nome, '%'))
+        order by pais.nome
+        """)
     List<Pais> findByNome(@Param("nome") String nome);
 }

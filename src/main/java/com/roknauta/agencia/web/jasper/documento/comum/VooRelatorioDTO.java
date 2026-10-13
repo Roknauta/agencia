@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class VooRelatorioDTO {
+
     private CompanhiaAereaRelatorioDTO companhia;
     private String numero;
     private String origem;
@@ -36,8 +37,8 @@ public class VooRelatorioDTO {
             return;
         }
         var voo = trecho.getVoo();
-        companhia = voo.getCompanhiaAerea() == null ? null
-                : new CompanhiaAereaRelatorioDTO(voo.getCompanhiaAerea().getNome());
+        companhia =
+            voo.getCompanhiaAerea() == null ? null : new CompanhiaAereaRelatorioDTO(voo.getCompanhiaAerea().getNome());
         numero = voo.getNumero();
         localizador = trecho.getLocalizador();
         cabine = trecho.getCabine() == null ? null : trecho.getCabine().name();

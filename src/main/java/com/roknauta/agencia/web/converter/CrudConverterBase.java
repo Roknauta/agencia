@@ -9,8 +9,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 
-public abstract class CrudConverterBase<T extends BaseDTO, S extends CrudService<T>>
-        implements Converter<T> {
+public abstract class CrudConverterBase<T extends BaseDTO, S extends CrudService<T>> implements Converter<T> {
 
     protected final S service;
 
@@ -27,11 +26,8 @@ public abstract class CrudConverterBase<T extends BaseDTO, S extends CrudService
         try {
             return service.findById(Long.parseLong(value));
         } catch (IllegalArgumentException e) {
-            throw new ConverterException(new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR,
-                    Msg.get("crud.converter.valor.invalido"),
-                    null
-            ));
+            throw new ConverterException(
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, Msg.get("crud.converter.valor.invalido"), null));
         }
     }
 

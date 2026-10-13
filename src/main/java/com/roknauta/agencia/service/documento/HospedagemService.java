@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class HospedagemService {
+
     private final HospedagemRepository repository;
     private final HospedagemMapper mapper;
 
@@ -23,7 +24,7 @@ public class HospedagemService {
     @Transactional(readOnly = true)
     public HospedagemDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Hospedagem não encontrado."));
+            .orElseThrow(() -> new IllegalArgumentException("Hospedagem não encontrado."));
     }
 
     @Transactional(readOnly = true)
@@ -39,7 +40,7 @@ public class HospedagemService {
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Hospedagem não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Hospedagem não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
         return mapper.toDTO(repository.save(entidade));

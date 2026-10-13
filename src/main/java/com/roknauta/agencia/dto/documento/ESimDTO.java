@@ -14,6 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ESimDTO extends BaseDTO {
+
     private String operadora;
     private String plano;
     private String franquiaDados;

@@ -25,10 +25,8 @@ public class VooService extends CrudServiceBase<Voo, VooDTO> {
     private final AeroportoRepository aeroportoRepository;
     private final VooMapper mapper;
 
-    public VooService(VooRepository repository,
-                      CompanhiaAereaRepository companhiaRepository,
-                      AeroportoRepository aeroportoRepository,
-                      VooMapper mapper) {
+    public VooService(VooRepository repository, CompanhiaAereaRepository companhiaRepository,
+        AeroportoRepository aeroportoRepository, VooMapper mapper) {
         this.repository = repository;
         this.companhiaRepository = companhiaRepository;
         this.aeroportoRepository = aeroportoRepository;
@@ -39,8 +37,7 @@ public class VooService extends CrudServiceBase<Voo, VooDTO> {
     @Transactional
     public VooDTO save(VooDTO dto) {
         if (dto.getId() != null) {
-            throw new UnsupportedOperationException(
-                    "Voo é imutável; cadastre uma nova versão.");
+            throw new UnsupportedOperationException("Voo é imutável; cadastre uma nova versão.");
         }
         if (dto.getDataReferencia() == null) {
             throw new IllegalArgumentException("Data de referência é obrigatória.");
@@ -73,8 +70,7 @@ public class VooService extends CrudServiceBase<Voo, VooDTO> {
 
     @Override
     protected void updateEntity(VooDTO dto, Voo entity) {
-        throw new UnsupportedOperationException(
-                "Voo é imutável; cadastre uma nova versão.");
+        throw new UnsupportedOperationException("Voo é imutável; cadastre uma nova versão.");
     }
 
     @Override
@@ -83,23 +79,20 @@ public class VooService extends CrudServiceBase<Voo, VooDTO> {
         Long companhiaId = dto.getCompanhiaAerea() == null ? null : dto.getCompanhiaAerea().getId();
         Long origemId = dto.getOrigem() == null ? null : dto.getOrigem().getId();
         Long destinoId = dto.getDestino() == null ? null : dto.getDestino().getId();
-        return repository.buscar(numero, companhiaId, origemId, destinoId,
-                        dto.getDataReferencia())
-                .stream().map(this::toDTO).toList();
+        return repository.buscar(numero, companhiaId, origemId, destinoId, dto.getDataReferencia()).stream()
+            .map(this::toDTO).toList();
     }
 
     public List<VooDTO> findByNumeroCompanhiaAerea(String numero, Long idCompanhiaAerea) {
         String filtro = StringUtils.defaultString(StringUtils.trimToNull(numero));
-        return repository.buscar(filtro, idCompanhiaAerea, null, null, null)
-                .stream().map(this::toDTO).toList();
+        return repository.buscar(filtro, idCompanhiaAerea, null, null, null).stream().map(this::toDTO).toList();
     }
 
     private void setReferences(VooDTO dto, Voo entity) {
-        if (StringUtils.isBlank(dto.getNumero()) || dto.getDataReferencia() == null
-                || dto.getCompanhiaAerea() == null || dto.getCompanhiaAerea().getId() == null
-                || dto.getOrigem() == null || dto.getOrigem().getId() == null
-                || dto.getDestino() == null || dto.getDestino().getId() == null
-                || dto.getPartida() == null || dto.getChegada() == null) {
+        if (StringUtils.isBlank(dto.getNumero()) || dto.getDataReferencia() == null || dto.getCompanhiaAerea() == null
+            || dto.getCompanhiaAerea().getId() == null || dto.getOrigem() == null || dto.getOrigem().getId() == null
+            || dto.getDestino() == null || dto.getDestino().getId() == null || dto.getPartida() == null
+            || dto.getChegada() == null) {
             throw new IllegalArgumentException("Preencha todos os campos obrigatórios do voo.");
         }
 

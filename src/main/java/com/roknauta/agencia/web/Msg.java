@@ -8,8 +8,7 @@ public final class Msg {
 
     private static final Locale LOCALE = Locale.forLanguageTag("pt-BR");
 
-    private Msg() {
-    }
+    private Msg() {}
 
     public static String formatar(String chave, Object... argumentos) {
         return get(chave, argumentos);
