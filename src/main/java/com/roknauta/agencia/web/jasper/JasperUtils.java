@@ -2,7 +2,6 @@ package com.roknauta.agencia.web.jasper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public final class JasperUtils {
     public static byte[] gerarPdf(String nomeArquivo, JRDataSource fonteDados, Map<String, Object> parametros)
         throws IOException, JRException {
         JasperReport relatorio = compilar(nomeArquivo);
-        Map<String, Object> parametrosRelatorio = parametros == null ? Collections.emptyMap() : parametros;
+        Map<String, Object> parametrosRelatorio = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
         JasperPrint impressao = JasperFillManager.fillReport(relatorio, parametrosRelatorio, fonteDados);
         return JasperExportManager.exportReportToPdf(impressao);
     }

@@ -9,7 +9,7 @@
                         value="#{trajetoAereoController.orcamentoSelecionado}"
                         completeMethod="#{trajetoAereoController.completeOrcamento}"
                         var="orcamento" itemLabel="#{orcamento.numero} #{orcamento.cliente}" itemValue="#{orcamento}"
-                        converter="#{orcamentoConverter}" required="false" minQueryLength="0">
+                        converter="#{orcamentoConverter}" required="true" minQueryLength="0">
             <p:ajax event="itemSelect" listener="#{trajetoAereoController.selecionarOrcamento}" process="@this" update=":crudContent"/>
         </m:autoComplete>
     </ui:define>

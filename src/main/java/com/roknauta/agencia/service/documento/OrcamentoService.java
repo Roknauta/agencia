@@ -1,5 +1,8 @@
 package com.roknauta.agencia.service.documento;
 
+import java.io.IOException;
+import java.util.Map;
+
 import com.roknauta.agencia.domain.documento.Orcamento;
 import com.roknauta.agencia.domain.documento.StatusOrcamento;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
@@ -7,6 +10,9 @@ import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.repository.documento.OrcamentoRepository;
 import com.roknauta.agencia.service.crud.CrudService;
 import com.roknauta.agencia.service.mapper.OrcamentoMapper;
+import com.roknauta.agencia.web.jasper.JasperUtils;
+import com.roknauta.agencia.web.jasper.documento.orcamento.OrcamentoRelatorioDTO;
+import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +41,13 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     public OrcamentoDTO buscarPorId(Long id) {
         return repository.findById(id).map(mapper::toDTO)
             .orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
+    }
+
+    @Transactional(readOnly = true)
+    public byte[] gerarPdf(Long id, Map<String, Object> parametros) throws IOException, JRException {
+        OrcamentoDTO orcamento = buscarPorId(id);
+        return JasperUtils.gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml",
+            new OrcamentoRelatorioDTO(orcamento), parametros);
     }
 
     @Transactional(readOnly = true)
