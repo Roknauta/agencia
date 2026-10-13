@@ -1,0 +1,105 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
+                xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+                xmlns:t="http://agencia.com/jsf" template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{contratoController}"/>
+    <ui:param name="formId" value="contrato"/>
+    <ui:define name="searchField">
+        <m:inputText id="cliente" label="#{msg['cliente']}" value="#{contratoController.searchForm.cliente}" maxlength="200"/>
+        <m:inputText id="numero" label="#{msg['campo.numero']}" value="#{contratoController.searchForm.numero}" maxlength="50"/>
+        <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
+                        value="#{contratoController.searchForm.orcamento}"
+                        completeMethod="#{contratoController.completeOrcamento}"
+                        var="orcamento" itemLabel="#{orcamento.numero} - #{orcamento.cliente} (#{orcamento.status.descricao})" itemValue="#{orcamento}"
+                        converter="#{orcamentoConverter}" required="false" minQueryLength="0"/>
+    </ui:define>
+    <ui:define name="resultados">
+        <p:dataTable id="registros" rendered="#{contratoController.pesquisaRealizada}"
+                     value="#{contratoController.result}" var="item" reflow="true" showGridlines="true"
+                     emptyMessage="#{msg['nenhum.registro.encontrado']}">
+            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
+                <p:commandButton id="gerarPdf" value="PDF" icon="pi pi-file-pdf"
+                                 action="#{contratoController.gerarPdf(item.id)}" ajax="false" process="@this"/>
+            </p:column>
+            <t:column headerText="#{msg['campo.numero']}" value="#{item.numero}"/>
+            <t:column headerText="#{msg['orcamento']}" value="#{item.orcamento.numero}"/>
+            <t:column headerText="#{msg['cliente']}" value="#{item.cliente}"/>
+            <t:column headerText="#{msg['campo.status']}" value="#{item.status.descricao}"/>
+            <t:column headerText="#{msg['data.consulta.precos']}" value="#{item.dataConsultaPrecos}"
+                      />
+            <t:column headerText="#{msg['pre.reserva.valida.ate']}" value="#{item.preReservaValidaAte}"
+                      />
+        </p:dataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
+                            value="#{contratoController.orcamentoSelecionado}"
+                            completeMethod="#{contratoController.completeOrcamento}"
+                            var="orcamento" itemLabel="#{orcamento.numero} - #{orcamento.cliente} (#{orcamento.status.descricao})" itemValue="#{orcamento}"
+                            converter="#{orcamentoConverter}" required="true" minQueryLength="0">
+                <p:ajax event="itemSelect" listener="#{contratoController.selecionarOrcamento}"
+                        process="@this" update=":crudContent"/>
+            </m:autoComplete>
+            <m:inputText id="cliente" label="#{msg['cliente']}" value="#{contratoController.editForm.cliente}"
+                         required="true" maxlength="200"/>
+            <m:inputText id="consultor" label="#{msg['consultor']}" value="#{contratoController.editForm.consultor}"
+                         maxlength="200"/>
+            <m:datePicker id="dataDocumento" label="#{msg['data.documento']}"
+                          value="#{contratoController.editForm.dataDocumento}" required="true"/>
+            <m:inputText id="destino" label="#{msg['campo.destino']}" value="#{contratoController.editForm.destino}"
+                         maxlength="200"/>
+            <m:datePicker id="inicio" label="#{msg['inicio']}" value="#{contratoController.editForm.inicio}"/>
+            <m:datePicker id="fim" label="#{msg['fim']}" value="#{contratoController.editForm.fim}"/>
+            <m:datePicker id="dataConsultaPrecos" label="#{msg['data.consulta.precos']}"
+                          value="#{contratoController.dataConsultaPrecos}" pattern="dd/MM/yyyy HH:mm"
+                          showTime="true" required="true"/>
+            <m:inputText id="referenciaPreReserva" label="#{msg['referencia.pre.reserva']}"
+                         value="#{contratoController.editForm.referenciaPreReserva}" required="true" maxlength="100"/>
+            <m:datePicker id="preReservaValidaAte" label="#{msg['pre.reserva.valida.ate']}"
+                          value="#{contratoController.preReservaValidaAte}" pattern="dd/MM/yyyy HH:mm"
+                          showTime="true" required="true"/>
+            <m:inputTextarea id="regras" label="#{msg['regras.contrato']}"
+                             value="#{contratoController.editForm.regras}" rows="5"/>
+            <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                             value="#{contratoController.editForm.observacoes}" rows="4"/>
+        </p:panelGrid>
+        <p:panel header="#{msg['viajantes']}" styleClass="form-field">
+            <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
+                <m:inputText id="nomeViajante" label="#{msg['viajante.nome']}"
+                             value="#{contratoController.viajanteForm.nome}" required="true" maxlength="200"/>
+                <m:selectOneMenu id="tipoDocumentoViajante" label="#{msg['tipo.documento']}"
+                                 value="#{contratoController.viajanteForm.tipoDocumento}">
+                    <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                    <f:selectItems value="#{contratoController.tiposDocumentoViajante}" var="tipo"
+                                   itemValue="#{tipo}" itemLabel="#{tipo}"/>
+                </m:selectOneMenu>
+                <m:inputText id="documentoViajante" label="#{msg['documento']}"
+                             value="#{contratoController.viajanteForm.documento}" maxlength="50"/>
+                <m:datePicker id="nascimentoViajante" label="#{msg['data.nascimento']}"
+                              value="#{contratoController.viajanteForm.dataNascimento}"/>
+            </p:panelGrid>
+            <p:commandButton id="adicionarViajante" value="#{msg['adicionar.viajante']}" icon="pi pi-plus"
+                             action="#{contratoController.adicionarViajante}" process="@this,nomeViajante"
+                             update="viajantesTabela,nomeViajante"/>
+            <p:dataTable id="viajantesTabela" value="#{contratoController.editForm.viajantes}" var="viajante"
+                         rowIndexVar="indiceViajante" emptyMessage="#{msg['nenhum.registro.encontrado']}"
+                         style="margin-top: 10px" showGridlines="true">
+                <p:column headerText="#{msg['interface.acoes']}" style="width: 70px">
+                    <p:commandButton action="#{contratoController.removerViajante(indiceViajante)}"
+                                     process="@this" update="viajantesTabela" icon="pi pi-trash"/>
+                </p:column>
+                <t:column headerText="#{msg['viajante.nome']}" value="#{viajante.nome}"/>
+                <t:column headerText="#{msg['tipo.documento']}" value="#{viajante.tipoDocumento}"/>
+                <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
+                <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
+                          />
+            </p:dataTable>
+        </p:panel>
+        <p:outputPanel styleClass="form-field">
+            <h:outputText value="Antes de criar o contrato, registre em Orçamento o envio ao cliente e o interesse do cliente. " />
+            <h:outputText value="O orçamento selecionado precisa estar com status Cliente deseja prosseguir. " />
+            <h:outputText value="A consulta, referência e validade da pré-reserva são obrigatórias." />
+        </p:outputPanel>
+    </ui:define>
+</ui:composition>

@@ -33,10 +33,21 @@
                     </p:menuitem>
                     <p:menuitem id="gerarPdf" value="Gerar PDF" icon="pi pi-file-pdf"
                                 action="#{orcamentoController.gerarPdf(item.id)}" ajax="false" process="@this"/>
+                    <p:menuitem id="registrarEnvio" value="#{msg['orcamento.registrar.envio']}"
+                                icon="pi pi-send" action="#{orcamentoController.registrarEnvio(item.id)}"
+                                process="@this" update=":crudContent"
+                                rendered="#{item.status.name() eq 'RASCUNHO'}"/>
+                    <p:menuitem id="registrarInteresse" value="#{msg['orcamento.registrar.interesse']}"
+                                icon="pi pi-check" action="#{orcamentoController.registrarInteresseCliente(item.id)}"
+                                process="@this" update=":crudContent"
+                                rendered="#{item.status.name() eq 'ENVIADO'}"/>
                 </p:menuButton>
             </p:column>
             <p:column headerText="#{msg['cliente']}" sortBy="#{item.cliente}">
                 <h:outputText value="#{item.cliente}"/>
+            </p:column>
+            <p:column headerText="#{msg['campo.status']}" sortBy="#{item.status}">
+                <h:outputText value="#{item.status.descricao}"/>
             </p:column>
             <p:column headerText="#{msg['campo.origem']}" sortBy="#{item.origem.nome}">
                 <h:outputText value="#{item.origem.nome}"/>

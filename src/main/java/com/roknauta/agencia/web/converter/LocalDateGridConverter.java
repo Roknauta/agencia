@@ -23,8 +23,8 @@ public class LocalDateGridConverter implements Converter<LocalDate> {
         try {
             return LocalDate.parse(value, FORMATO);
         } catch (RuntimeException e) {
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Data inválida. Use o formato dd-MM-yyyy.", null), e);
+            throw new ConverterException(
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Data inválida. Use o formato dd-MM-yyyy.", null), e);
         }
     }
 

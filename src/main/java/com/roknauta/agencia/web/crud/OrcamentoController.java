@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.List;
 
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
-import com.roknauta.agencia.dto.CidadeDTO;
+import com.roknauta.agencia.domain.documento.StatusOrcamento;
 import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.service.CidadeService;
 import com.roknauta.agencia.web.Msg;
@@ -39,5 +39,19 @@ public class OrcamentoController extends CrudControllerBase<OrcamentoDTO, Orcame
         context.getExternalContext().setResponseContentLength(pdf.length);
         context.getExternalContext().getResponseOutputStream().write(pdf);
         context.responseComplete();
+    }
+
+    public StatusOrcamento[] getStatuses() {
+        return StatusOrcamento.values();
+    }
+
+    public void registrarEnvio(Long id) {
+        service.registrarEnvio(id);
+        atualizarResultados();
+    }
+
+    public void registrarInteresseCliente(Long id) {
+        service.registrarInteresseCliente(id);
+        atualizarResultados();
     }
 }

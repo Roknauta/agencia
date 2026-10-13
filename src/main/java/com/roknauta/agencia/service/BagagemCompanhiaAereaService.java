@@ -76,7 +76,7 @@ public class BagagemCompanhiaAereaService extends CrudServiceBase<BagagemCompanh
     }
 
     public List<BagagemCompanhiaAereaDTO> findByCompanhiaId(Long companhiaId) {
-        return repository.buscar(companhiaId,null,null).stream().map(this::toDTO).toList();
+        return repository.buscar(companhiaId, null, null).stream().map(this::toDTO).toList();
     }
 
     public List<BagagemCompanhiaAereaDTO> findByTexto(String texto) {

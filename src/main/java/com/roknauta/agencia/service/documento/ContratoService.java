@@ -17,6 +17,7 @@ import com.roknauta.agencia.domain.documento.StatusOrcamento;
 import com.roknauta.agencia.dto.documento.ContratoDTO;
 import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.repository.documento.OrcamentoRepository;
+import com.roknauta.agencia.service.crud.CrudService;
 import com.roknauta.agencia.service.AgenciaService;
 import com.roknauta.agencia.service.mapper.ContratoMapper;
 import com.roknauta.agencia.web.jasper.JasperUtils;
@@ -27,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.StringUtils;
 
 @Service
-public class ContratoService {
+public class ContratoService implements CrudService<ContratoDTO> {
 
     private final ContratoRepository repository;
     private final OrcamentoRepository orcamentoRepository;
@@ -50,12 +51,41 @@ public class ContratoService {
             .orElseThrow(() -> new IllegalArgumentException("Contrato não encontrado."));
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ContratoDTO findById(Long id) {
+        return buscarPorId(id);
+    }
+
     @Transactional(readOnly = true)
     public List<ContratoDTO> buscar(ContratoDTO filtro) {
         String numero = StringUtils.defaultString(StringUtils.trimToNull(filtro.getNumero()));
         String cliente = StringUtils.defaultString(StringUtils.trimToNull(filtro.getCliente()));
         Long orcamentoId = filtro.getOrcamento() == null ? null : filtro.getOrcamento().getId();
         return repository.buscar(numero, cliente, orcamentoId).stream().map(mapper::toDTO).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ContratoDTO> find(ContratoDTO filtro) {
+        return buscar(filtro);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ContratoDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toDTO).toList();
+    }
+
+    @Override
+    public ContratoDTO save(ContratoDTO dto) {
+        return salvar(dto);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        throw new UnsupportedOperationException("Contrato é imutável e não pode ser excluído.");
     }
 
     @Transactional(readOnly = true)
@@ -85,6 +115,7 @@ public class ContratoService {
         Contrato contrato = mapper.toEntity(dto);
         contrato.setOrcamento(orcamento);
         contrato.setStatus(StatusContrato.AGUARDANDO_ACEITE);
+        limparIdsDosItensCopiados(contrato);
         trechoAereoService.resolverReferencias(dto, contrato);
         Contrato salvo = repository.save(contrato);
         orcamento.setStatus(StatusOrcamento.CONVERTIDO_EM_CONTRATO);
@@ -146,5 +177,28 @@ public class ContratoService {
         if (dto.getOrcamento() == null || dto.getOrcamento().getId() == null) {
             throw new IllegalArgumentException("Orçamento aprovado é obrigatório para criar o contrato.");
         }
+    }
+
+    private void limparIdsDosItensCopiados(Contrato contrato) {
+        contrato.getTransfers().forEach(transfer -> transfer.setId(null));
+        contrato.getHospedagens().forEach(hospedagem -> {
+            hospedagem.setId(null);
+            hospedagem.getFotos().forEach(foto -> foto.setId(null));
+        });
+        contrato.getAlugueis().forEach(aluguel -> aluguel.setId(null));
+        contrato.getSegurosViagem().forEach(seguro -> {
+            seguro.setId(null);
+            seguro.getViajantesCobertos().forEach(viajante -> viajante.setId(null));
+        });
+        contrato.getESims().forEach(eSim -> eSim.setId(null));
+        contrato.getViajantes().forEach(viajante -> viajante.setId(null));
+        contrato.getTrajetosAereos().forEach(trajeto -> {
+            trajeto.setId(null);
+            trajeto.getTrechos().forEach(trecho -> {
+                trecho.setId(null);
+                trecho.getBagagens().forEach(bagagem -> bagagem.setId(null));
+            });
+        });
+        contrato.getTrajetosRodoviarios().forEach(trajeto -> trajeto.setId(null));
     }
 }

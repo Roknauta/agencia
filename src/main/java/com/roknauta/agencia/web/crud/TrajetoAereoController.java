@@ -118,7 +118,7 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     }
 
     public void carregarBagagens() {
-        bagagemCompanhiaAereaService.findByCompanhiaId(companhiaAerea.getId()).forEach(bagagem->{
+        bagagemCompanhiaAereaService.findByCompanhiaId(companhiaAerea.getId()).forEach(bagagem -> {
             BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
             item.setBagagemCompanhiaAerea(bagagem);
             item.setQuantidade(0);
