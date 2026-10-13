@@ -3,9 +3,11 @@ package com.roknauta.agencia.web.converter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 import jakarta.faces.convert.FacesConverter;
 
 @FacesConverter("localDateGridConverter")
@@ -15,7 +17,15 @@ public class LocalDateGridConverter implements Converter<LocalDate> {
 
     @Override
     public LocalDate getAsObject(FacesContext context, UIComponent component, String value) {
-        throw new UnsupportedOperationException("Este converter é somente para exibição em grids.");
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        try {
+            return LocalDate.parse(value, FORMATO);
+        } catch (RuntimeException e) {
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Data inválida. Use o formato dd-MM-yyyy.", null), e);
+        }
     }
 
     @Override

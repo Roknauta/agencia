@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.roknauta.agencia.dto.AeroportoDTO;
 import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,8 @@ public class VooRelatorioDTO {
         numero = voo.getNumero();
         localizador = trecho.getLocalizador();
         cabine = trecho.getCabine() == null ? null : trecho.getCabine().name();
-        origem = voo.getOrigem() == null ? null : voo.getOrigem().getCodigoIata();
-        destino = voo.getDestino() == null ? null : voo.getDestino().getCodigoIata();
+        origem = formatarAeroporto(voo.getOrigem());
+        destino = formatarAeroporto(voo.getDestino());
         if (trecho.getTarifaAerea() != null) {
             tarifa = trecho.getTarifaAerea().getNome();
             regraCancelamento = trecho.getTarifaAerea().getRegraCancelamento();
@@ -67,5 +68,25 @@ public class VooRelatorioDTO {
     private static String formatarDuracao(Duration duracao) {
         long minutos = Math.max(0, duracao.toMinutes());
         return (minutos / 60) + "h " + (minutos % 60) + "min";
+    }
+
+    public void calcularConexaoPara(VooRelatorioDTO proximoVoo) {
+        if (proximoVoo == null || chegada == null || proximoVoo.getSaida() == null) {
+            conexaoFormatada = "";
+            return;
+        }
+        conexaoFormatada = formatarDuracao(Duration.between(chegada, proximoVoo.getSaida()));
+    }
+
+    private static String formatarAeroporto(AeroportoDTO aeroporto) {
+        if (aeroporto == null) {
+            return null;
+        }
+        String nome = aeroporto.getNome();
+        String codigoIata = aeroporto.getCodigoIata();
+        if (nome == null || nome.isBlank()) {
+            return codigoIata;
+        }
+        return codigoIata == null || codigoIata.isBlank() ? nome : nome + " (" + codigoIata + ")";
     }
 }

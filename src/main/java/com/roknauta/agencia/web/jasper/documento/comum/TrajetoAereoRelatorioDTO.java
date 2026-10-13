@@ -27,6 +27,10 @@ public class TrajetoAereoRelatorioDTO {
         valorTotal = trajeto.getValorTotal();
         if (trajeto.getTrechos() != null) {
             voos = trajeto.getTrechos().stream().map(VooRelatorioDTO::new).toList();
+            for (int indice = 0; indice < voos.size(); indice++) {
+                VooRelatorioDTO proximoVoo = indice + 1 < voos.size() ? voos.get(indice + 1) : null;
+                voos.get(indice).calcularConexaoPara(proximoVoo);
+            }
         }
     }
 

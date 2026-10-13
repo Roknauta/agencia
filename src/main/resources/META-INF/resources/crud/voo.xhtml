@@ -26,17 +26,17 @@
                       value="#{vooController.searchForm.dataReferencia}"/>
     </ui:define>
     <ui:define name="resultados">
-        <m:crudDataTable readOnly="true">
+        <m:crudDataTable>
             <t:column headerText="#{msg['numero.voo']}" value="#{item.numero}" sortBy="#{item.numero}"/>
             <t:column headerText="#{msg['companhia.aerea']}" value="#{item.companhiaAerea.nome}" sortBy="#{item.companhiaAerea.nome}"/>
             <t:column headerText="#{msg['campo.origem']}" value="#{item.origem.codigoIata}" sortBy="#{item.origem.codigoIata}"/>
             <t:column headerText="#{msg['campo.destino']}" value="#{item.destino.codigoIata}" sortBy="#{item.destino.codigoIata}"/>
             <t:column headerText="#{msg['campo.partida']}" value="#{item.partida}"
-                      sortBy="#{item.partida}" converter="localDateTimeGridConverter"/>
+                      sortBy="#{item.partida}" />
             <t:column headerText="#{msg['campo.chegada']}" value="#{item.chegada}"
-                      sortBy="#{item.chegada}" converter="localDateTimeGridConverter"/>
+                      sortBy="#{item.chegada}"/>
             <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}"
-                      sortBy="#{item.dataReferencia}" converter="localDateGridConverter"/>
+                      sortBy="#{item.dataReferencia}" />
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">
