@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import java.util.List;
 
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import com.roknauta.agencia.domain.documento.Moeda;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO;
@@ -36,6 +37,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private String perfilPassageiros;
     private int quantidadePassageiros;
     private String pagamento;
+    private Moeda moeda;
     private BigDecimal valorAereo = BigDecimal.ZERO;
     private BigDecimal valorRodoviario = BigDecimal.ZERO;
     private BigDecimal valorHospedagem = BigDecimal.ZERO;
@@ -63,6 +65,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         consultaPrecosEm = elaboradoEm;
         validade = orcamento.getValidadeAte() == null ? null : orcamento.getValidadeAte().format(DATA);
         pagamento = orcamento.getPagamento();
+        moeda = orcamento.getMoeda();
         possuiPassagensAereas = !getTrajetosAereos().isEmpty();
         possuiPassagensRodoviarias = !getTrajetosRodoviarios().isEmpty();
         valorAereo = soma(getTrajetosAereos().stream().map(TrajetoAereoRelatorioDTO::getValorTotal));
@@ -126,9 +129,8 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                     "Vigência: " + Objects.toString(seguro.getInicioVigencia(), "") + " a "
                         + Objects.toString(seguro.getFimVigencia(), ""),
                     "Viajantes: " + Objects.toString(seguro.getViajantesCobertos(), ""),
-                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""),
-                    "Observações: " + Objects.toString(seguro.getObservacoes(), ""),
-                    "Valor: " + formatarDinheiro(seguro.getValorTotal()))
+                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""), seguro.getResumoFinanceiro(),
+                    "Observações: " + Objects.toString(seguro.getObservacoes(), ""))
                 .filter(linha -> !linha.endsWith(": ")).collect(Collectors.joining("\n")))
             .collect(Collectors.joining("\n\n"));
     }
@@ -140,9 +142,8 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             "Cobertura: " + Objects.toString(esim.getCobertura(), ""),
             "Duração: " + Objects.toString(esim.getDuracaoDias(), "") + " dias", "Quantidade: " + esim.getQuantidade(),
             "Códigos de ativação: " + Objects.toString(esim.getCodigosAtivacao(), ""),
-            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""),
-            "Observações: " + Objects.toString(esim.getObservacoes(), ""),
-            "Valor: " + formatarDinheiro(esim.getValorTotal())).filter(linha -> !linha.endsWith(": "))
+            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""), esim.getResumoFinanceiro(),
+            "Observações: " + Objects.toString(esim.getObservacoes(), "")).filter(linha -> !linha.endsWith(": "))
             .collect(Collectors.joining("\n"))).collect(Collectors.joining("\n\n"));
     }
 
@@ -159,9 +160,13 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             .collect(Collectors.joining(" • "));
     }
 
-    private static String formatarDinheiro(BigDecimal valor) {
-        return valor == null ? ""
-            : java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
+    private String formatarDinheiro(BigDecimal valor) {
+        if (valor == null) {
+            return "";
+        }
+        String simbolo = moeda == null ? "R$" : moeda.getSimbolo();
+        return simbolo + " "
+            + java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
     }
 
     private BigDecimal totalRodoviario() {

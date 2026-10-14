@@ -33,13 +33,16 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     private final ContratoRepository contratoRepository;
     private final OrcamentoMapper mapper;
     private final ViajanteMapper viajanteMapper;
+    private final ServicoTaxaService servicoTaxaService;
 
     public OrcamentoService(OrcamentoRepository repository, ContratoRepository contratoRepository,
-        OrcamentoMapper mapper, TrechoAereoService trechoAereoService, ViajanteMapper viajanteMapper) {
+        OrcamentoMapper mapper, TrechoAereoService trechoAereoService, ViajanteMapper viajanteMapper,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.contratoRepository = contratoRepository;
         this.mapper = mapper;
         this.viajanteMapper = viajanteMapper;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -101,6 +104,7 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
             }
             mapper.updateEntity(dto, entidade);
         }
+        resolverTaxas(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 
@@ -163,5 +167,25 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
 
     private Orcamento buscarEntidade(Long id) {
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Orcamento não encontrado."));
+    }
+
+    private void resolverTaxas(OrcamentoDTO dto, Orcamento entidade) {
+        if (dto.getMoeda() == null) {
+            throw new IllegalArgumentException("Informe a moeda do orçamento.");
+        }
+        servicoTaxaService.validarMoedaOrcamento(dto.getAlugueis(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getESims(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getHospedagens(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getSegurosViagem(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTrajetosAereos(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTrajetosRodoviarios(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTransfers(), dto.getMoeda());
+        servicoTaxaService.resolver(dto.getAlugueis(), entidade.getAlugueis());
+        servicoTaxaService.resolver(dto.getESims(), entidade.getESims());
+        servicoTaxaService.resolver(dto.getHospedagens(), entidade.getHospedagens());
+        servicoTaxaService.resolver(dto.getSegurosViagem(), entidade.getSegurosViagem());
+        servicoTaxaService.resolver(dto.getTrajetosAereos(), entidade.getTrajetosAereos());
+        servicoTaxaService.resolver(dto.getTrajetosRodoviarios(), entidade.getTrajetosRodoviarios());
+        servicoTaxaService.resolver(dto.getTransfers(), entidade.getTransfers());
     }
 }

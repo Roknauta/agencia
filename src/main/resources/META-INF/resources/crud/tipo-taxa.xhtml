@@ -1,0 +1,28 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:f="jakarta.faces.core" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:t="http://agencia.com/jsf"
+                template="/layout/crud.xhtml">
+    <ui:param name="crudController" value="#{tipoTaxaController}"/>
+    <ui:param name="formId" value="tipoTaxa"/>
+    <ui:define name="searchField">
+        <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{tipoTaxaController.searchForm.nome}" maxlength="100"/>
+        <m:selectOneMenu id="ativoFiltro" label="#{msg['campo.status']}" value="#{tipoTaxaController.searchForm.ativo}">
+            <f:selectItem itemLabel="#{msg['todos']}" itemValue="" noSelectionOption="true"/>
+            <f:selectItem itemLabel="#{msg['ativo']}" itemValue="true"/>
+            <f:selectItem itemLabel="#{msg['inativo']}" itemValue="false"/>
+        </m:selectOneMenu>
+    </ui:define>
+    <ui:define name="resultados">
+        <m:crudDataTable>
+            <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
+            <t:column headerText="#{msg['descricao']}" value="#{item.descricao}"/>
+            <t:column headerText="#{msg['campo.status']}" value="#{item.ativo ? msg['ativo'] : msg['inativo']}"/>
+        </m:crudDataTable>
+    </ui:define>
+    <ui:define name="editField">
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputText id="nome" label="#{msg['campo.nome']}" value="#{tipoTaxaController.editForm.nome}" required="true" maxlength="100"/>
+            <m:inputTextarea id="descricao" label="#{msg['descricao']}" value="#{tipoTaxaController.editForm.descricao}" maxlength="1000" rows="3"/>
+            <m:toggleSwitch id="ativo" label="#{msg['ativo']}" value="#{tipoTaxaController.editForm.ativo}"/>
+        </p:panelGrid>
+    </ui:define>
+</ui:composition>

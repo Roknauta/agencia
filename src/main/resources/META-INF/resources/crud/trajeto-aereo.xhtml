@@ -17,9 +17,7 @@
         <m:crudDataTable>
             <t:column headerText="#{msg['sentido']}" value="#{item.sentido}"/>
             <t:column headerText="#{msg['voos']}" value="#{item.trechos.size()}"/>
-            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
-                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
-            </t:column>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">
@@ -35,9 +33,8 @@
                 <f:selectItems value="#{trajetoAereoController.sentidos}" var="sentido" itemValue="#{sentido}" itemLabel="#{sentido}"/>
                 <p:ajax event="change" process="@this" update=":trajetoAereoEditForm:adicionarVoo"/>
             </m:selectOneMenu>
-            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
-                           value="#{trajetoAereoController.editForm.valorTotal}" minValue="0" decimalPlaces="2" decimalSeparator="."/>
         </p:panelGrid>
+        <m:servicoFields value="#{trajetoAereoController.editForm}" controller="#{trajetoAereoController}"/>
         <p:commandButton id="adicionarVoo" value="#{msg['adicionar.voo']}" icon="pi pi-plus" action="#{trajetoAereoController.novoTrecho}"
                          process="@this" update=":trechoForm"
                          disabled="#{empty trajetoAereoController.idOrcamento or empty trajetoAereoController.editForm.sentido}"/>

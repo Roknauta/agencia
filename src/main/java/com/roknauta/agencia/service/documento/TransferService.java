@@ -15,10 +15,13 @@ public class TransferService {
 
     private final TransferRepository repository;
     private final TransferMapper mapper;
+    private final ServicoTaxaService servicoTaxaService;
 
-    public TransferService(TransferRepository repository, TransferMapper mapper) {
+    public TransferService(TransferRepository repository, TransferMapper mapper,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -43,6 +46,7 @@ public class TransferService {
                 .orElseThrow(() -> new IllegalArgumentException("Transfer não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 }

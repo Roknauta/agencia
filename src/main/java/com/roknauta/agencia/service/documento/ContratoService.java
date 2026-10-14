@@ -35,14 +35,17 @@ public class ContratoService implements CrudService<ContratoDTO> {
     private final ContratoMapper mapper;
     private final TrechoAereoService trechoAereoService;
     private final AgenciaService agenciaService;
+    private final ServicoTaxaService servicoTaxaService;
 
     public ContratoService(ContratoRepository repository, OrcamentoRepository orcamentoRepository,
-        ContratoMapper mapper, TrechoAereoService trechoAereoService, AgenciaService agenciaService) {
+        ContratoMapper mapper, TrechoAereoService trechoAereoService, AgenciaService agenciaService,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.orcamentoRepository = orcamentoRepository;
         this.mapper = mapper;
         this.trechoAereoService = trechoAereoService;
         this.agenciaService = agenciaService;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -110,6 +113,7 @@ public class ContratoService implements CrudService<ContratoDTO> {
         entidadeOrcamentoObrigatorio(dto);
         Orcamento orcamento = orcamentoRepository.findById(dto.getOrcamento().getId())
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        dto.setMoeda(orcamento.getMoeda());
         if (orcamento.getStatus() != StatusOrcamento.CLIENTE_INTERESSADO) {
             throw new IllegalStateException("O contrato exige um orçamento com interesse do cliente registrado.");
         }
@@ -122,6 +126,7 @@ public class ContratoService implements CrudService<ContratoDTO> {
         Contrato contrato = mapper.toEntity(dto);
         contrato.setOrcamento(orcamento);
         contrato.setStatus(StatusContrato.AGUARDANDO_ACEITE);
+        resolverTaxas(dto, contrato);
         limparIdsDosItensCopiados(contrato);
         trechoAereoService.resolverReferencias(dto, contrato);
         Contrato salvo = repository.save(contrato);
@@ -187,25 +192,60 @@ public class ContratoService implements CrudService<ContratoDTO> {
     }
 
     private void limparIdsDosItensCopiados(Contrato contrato) {
-        contrato.getTransfers().forEach(transfer -> transfer.setId(null));
+        contrato.getTransfers().forEach(transfer -> {
+            transfer.setId(null);
+            transfer.getTaxas().forEach(taxa -> taxa.setId(null));
+        });
         contrato.getHospedagens().forEach(hospedagem -> {
             hospedagem.setId(null);
+            hospedagem.getTaxas().forEach(taxa -> taxa.setId(null));
             hospedagem.getFotos().forEach(foto -> foto.setId(null));
         });
-        contrato.getAlugueis().forEach(aluguel -> aluguel.setId(null));
+        contrato.getAlugueis().forEach(aluguel -> {
+            aluguel.setId(null);
+            aluguel.getTaxas().forEach(taxa -> taxa.setId(null));
+        });
         contrato.getSegurosViagem().forEach(seguro -> {
             seguro.setId(null);
+            seguro.getTaxas().forEach(taxa -> taxa.setId(null));
             seguro.getViajantesCobertos().forEach(viajante -> viajante.setId(null));
         });
-        contrato.getESims().forEach(eSim -> eSim.setId(null));
+        contrato.getESims().forEach(eSim -> {
+            eSim.setId(null);
+            eSim.getTaxas().forEach(taxa -> taxa.setId(null));
+        });
         contrato.getViajantes().forEach(viajante -> viajante.setId(null));
         contrato.getTrajetosAereos().forEach(trajeto -> {
             trajeto.setId(null);
+            trajeto.getTaxas().forEach(taxa -> taxa.setId(null));
             trajeto.getTrechos().forEach(trecho -> {
                 trecho.setId(null);
                 trecho.getBagagens().forEach(bagagem -> bagagem.setId(null));
             });
         });
-        contrato.getTrajetosRodoviarios().forEach(trajeto -> trajeto.setId(null));
+        contrato.getTrajetosRodoviarios().forEach(trajeto -> {
+            trajeto.setId(null);
+            trajeto.getTaxas().forEach(taxa -> taxa.setId(null));
+        });
+    }
+
+    private void resolverTaxas(ContratoDTO dto, Contrato contrato) {
+        if (dto.getMoeda() == null) {
+            throw new IllegalArgumentException("Informe a moeda do contrato.");
+        }
+        servicoTaxaService.validarMoedaOrcamento(dto.getAlugueis(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getESims(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getHospedagens(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getSegurosViagem(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTrajetosAereos(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTrajetosRodoviarios(), dto.getMoeda());
+        servicoTaxaService.validarMoedaOrcamento(dto.getTransfers(), dto.getMoeda());
+        servicoTaxaService.resolver(dto.getAlugueis(), contrato.getAlugueis());
+        servicoTaxaService.resolver(dto.getESims(), contrato.getESims());
+        servicoTaxaService.resolver(dto.getHospedagens(), contrato.getHospedagens());
+        servicoTaxaService.resolver(dto.getSegurosViagem(), contrato.getSegurosViagem());
+        servicoTaxaService.resolver(dto.getTrajetosAereos(), contrato.getTrajetosAereos());
+        servicoTaxaService.resolver(dto.getTrajetosRodoviarios(), contrato.getTrajetosRodoviarios());
+        servicoTaxaService.resolver(dto.getTransfers(), contrato.getTransfers());
     }
 }

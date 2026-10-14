@@ -1,0 +1,71 @@
+<ui:component xmlns:ui="jakarta.faces.facelets" xmlns:cc="jakarta.faces.composite"
+              xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
+              xmlns:m="jakarta.faces.composite/resources/components" xmlns:t="http://agencia.com/jsf">
+    <cc:interface>
+        <cc:attribute name="value" required="true"/>
+        <cc:attribute name="controller" required="true"/>
+    </cc:interface>
+    <cc:implementation>
+        <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
+            <m:inputNumber id="valor" label="#{msg['valor']}" value="#{cc.attrs.value.valor}"
+                           minValue="0" decimalPlaces="2"/>
+            <m:inputNumber id="desconto" label="#{msg['desconto']}" value="#{cc.attrs.value.desconto}"
+                           minValue="0" decimalPlaces="2"/>
+            <m:selectOneMenu id="moeda" label="#{msg['moeda']}" value="#{cc.attrs.value.moeda}" required="true">
+                <f:selectItems value="#{cc.attrs.controller.moedas}" var="moeda"
+                               itemValue="#{moeda}" itemLabel="#{moeda.descricao}"/>
+            </m:selectOneMenu>
+        </p:panelGrid>
+
+        <p:commandButton id="adicionarTaxa" value="#{msg['adicionar.taxa']}" icon="pi pi-plus"
+                         action="#{cc.attrs.controller.novaTaxa}" process="@this"
+                         update="taxaCampos" oncomplete="PF('taxaDialogWidget').show()"/>
+        <p:dataTable id="taxasTabela" value="#{cc.attrs.value.taxas}" var="taxa" rowIndexVar="indiceTaxa"
+                     emptyMessage="#{msg['nenhuma.taxa.adicionada']}" style="margin-top: 10px" showGridlines="true">
+            <f:facet name="header">#{msg['taxas']}</f:facet>
+            <p:column headerText="#{msg['interface.acoes']}" style="width: 85px">
+                <p:commandButton icon="pi pi-pencil" title="#{msg['editar']}"
+                                 action="#{cc.attrs.controller.editarTaxa(indiceTaxa)}" process="@this"
+                                 update="taxaCampos" oncomplete="PF('taxaDialogWidget').show()"/>
+                <p:commandButton icon="pi pi-trash" title="#{msg['excluir']}"
+                                 action="#{cc.attrs.controller.removerTaxa(indiceTaxa)}" process="@this"
+                                 update="taxasTabela"/>
+            </p:column>
+            <t:column headerText="#{msg['tipo.taxa']}" value="#{taxa.tipoTaxa.nome}"/>
+            <t:column headerText="#{msg['valor']}" value="#{taxa.moeda.simbolo} #{taxa.valor}"/>
+        </p:dataTable>
+
+        <p:dialog id="taxaDialog" widgetVar="taxaDialogWidget" modal="true" resizable="false" appendTo="@form"
+                  header="#{msg['adicionar.taxa']}" width="600">
+            <p:panelGrid id="taxaCampos" columns="2" layout="grid" styleClass="form-grid">
+                <m:autoComplete id="tipoTaxa" label="#{msg['tipo.taxa']}" value="#{cc.attrs.controller.taxaForm.tipoTaxa}"
+                                completeMethod="#{tipoTaxaController.completeTipoTaxa}"
+                                var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo}"
+                                converter="#{tipoTaxaConverter}" required="true" minQueryLength="0"/>
+                <m:inputNumber id="valorTaxa" label="#{msg['valor']}" value="#{cc.attrs.controller.taxaForm.valor}"
+                               minValue="0" decimalPlaces="2" required="true"/>
+                <m:selectOneMenu id="moedaTaxa" label="#{msg['moeda']}" value="#{cc.attrs.controller.taxaForm.moeda}"
+                                 required="true">
+                    <f:selectItems value="#{cc.attrs.controller.moedas}" var="moeda"
+                                   itemValue="#{moeda}" itemLabel="#{moeda.descricao}"/>
+                </m:selectOneMenu>
+            </p:panelGrid>
+            <p:outputPanel styleClass="crud-footer">
+                <p:commandButton id="confirmarTaxa" value="#{msg['confirmar']}" icon="pi pi-check"
+                                 action="#{cc.attrs.controller.confirmarTaxa}" process="@this taxaCampos"
+                                 update="taxasTabela" oncomplete="if (!args.validationFailed) PF('taxaDialogWidget').hide()"/>
+                <p:commandButton value="#{msg['cancelar']}" type="button" icon="pi pi-times"
+                                 onclick="PF('taxaDialogWidget').hide()"/>
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:panelGrid columns="1" layout="grid" styleClass="form-grid">
+            <m:inputTextarea id="regrasAlteracao" label="#{msg['regras.alteracao']}"
+                             value="#{cc.attrs.value.regrasAlteracao}" maxlength="3000" rows="3"/>
+            <m:inputTextarea id="regrasCancelamento" label="#{msg['regras.cancelamento']}"
+                             value="#{cc.attrs.value.regrasCancelamento}" maxlength="3000" rows="3"/>
+            <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                             value="#{cc.attrs.value.observacoes}" maxlength="3000" rows="4"/>
+        </p:panelGrid>
+    </cc:implementation>
+</ui:component>

@@ -1,9 +1,7 @@
 package com.roknauta.agencia.dto.documento;
 
 import com.roknauta.agencia.domain.documento.TipoTransfer;
-import com.roknauta.agencia.dto.BaseDTO;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -13,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TransferDTO extends BaseDTO {
+public class TransferDTO extends ServicoDTO {
 
     private String prestador;
     private TipoTransfer tipo;
@@ -23,6 +21,4 @@ public class TransferDTO extends BaseDTO {
     private LocalDateTime dataHora;
     private String fusoHorario;
     private int passageiros = 1;
-    private String observacoes;
-    private BigDecimal valorTotal;
 }

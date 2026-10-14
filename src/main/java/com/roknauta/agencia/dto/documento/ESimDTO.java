@@ -1,8 +1,6 @@
 package com.roknauta.agencia.dto.documento;
 
-import com.roknauta.agencia.dto.BaseDTO;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ESimDTO extends BaseDTO {
+public class ESimDTO extends ServicoDTO {
 
     private String operadora;
     private String plano;
@@ -21,8 +19,6 @@ public class ESimDTO extends BaseDTO {
     private String cobertura;
     private Integer duracaoDias;
     private String instrucoesInstalacao;
-    private String observacoes;
     private List<String> codigosAtivacao = new ArrayList<>();
     private int quantidade = 1;
-    private BigDecimal valorTotal;
 }

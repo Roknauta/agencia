@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.roknauta.agencia.domain.SentidoVoo;
+import com.roknauta.agencia.domain.documento.Moeda;
 import com.roknauta.agencia.dto.documento.DocumentoViagemDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class DocumentoViagemRelatorioDTO {
     private LocalDate inicio;
     private LocalDate fim;
     private String observacoes;
+    private Moeda moeda;
     private List<ViajanteRelatorioDTO> viajantes = new ArrayList<>();
     private List<TrajetoAereoRelatorioDTO> trajetosAereos = new ArrayList<>();
     private List<TrajetoRodoviarioRelatorioDTO> trajetosRodoviarios = new ArrayList<>();
@@ -48,6 +50,7 @@ public class DocumentoViagemRelatorioDTO {
         inicio = documento.getInicio();
         fim = documento.getFim();
         observacoes = documento.getObservacoes();
+        moeda = documento.getMoeda();
         if (documento.getViajantes() != null) {
             viajantes = documento.getViajantes().stream().map(ViajanteRelatorioDTO::new).toList();
         }
@@ -94,6 +97,7 @@ public class DocumentoViagemRelatorioDTO {
         agregado.setVoos(trajetos.stream().flatMap(trajeto -> trajeto.getVoos().stream()).toList());
         agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal).filter(Objects::nonNull)
             .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
+        agregado.setMoeda(moeda);
         return agregado;
     }
 

@@ -93,7 +93,7 @@ public final class DadosRelatoriosTeste {
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.IDA);
         trajeto.setTrechos(List.of(primeiroTrecho, segundoTrecho));
-        trajeto.setValorTotal(new BigDecimal("2600.00"));
+        trajeto.setValor(new BigDecimal("2600.00"));
         return trajeto;
     }
 
@@ -105,7 +105,7 @@ public final class DadosRelatoriosTeste {
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.VOLTA);
         trajeto.setTrechos(List.of(trecho));
-        trajeto.setValorTotal(new BigDecimal("1900.00"));
+        trajeto.setValor(new BigDecimal("1900.00"));
         return trajeto;
     }
 
@@ -171,7 +171,7 @@ public final class DadosRelatoriosTeste {
         trajeto.setBagagem("1 mala de até 23 kg");
         trajeto.setSaida(DATA_PARTIDA.plusDays(2).atTime(9, 30));
         trajeto.setChegada(DATA_PARTIDA.plusDays(2).atTime(13, 0));
-        trajeto.setValorTotal(new BigDecimal("75.00"));
+        trajeto.setValor(new BigDecimal("75.00"));
         return trajeto;
     }
 
@@ -188,10 +188,10 @@ public final class DadosRelatoriosTeste {
         hospedagem.setAcomodacao("Quarto familiar");
         hospedagem.setQuartos(1);
         hospedagem.setRegime(RegimeHospedagem.CAFE_DA_MANHA);
-        hospedagem.setCancelamento("Cancelamento grátis até 48 horas antes.");
+        hospedagem.setRegrasCancelamento("Cancelamento grátis até 48 horas antes.");
         hospedagem.setIncluidos("Café da manhã e Wi-Fi");
         hospedagem.setNaoIncluidos("Estacionamento");
-        hospedagem.setValorTotal(new BigDecimal("1800.00"));
+        hospedagem.setValor(new BigDecimal("1800.00"));
         hospedagem.setObservacoes("Quarto para dois adultos e duas crianças.");
         FotoHospedagemDTO foto = new FotoHospedagemDTO();
         foto.setConteudo(Base64.getDecoder()
@@ -211,7 +211,7 @@ public final class DadosRelatoriosTeste {
         transfer.setFusoHorario("Europe/Lisbon");
         transfer.setPassageiros(4);
         transfer.setObservacoes(percurso);
-        transfer.setValorTotal(valor);
+        transfer.setValor(valor);
         return transfer;
     }
 
@@ -230,7 +230,7 @@ public final class DadosRelatoriosTeste {
         aluguel.setDevolucao(DATA_PARTIDA.plusDays(5).atTime(10, 0));
         aluguel.setFusoHorarioRetirada("Europe/Lisbon");
         aluguel.setFusoHorarioDevolucao("Europe/Lisbon");
-        aluguel.setValorTotal(valor);
+        aluguel.setValor(valor);
         return aluguel;
     }
 
@@ -242,7 +242,7 @@ public final class DadosRelatoriosTeste {
         seguro.setNumeroApolice("POL-001");
         seguro.setInicioVigencia(DATA_PARTIDA);
         seguro.setFimVigencia(DATA_PARTIDA.plusDays(8));
-        seguro.setValorTotal(new BigDecimal("120.00"));
+        seguro.setValor(new BigDecimal("120.00"));
         seguro.setViajantesCobertos(List.of(viajantes));
         return seguro;
     }
@@ -257,7 +257,7 @@ public final class DadosRelatoriosTeste {
         esim.setInstrucoesInstalacao("Instalar antes do embarque e ativar ao chegar.");
         esim.setCodigosAtivacao(List.of("LPA:1$SM-DP+$TESTE-001", "LPA:1$SM-DP+$TESTE-002"));
         esim.setQuantidade(2);
-        esim.setValorTotal(new BigDecimal("60.00"));
+        esim.setValor(new BigDecimal("60.00"));
         return esim;
     }
 

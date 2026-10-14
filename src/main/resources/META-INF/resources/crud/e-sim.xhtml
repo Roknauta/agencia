@@ -33,9 +33,7 @@
             <t:column headerText="#{msg['franquia.dados']}" value="#{item.franquiaDados}"/>
             <t:column headerText="#{msg['duracao.dias']}" value="#{item.duracaoDias}"/>
             <t:column headerText="#{msg['quantidade']}" value="#{item.quantidade}"/>
-            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
-                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
-            </t:column>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">
@@ -57,15 +55,12 @@
                            value="#{eSimController.editForm.duracaoDias}" minValue="1" decimalPlaces="0"/>
             <m:inputNumber id="quantidade" label="#{msg['quantidade']}"
                            value="#{eSimController.editForm.quantidade}" minValue="1" decimalPlaces="0" required="true"/>
-            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
-                           value="#{eSimController.editForm.valorTotal}" minValue="0" decimalPlaces="2"/>
         </p:panelGrid>
+        <m:servicoFields value="#{eSimController.editForm}" controller="#{eSimController}"/>
         <m:inputTextarea id="cobertura" label="#{msg['cobertura']}"
                          value="#{eSimController.editForm.cobertura}" rows="3"/>
         <m:inputTextarea id="instrucoes" label="#{msg['instrucoes.instalacao']}"
                          value="#{eSimController.editForm.instrucoesInstalacao}" rows="4"/>
-        <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                         value="#{eSimController.editForm.observacoes}" maxlength="3000" rows="4"/>
         <p:panel header="#{msg['codigos.ativacao']}" styleClass="form-field">
             <p:commandButton id="adicionarCodigo" value="#{msg['adicionar.codigo']}" icon="pi pi-plus"
                              action="#{eSimController.adicionarCodigo}" process="@this" update="codigosTabela"/>

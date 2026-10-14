@@ -115,7 +115,7 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Categoria", trajeto.getCategoria()), linha("Localizador", trajeto.getLocalizador()),
                 linha("Terminais",
                     formatarLista(" → ", trajeto.getTerminalEmbarque(), trajeto.getTerminalDesembarque())),
-                linha("Bagagem", trajeto.getBagagem()), linha("Valor", trajeto.getValorTotal()))));
+                linha("Bagagem", trajeto.getBagagem()), linha("Valores", trajeto.getResumoFinanceiro()))));
         getHospedagens().forEach(hospedagem -> adicionar(blocos, "Hospedagem",
             juntar(linha("Hotel", hospedagem.getNome()), linha("Cidade", hospedagem.getCidade()),
                 linha("Endereço", hospedagem.getEndereco()), linha("Check-in", hospedagem.getCheckIn()),
@@ -123,12 +123,12 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Quartos", hospedagem.getQuartos()), linha("Regime", hospedagem.getRegime()),
                 linha("Incluídos", hospedagem.getIncluidos()), linha("Não incluídos", hospedagem.getNaoIncluidos()),
                 linha("Cancelamento", hospedagem.getCancelamento()), linha("Localizador", hospedagem.getLocalizador()),
-                linha("Valor", hospedagem.getValorTotal()))));
+                linha("Valores", hospedagem.getResumoFinanceiro()))));
         getTransfers().forEach(transfer -> adicionar(blocos, "Transfer",
             juntar(linha("Prestador", transfer.getPrestador()), linha("Modalidade", transfer.getTipo()),
                 linha("Percurso", transfer.getResumoPercursos()), linha("Data e hora", transfer.getResumoDatas()),
                 linha("Passageiros", transfer.getPassageiros()), linha("Localizador", transfer.getLocalizador()),
-                linha("Observações", transfer.getObservacoes()), linha("Valor", transfer.getValorTotal()))));
+                linha("Observações", transfer.getObservacoes()), linha("Valores", transfer.getResumoFinanceiro()))));
         getAlugueis().forEach(aluguel -> adicionar(blocos, "Aluguel de veículo",
             juntar(linha("Locadora", aluguel.getLocadora()), linha("Categoria", aluguel.getCategoria()),
                 linha("Condutores", aluguel.getCondutor()), linha("Retirada", aluguel.getResumoRetirada()),
@@ -136,19 +136,19 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Devolução", aluguel.getResumoDevolucao()),
                 linha("Local de devolução", aluguel.getLocalDevolucao()),
                 linha("Localizador", aluguel.getLocalizador()), linha("Coberturas", aluguel.getCoberturas()),
-                linha("Condições", aluguel.getCondicoes()), linha("Valor", aluguel.getValorTotal()))));
+                linha("Condições", aluguel.getCondicoes()), linha("Valores", aluguel.getResumoFinanceiro()))));
         getSegurosViagem().forEach(seguro -> adicionar(blocos, "Seguro viagem",
             juntar(linha("Seguradora", seguro.getSeguradora()), linha("Plano", seguro.getPlano()),
                 linha("Vigência", formatarLista(" a ", seguro.getInicioVigencia(), seguro.getFimVigencia())),
                 linha("Viajantes cobertos", seguro.getViajantesCobertos()),
                 linha("Resumo da cobertura", seguro.getResumoCobertura()), linha("Apólice", seguro.getNumeroApolice()),
-                linha("Observações", seguro.getObservacoes()), linha("Valor", seguro.getValorTotal()))));
+                linha("Observações", seguro.getObservacoes()), linha("Valores", seguro.getResumoFinanceiro()))));
         getESims().forEach(esim -> adicionar(blocos, "eSIM",
             juntar(linha("Operadora", esim.getOperadora()), linha("Plano", esim.getPlano()),
                 linha("Franquia de dados", esim.getFranquiaDados()), linha("Cobertura", esim.getCobertura()),
                 linha("Duração", esim.getDuracaoDias() == null ? null : esim.getDuracaoDias() + " dias"),
                 linha("Quantidade", esim.getQuantidade()), linha("Observações", esim.getObservacoes()),
-                linha("Valor", esim.getValorTotal()))));
+                linha("Valores", esim.getResumoFinanceiro()))));
         BigDecimal total = totalServicos();
         if (total.signum() > 0) {
             adicionar(blocos, "Valor total dos serviços", linha("Total", total));

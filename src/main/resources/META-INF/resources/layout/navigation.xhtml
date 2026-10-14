@@ -27,6 +27,9 @@
                 <p:menuitem value="#{msg['hotel']}" outcome="/crud/hotel" icon="pi pi-building"
                             styleClass="#{view.viewId eq '/crud/hotel.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/hotel.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['tipo.taxa']}" outcome="/crud/tipo-taxa" icon="pi pi-dollar"
+                            styleClass="#{view.viewId eq '/crud/tipo-taxa.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/tipo-taxa.xhtml' ? 'page' : null}"/>
             </p:submenu>
             <p:submenu label="#{msg['documentos.menu']}" expanded="true">
                 <p:menuitem value="#{msg['orcamento']}" outcome="/crud/orcamento" icon="pi pi-file-edit"

@@ -63,10 +63,10 @@ class OrcamentoRelatorioDTOTest {
 
         OrcamentoDTO apenasTransferESim = new OrcamentoDTO();
         TransferDTO transfer = new TransferDTO();
-        transfer.setValorTotal(new BigDecimal("80.00"));
+        transfer.setValor(new BigDecimal("80.00"));
         apenasTransferESim.setTransfers(List.of(transfer));
         ESimDTO esim = new ESimDTO();
-        esim.setValorTotal(new BigDecimal("30.00"));
+        esim.setValor(new BigDecimal("30.00"));
         apenasTransferESim.setESims(List.of(esim));
         OrcamentoRelatorioDTO segundo = new OrcamentoRelatorioDTO(apenasTransferESim);
         assertEquals(new BigDecimal("110.00"), segundo.getTotal());

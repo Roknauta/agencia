@@ -18,11 +18,14 @@ public class ESimService implements CrudService<ESimDTO> {
     private final ESimRepository repository;
     private final ESimMapper mapper;
     private final OrcamentoRepository orcamentoRepository;
+    private final ServicoTaxaService servicoTaxaService;
 
-    public ESimService(ESimRepository repository, ESimMapper mapper, OrcamentoRepository orcamentoRepository) {
+    public ESimService(ESimRepository repository, ESimMapper mapper, OrcamentoRepository orcamentoRepository,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
         this.orcamentoRepository = orcamentoRepository;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -86,6 +89,7 @@ public class ESimService implements CrudService<ESimDTO> {
                 .orElseThrow(() -> new IllegalArgumentException("ESim não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 
@@ -99,6 +103,7 @@ public class ESimService implements CrudService<ESimDTO> {
     public ESimDTO salvarNoOrcamento(Long idOrcamento, ESimDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        servicoTaxaService.validarMoedaOrcamento(List.of(dto), orcamento.getMoeda());
         ESim eSim;
         if (dto.getId() == null) {
             eSim = mapper.toEntity(dto);
@@ -108,6 +113,7 @@ public class ESimService implements CrudService<ESimDTO> {
                 .orElseThrow(() -> new IllegalArgumentException("eSIM não pertence ao orçamento."));
             mapper.updateEntity(dto, eSim);
         }
+        servicoTaxaService.resolver(dto, eSim);
         orcamentoRepository.save(orcamento);
         return mapper.toDTO(eSim);
     }

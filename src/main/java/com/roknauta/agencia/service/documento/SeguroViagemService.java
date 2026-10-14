@@ -22,12 +22,14 @@ public class SeguroViagemService implements CrudService<SeguroViagemDTO> {
     private final SeguroViagemRepository repository;
     private final SeguroViagemMapper mapper;
     private final OrcamentoRepository orcamentoRepository;
+    private final ServicoTaxaService servicoTaxaService;
 
     public SeguroViagemService(SeguroViagemRepository repository, SeguroViagemMapper mapper,
-        OrcamentoRepository orcamentoRepository) {
+        OrcamentoRepository orcamentoRepository, ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
         this.orcamentoRepository = orcamentoRepository;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -91,6 +93,7 @@ public class SeguroViagemService implements CrudService<SeguroViagemDTO> {
                 .orElseThrow(() -> new IllegalArgumentException("SeguroViagem não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 
@@ -104,6 +107,7 @@ public class SeguroViagemService implements CrudService<SeguroViagemDTO> {
     public SeguroViagemDTO salvarNoOrcamento(Long idOrcamento, SeguroViagemDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        servicoTaxaService.validarMoedaOrcamento(List.of(dto), orcamento.getMoeda());
         SeguroViagem seguro;
         if (dto.getId() == null) {
             seguro = mapper.toEntity(dto);
@@ -118,6 +122,7 @@ public class SeguroViagemService implements CrudService<SeguroViagemDTO> {
             throw new IllegalArgumentException("Fim da vigência deve ser posterior ao início.");
         }
         resolverViajantes(dto, seguro, orcamento);
+        servicoTaxaService.resolver(dto, seguro);
         orcamentoRepository.save(orcamento);
         return mapper.toDTO(seguro);
     }

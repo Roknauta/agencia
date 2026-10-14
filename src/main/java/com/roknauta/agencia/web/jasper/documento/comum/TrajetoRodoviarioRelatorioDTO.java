@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TrajetoRodoviarioRelatorioDTO {
+public class TrajetoRodoviarioRelatorioDTO extends ServicoRelatorioDTO {
 
     private String transportadora;
     private String origem;
@@ -23,9 +23,9 @@ public class TrajetoRodoviarioRelatorioDTO {
     private String bagagem;
     private LocalDateTime saida;
     private LocalDateTime chegada;
-    private BigDecimal valorTotal;
 
     public TrajetoRodoviarioRelatorioDTO(TrajetoRodoviarioDTO trajeto) {
+        super(trajeto);
         if (trajeto == null) {
             return;
         }
@@ -39,6 +39,5 @@ public class TrajetoRodoviarioRelatorioDTO {
         bagagem = trajeto.getBagagem();
         saida = trajeto.getSaida();
         chegada = trajeto.getChegada();
-        valorTotal = trajeto.getValorTotal();
     }
 }

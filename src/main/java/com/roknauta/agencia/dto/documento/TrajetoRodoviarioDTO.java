@@ -1,10 +1,8 @@
 package com.roknauta.agencia.dto.documento;
 
 import com.roknauta.agencia.domain.documento.CategoriaTrajetoRodoviario;
-import com.roknauta.agencia.dto.BaseDTO;
 import com.roknauta.agencia.dto.CidadeDTO;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
@@ -14,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TrajetoRodoviarioDTO extends BaseDTO {
+public class TrajetoRodoviarioDTO extends ServicoDTO {
 
     private String transportadora;
     private CidadeDTO origem;
@@ -26,5 +24,4 @@ public class TrajetoRodoviarioDTO extends BaseDTO {
     private String bagagem;
     private LocalDateTime saida;
     private LocalDateTime chegada;
-    private BigDecimal valorTotal;
 }

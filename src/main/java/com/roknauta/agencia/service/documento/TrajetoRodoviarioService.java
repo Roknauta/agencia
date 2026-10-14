@@ -15,10 +15,13 @@ public class TrajetoRodoviarioService {
 
     private final TrajetoRodoviarioRepository repository;
     private final TrajetoRodoviarioMapper mapper;
+    private final ServicoTaxaService servicoTaxaService;
 
-    public TrajetoRodoviarioService(TrajetoRodoviarioRepository repository, TrajetoRodoviarioMapper mapper) {
+    public TrajetoRodoviarioService(TrajetoRodoviarioRepository repository, TrajetoRodoviarioMapper mapper,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -43,6 +46,7 @@ public class TrajetoRodoviarioService {
                 .orElseThrow(() -> new IllegalArgumentException("TrajetoRodoviario não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 }

@@ -18,13 +18,16 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
     private final TrajetoAereoMapper mapper;
     private final TrechoAereoService trechoAereoService;
     private final OrcamentoRepository orcamentoRepository;
+    private final ServicoTaxaService servicoTaxaService;
 
     public TrajetoAereoService(TrajetoAereoRepository repository, TrajetoAereoMapper mapper,
-        TrechoAereoService trechoAereoService, OrcamentoRepository orcamentoRepository) {
+        TrechoAereoService trechoAereoService, OrcamentoRepository orcamentoRepository,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
         this.trechoAereoService = trechoAereoService;
         this.orcamentoRepository = orcamentoRepository;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -50,6 +53,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
             mapper.updateEntity(dto, entidade);
         }
         trechoAereoService.resolverReferencias(dto, entidade);
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 
@@ -95,6 +99,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
     public TrajetoAereoDTO salvarNoOrcamento(Long idOrcamento, TrajetoAereoDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        servicoTaxaService.validarMoedaOrcamento(List.of(dto), orcamento.getMoeda());
         TrajetoAereo trajeto;
         if (dto.getId() == null) {
             trajeto = mapper.toEntity(dto);
@@ -105,6 +110,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
             mapper.updateEntity(dto, trajeto);
         }
         trechoAereoService.resolverReferencias(dto, trajeto);
+        servicoTaxaService.resolver(dto, trajeto);
         orcamentoRepository.save(orcamento);
         return mapper.toDTO(trajeto);
     }

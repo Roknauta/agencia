@@ -13,18 +13,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TrajetoAereoRelatorioDTO {
+public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
 
     private String sentido;
-    private BigDecimal valorTotal;
     private List<VooRelatorioDTO> voos = new ArrayList<>();
 
     public TrajetoAereoRelatorioDTO(TrajetoAereoDTO trajeto) {
+        super(trajeto);
         if (trajeto == null) {
             return;
         }
         sentido = trajeto.getSentido() == null ? null : trajeto.getSentido().name();
-        valorTotal = trajeto.getValorTotal();
         if (trajeto.getTrechos() != null) {
             voos = trajeto.getTrechos().stream().map(VooRelatorioDTO::new).toList();
             for (int indice = 0; indice < voos.size(); indice++) {

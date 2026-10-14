@@ -35,9 +35,7 @@
                       converter="localDateGridConverter"/>
             <t:column headerText="#{msg['fim.vigencia']}" value="#{item.fimVigencia}"
                       converter="localDateGridConverter"/>
-            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
-                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
-            </t:column>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
             <t:column headerText="#{msg['viajantes']}" value="#{item.viajantesCobertos.size()}"/>
         </m:crudDataTable>
     </ui:define>
@@ -61,13 +59,10 @@
                           value="#{seguroViagemController.editForm.inicioVigencia}" required="true"/>
             <m:datePicker id="fimVigencia" label="#{msg['fim.vigencia']}"
                           value="#{seguroViagemController.editForm.fimVigencia}" required="true"/>
-            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
-                           value="#{seguroViagemController.editForm.valorTotal}" minValue="0" decimalPlaces="2"/>
         </p:panelGrid>
         <m:inputTextarea id="resumoCobertura" label="#{msg['resumo.cobertura']}"
                          value="#{seguroViagemController.editForm.resumoCobertura}" rows="4"/>
-        <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                         value="#{seguroViagemController.editForm.observacoes}" maxlength="3000" rows="4"/>
+        <m:servicoFields value="#{seguroViagemController.editForm}" controller="#{seguroViagemController}"/>
         <p:panel header="#{msg['viajantes.cobertos']}" styleClass="form-field">
             <m:autoComplete id="viajantesCobertos" label="#{msg['viajantes.cobertos']}"
                             value="#{seguroViagemController.editForm.viajantesCobertos}"
