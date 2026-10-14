@@ -123,6 +123,7 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     }
 
     @Override
+    @Transactional
     public OrcamentoDTO save(OrcamentoDTO dto) {
         return salvar(dto);
     }

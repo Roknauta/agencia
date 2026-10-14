@@ -14,7 +14,10 @@ import com.roknauta.agencia.domain.documento.Contrato;
 import com.roknauta.agencia.domain.documento.Orcamento;
 import com.roknauta.agencia.domain.documento.StatusContrato;
 import com.roknauta.agencia.domain.documento.StatusOrcamento;
+import com.roknauta.agencia.domain.documento.Viajante;
 import com.roknauta.agencia.dto.documento.ContratoDTO;
+import com.roknauta.agencia.dto.documento.SeguroViagemDTO;
+import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.repository.documento.ContratoRepository;
 import com.roknauta.agencia.repository.documento.OrcamentoRepository;
 import com.roknauta.agencia.service.crud.CrudService;
@@ -122,6 +125,7 @@ public class ContratoService implements CrudService<ContratoDTO> {
         Contrato contrato = mapper.toEntity(dto);
         contrato.setOrcamento(orcamento);
         contrato.setStatus(StatusContrato.AGUARDANDO_ACEITE);
+        resolverViajantesCobertos(dto, contrato);
         limparIdsDosItensCopiados(contrato);
         trechoAereoService.resolverReferencias(dto, contrato);
         Contrato salvo = repository.save(contrato);
@@ -195,7 +199,6 @@ public class ContratoService implements CrudService<ContratoDTO> {
         contrato.getAlugueis().forEach(aluguel -> aluguel.setId(null));
         contrato.getSegurosViagem().forEach(seguro -> {
             seguro.setId(null);
-            seguro.getViajantesCobertos().forEach(viajante -> viajante.setId(null));
         });
         contrato.getESims().forEach(eSim -> eSim.setId(null));
         contrato.getViajantes().forEach(viajante -> viajante.setId(null));
@@ -207,5 +210,28 @@ public class ContratoService implements CrudService<ContratoDTO> {
             });
         });
         contrato.getTrajetosRodoviarios().forEach(trajeto -> trajeto.setId(null));
+    }
+
+    private void resolverViajantesCobertos(ContratoDTO dto, Contrato contrato) {
+        List<SeguroViagemDTO> segurosDTO = dto.getSegurosViagem();
+        if (segurosDTO == null) {
+            return;
+        }
+        for (int indiceSeguro = 0; indiceSeguro < contrato.getSegurosViagem().size(); indiceSeguro++) {
+            List<Viajante> viajantesDoContrato = segurosDTO.get(indiceSeguro).getViajantesCobertos() == null ? List.of()
+                : segurosDTO.get(indiceSeguro).getViajantesCobertos().stream().map(viajanteDTO -> {
+                    if (viajanteDTO == null || viajanteDTO.getId() == null) {
+                        throw new IllegalArgumentException("Selecione viajantes válidos do contrato para o seguro.");
+                    }
+                    return localizarViajanteDoContrato(contrato, viajanteDTO);
+                }).toList();
+            contrato.getSegurosViagem().get(indiceSeguro).setViajantesCobertos(viajantesDoContrato);
+        }
+    }
+
+    private Viajante localizarViajanteDoContrato(Contrato contrato, ViajanteDTO viajanteDTO) {
+        return contrato.getViajantes().stream().filter(viajante -> viajanteDTO.getId().equals(viajante.getId()))
+            .findFirst().orElseThrow(() -> new IllegalArgumentException(
+                "Os viajantes cobertos pelo seguro devem estar incluídos no contrato."));
     }
 }
