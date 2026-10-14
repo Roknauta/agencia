@@ -47,4 +47,15 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
         return voos.stream().filter(voo -> voo.getBagagens() != null).flatMap(voo -> voo.getBagagens().stream())
             .toList();
     }
+
+    public String getResumoRegrasTarifarias() {
+        return voos.stream().flatMap(voo -> java.util.stream.Stream.of(voo.getRegraAlteracao(),
+            voo.getRegraCancelamento(), voo.getOutrasInformacoesTarifarias()))
+            .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
+    }
+
+    public String getResumoCondicoesComTarifas() {
+        return java.util.stream.Stream.of(getResumoCondicoes(), getResumoRegrasTarifarias())
+            .filter(texto -> texto != null && !texto.isBlank()).collect(Collectors.joining("\n"));
+    }
 }

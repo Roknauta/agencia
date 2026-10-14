@@ -25,7 +25,11 @@ public class ServicoTaxaService {
 
     public void resolver(ServicoDTO dto, Servico servico) {
         validarValores(dto);
-        List<Taxa> taxasAtuais = servico.getTaxas() == null ? List.of() : servico.getTaxas();
+        List<Taxa> taxasAtuais = servico.getTaxas();
+        if (taxasAtuais == null) {
+            taxasAtuais = new ArrayList<>();
+            servico.setTaxas(taxasAtuais);
+        }
         List<Taxa> taxasResolvidas = new ArrayList<>();
         if (dto.getTaxas() != null) {
             for (int indice = 0; indice < dto.getTaxas().size(); indice++) {
@@ -65,7 +69,12 @@ public class ServicoTaxaService {
         servico.setRegrasAlteracao(dto.getRegrasAlteracao());
         servico.setRegrasCancelamento(dto.getRegrasCancelamento());
         servico.setObservacoes(dto.getObservacoes());
-        servico.setTaxas(taxasResolvidas);
+        taxasAtuais.removeIf(atual -> taxasResolvidas.stream().noneMatch(resolvida -> resolvida == atual));
+        for (Taxa taxa : taxasResolvidas) {
+            if (taxasAtuais.stream().noneMatch(atual -> atual == taxa)) {
+                taxasAtuais.add(taxa);
+            }
+        }
     }
 
     public void resolver(List<? extends ServicoDTO> dtos, List<? extends Servico> servicos) {

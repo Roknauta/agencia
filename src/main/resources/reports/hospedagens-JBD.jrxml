@@ -5,7 +5,7 @@
 <dataset name="FotosHospedagem" uuid="c715b53b-c518-4c0b-aba5-7f68d08eeaf7">
         <field name="esquerda" class="java.io.InputStream"/>
         <field name="direita" class="java.io.InputStream"/>
-    </dataset><field name="hospedagem" class="com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field><detail><band height="309" splitType="Stretch">
+    </dataset><field name="hospedagem" class="com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field><detail><band height="365" splitType="Stretch">
 			
 			<element kind="staticText" uuid="fa123da0-e193-464a-931c-6db9d0a292f5" key="TITULO_HOSPEDAGEM" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[HOSPEDAGEM]]></text>
@@ -31,11 +31,9 @@
 			<element kind="textField" uuid="8231bcab-4767-4d9c-b1fd-2de0ad5d6bff" positionType="Float" x="0" y="216" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
 				<expression><![CDATA["Não incluído: " + $F{hospedagem}.getNaoIncluidos()]]></expression>
 			</element>
-			<element kind="textField" uuid="5617c287-ba13-485c-8e23-b1ff625d8093" positionType="Float" x="0" y="244" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
-				<expression><![CDATA["Cancelamento: " + $F{hospedagem}.getCancelamento()]]></expression>
-			</element>
-			<element kind="textField" positionType="Float" x="0" y="273" width="523" height="24" forecolor="#003366" fontSize="10" bold="true" blankWhenNull="true"><expression><![CDATA[$F{hospedagem}.getValorTotal() == null ? "" : "Valor: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{hospedagem}.getValorTotal())]]></expression></element>
-			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="303" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
+			<element kind="textField" uuid="5617c287-ba13-485c-8e23-b1ff625d8093" positionType="Float" x="0" y="244" width="523" height="48" forecolor="#003366" fontSize="9.0" bold="true" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle"><expression><![CDATA[$F{hospedagem}.getResumoCondicoes()]]></expression></element>
+			<element kind="textField" positionType="Float" x="0" y="298" width="523" height="48" forecolor="#003366" fontSize="10" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{hospedagem}.getResumoFinanceiro()]]></expression></element>
+			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="359" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
 		</band><band height="216" splitType="Stretch">
             <printWhenExpression><![CDATA[!$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression>
             <element kind="staticText" uuid="c5fc03ae-a80e-4c04-8339-3da348fa72f8" x="0" y="0" width="523" height="22" forecolor="#003366" fontSize="12" bold="true">

@@ -62,7 +62,10 @@
         </p:panelGrid>
         <m:inputTextarea id="resumoCobertura" label="#{msg['resumo.cobertura']}"
                          value="#{seguroViagemController.editForm.resumoCobertura}" rows="4"/>
-        <m:servicoFields value="#{seguroViagemController.editForm}" controller="#{seguroViagemController}"/>
+        <ui:include src="/resources/components/servicoFields.xhtml">
+            <ui:param name="servico" value="#{seguroViagemController.editForm}"/>
+            <ui:param name="controller" value="#{seguroViagemController}"/>
+        </ui:include>
         <p:panel header="#{msg['viajantes.cobertos']}" styleClass="form-field">
             <m:autoComplete id="viajantesCobertos" label="#{msg['viajantes.cobertos']}"
                             value="#{seguroViagemController.editForm.viajantesCobertos}"
@@ -77,5 +80,10 @@
                           converter="localDateGridConverter"/>
             </p:dataTable>
         </p:panel>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <ui:include src="servico-taxa-dialog.xhtml">
+            <ui:param name="controller" value="#{seguroViagemController}"/>
+        </ui:include>
     </ui:define>
 </ui:composition>

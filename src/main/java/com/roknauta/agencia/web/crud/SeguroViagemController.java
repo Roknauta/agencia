@@ -14,15 +14,10 @@ import org.springframework.stereotype.Component;
 
 @Component("seguroViagemController")
 @ViewScoped
-public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, SeguroViagemService> {
-
-    private final OrcamentoService orcamentoService;
-    private Long idOrcamento;
-    private OrcamentoDTO orcamentoSelecionado;
+public class SeguroViagemController extends ServicoControllerBase<SeguroViagemDTO, SeguroViagemService> {
 
     public SeguroViagemController(SeguroViagemService service, OrcamentoService orcamentoService) {
-        super(service);
-        this.orcamentoService = orcamentoService;
+        super(service, orcamentoService);
     }
 
     @Override
@@ -41,34 +36,7 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
     }
 
     @Override
-    public void edit(Long id) {
-        editForm = service.findById(id);
-        idOrcamento = localizarOrcamento(id);
-        orcamentoSelecionado = idOrcamento == null ? null : orcamentoService.findById(idOrcamento);
-        editing = true;
-    }
-
-    @Override
-    public void save() {
-        if (editForm.getId() != null) {
-            super.save();
-            return;
-        }
-        if (idOrcamento == null) {
-            throw new IllegalArgumentException("Selecione um orçamento.");
-        }
-        service.salvarNoOrcamento(idOrcamento, editForm);
-        atualizarResultados();
-        voltarPesquisa();
-        addInfoMessage("entidade.salva", pageTitle());
-    }
-
-    public List<OrcamentoDTO> completeOrcamento(String texto) {
-        return orcamentoService.findByTexto(texto);
-    }
-
-    public void selecionarOrcamento() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
+    protected void aoSelecionarOrcamento() {
         if (idOrcamento != null && editing && editForm != null) {
             List<ViajanteDTO> viajantes = orcamentoService.findById(idOrcamento).getViajantes();
             if (editForm != null) {
@@ -79,7 +47,6 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
                     .removeIf(viajante -> viajantes.stream().noneMatch(item -> item.getId().equals(viajante.getId())));
             }
         }
-        atualizarResultados();
     }
 
     public List<ViajanteDTO> completeViajante(String texto) {
@@ -89,22 +56,24 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
         return orcamentoService.findViajantes(idOrcamento, texto);
     }
 
-    public List<SeguroViagemDTO> getSegurosDoOrcamento() {
-        return idOrcamento == null ? List.of() : service.findByOrcamento(idOrcamento);
+    @Override
+    protected Long localizarOrcamento(Long idServico) {
+        return service.findIdBySeguroViagem(idServico);
     }
 
     @Override
-    protected void atualizarResultados() {
-        setResult(getSegurosDoOrcamento());
-        pesquisaRealizada = idOrcamento != null;
+    protected List<SeguroViagemDTO> buscarServicosDoOrcamento(Long idOrcamento) {
+        return service.findByOrcamento(idOrcamento);
     }
 
     @Override
-    public void delete(Long id) {
-        if (idOrcamento != null) {
-            service.excluirDoOrcamento(idOrcamento, id);
-            atualizarResultados();
-        }
+    protected SeguroViagemDTO salvarNoOrcamento(Long idOrcamento, SeguroViagemDTO servico) {
+        return service.salvarNoOrcamento(idOrcamento, servico);
+    }
+
+    @Override
+    protected void excluirDoOrcamento(Long idOrcamento, Long idServico) {
+        service.excluirDoOrcamento(idOrcamento, idServico);
     }
 
     public void editarSeguro(Long id) {
@@ -115,31 +84,4 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
         return idOrcamento == null ? List.of() : orcamentoService.findById(idOrcamento).getViajantes();
     }
 
-    @Override
-    public void voltarPesquisa() {
-        super.voltarPesquisa();
-        orcamentoSelecionado = null;
-        idOrcamento = null;
-    }
-
-    public Long getIdOrcamento() {
-        return idOrcamento;
-    }
-
-    public void setIdOrcamento(Long idOrcamento) {
-        this.idOrcamento = idOrcamento;
-    }
-
-    public OrcamentoDTO getOrcamentoSelecionado() {
-        return orcamentoSelecionado;
-    }
-
-    public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
-        this.orcamentoSelecionado = orcamentoSelecionado;
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
-    }
-
-    private Long localizarOrcamento(Long idSeguro) {
-        return service.findIdBySeguroViagem(idSeguro);
-    }
 }

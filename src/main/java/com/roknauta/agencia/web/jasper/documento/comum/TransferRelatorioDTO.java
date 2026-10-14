@@ -64,6 +64,10 @@ public class TransferRelatorioDTO extends ServicoRelatorioDTO {
         passageiros = itens.stream().mapToInt(TransferRelatorioDTO::getPassageiros).sum();
         setObservacoes(itens.stream().map(TransferRelatorioDTO::getObservacoes).filter(java.util.Objects::nonNull)
             .collect(Collectors.joining("\n")));
+        setRegrasAlteracao(itens.stream().map(TransferRelatorioDTO::getRegrasAlteracao)
+            .filter(valor -> valor != null && !valor.isBlank()).distinct().collect(Collectors.joining("\n")));
+        setRegrasCancelamento(itens.stream().map(TransferRelatorioDTO::getRegrasCancelamento)
+            .filter(valor -> valor != null && !valor.isBlank()).distinct().collect(Collectors.joining("\n")));
         setValorTotal(itens.stream().map(TransferRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
             .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         if (!itens.isEmpty()) {

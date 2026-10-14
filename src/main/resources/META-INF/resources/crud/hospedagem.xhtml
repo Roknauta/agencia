@@ -60,7 +60,10 @@
             <m:inputTextarea id="naoIncluidos" label="#{msg['nao.incluidos']}"
                              value="#{hospedagemController.editForm.naoIncluidos}" rows="3"/>
         </p:panelGrid>
-        <m:servicoFields value="#{hospedagemController.editForm}" controller="#{hospedagemController}"/>
+        <ui:include src="/resources/components/servicoFields.xhtml">
+            <ui:param name="servico" value="#{hospedagemController.editForm}"/>
+            <ui:param name="controller" value="#{hospedagemController}"/>
+        </ui:include>
         <p:outputPanel id="fotosPanel">
             <p:fileUpload id="uploadFoto" mode="advanced" auto="true" multiple="true"
                           listener="#{hospedagemController.adicionarFoto}" update="fotosTabela"
@@ -75,5 +78,10 @@
                 </p:column>
             </p:dataTable>
         </p:outputPanel>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <ui:include src="servico-taxa-dialog.xhtml">
+            <ui:param name="controller" value="#{hospedagemController}"/>
+        </ui:include>
     </ui:define>
 </ui:composition>

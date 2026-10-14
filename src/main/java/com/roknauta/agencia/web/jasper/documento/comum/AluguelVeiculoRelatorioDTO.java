@@ -68,6 +68,8 @@ public class AluguelVeiculoRelatorioDTO extends ServicoRelatorioDTO {
         coberturas = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getCoberturas).toList());
         condicoes = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getCondicoes).toList());
         setObservacoes(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getObservacoes).toList()));
+        setRegrasAlteracao(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getRegrasAlteracao).toList()));
+        setRegrasCancelamento(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getRegrasCancelamento).toList()));
         setValorTotal(itens.stream().map(AluguelVeiculoRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
             .reduce(BigDecimal.ZERO, BigDecimal::add));
         if (!itens.isEmpty()) {

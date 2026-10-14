@@ -12,15 +12,10 @@ import java.util.List;
 
 @Component("eSimController")
 @ViewScoped
-public class ESimController extends CrudControllerBase<ESimDTO, ESimService> {
-
-    private final OrcamentoService orcamentoService;
-    private Long idOrcamento;
-    private OrcamentoDTO orcamentoSelecionado;
+public class ESimController extends ServicoControllerBase<ESimDTO, ESimService> {
 
     public ESimController(ESimService service, OrcamentoService orcamentoService) {
-        super(service);
-        this.orcamentoService = orcamentoService;
+        super(service, orcamentoService);
     }
 
     @Override
@@ -38,53 +33,23 @@ public class ESimController extends CrudControllerBase<ESimDTO, ESimService> {
     }
 
     @Override
-    public void edit(Long id) {
-        editForm = service.findById(id);
-        idOrcamento = localizarOrcamento(id);
-        orcamentoSelecionado = orcamentoService.findById(idOrcamento);
-        editing = true;
-    }
-
-    public List<OrcamentoDTO> completeOrcamento(String texto) {
-        return orcamentoService.findByTexto(texto);
-    }
-
-    public void selecionarOrcamento() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
-        atualizarResultados();
-    }
-
-    public List<ESimDTO> getESimsDoOrcamento() {
-        return idOrcamento == null ? List.of() : service.findByOrcamento(idOrcamento);
+    protected Long localizarOrcamento(Long idServico) {
+        return service.findIdByESim(idServico);
     }
 
     @Override
-    public void save() {
-        if (idOrcamento == null) {
-            throw new IllegalArgumentException("Selecione um orçamento.");
-        }
-        if (editForm.getId() != null) {
-            super.save();
-            return;
-        }
-        service.salvarNoOrcamento(idOrcamento, editForm);
-        atualizarResultados();
-        voltarPesquisa();
-        addInfoMessage("entidade.salva", pageTitle());
+    protected List<ESimDTO> buscarServicosDoOrcamento(Long idOrcamento) {
+        return service.findByOrcamento(idOrcamento);
     }
 
     @Override
-    protected void atualizarResultados() {
-        setResult(getESimsDoOrcamento());
-        pesquisaRealizada = idOrcamento != null;
+    protected ESimDTO salvarNoOrcamento(Long idOrcamento, ESimDTO servico) {
+        return service.salvarNoOrcamento(idOrcamento, servico);
     }
 
     @Override
-    public void delete(Long id) {
-        if (idOrcamento != null) {
-            service.excluirDoOrcamento(idOrcamento, id);
-            atualizarResultados();
-        }
+    protected void excluirDoOrcamento(Long idOrcamento, Long idServico) {
+        service.excluirDoOrcamento(idOrcamento, idServico);
     }
 
     public void editarESim(Long id) {
@@ -92,45 +57,11 @@ public class ESimController extends CrudControllerBase<ESimDTO, ESimService> {
     }
 
     public void selecionarOrcamentoNoForm() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
+        selecionarOrcamento();
     }
 
-
-    @Override
-    public void voltarPesquisa() {
-        super.voltarPesquisa();
-        orcamentoSelecionado = null;
-        idOrcamento = null;
+    public List<String> completeCodigoAtivacao(String texto) {
+        return texto == null || texto.isBlank() ? List.of() : List.of(texto.trim());
     }
 
-    public void adicionarCodigo() {
-        editForm.getCodigosAtivacao().add("");
-    }
-
-    public void removerCodigo(int indice) {
-        if (indice >= 0 && indice < editForm.getCodigosAtivacao().size()) {
-            editForm.getCodigosAtivacao().remove(indice);
-        }
-    }
-
-    public Long getIdOrcamento() {
-        return idOrcamento;
-    }
-
-    public void setIdOrcamento(Long idOrcamento) {
-        this.idOrcamento = idOrcamento;
-    }
-
-    public OrcamentoDTO getOrcamentoSelecionado() {
-        return orcamentoSelecionado;
-    }
-
-    public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
-        this.orcamentoSelecionado = orcamentoSelecionado;
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
-    }
-
-    private Long localizarOrcamento(Long idESim) {
-        return service.findIdByESim(idESim);
-    }
 }

@@ -129,10 +129,13 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                     "Vigência: " + Objects.toString(seguro.getInicioVigencia(), "") + " a "
                         + Objects.toString(seguro.getFimVigencia(), ""),
                     "Viajantes: " + Objects.toString(seguro.getViajantesCobertos(), ""),
-                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""), seguro.getResumoFinanceiro(),
-                    "Observações: " + Objects.toString(seguro.getObservacoes(), ""))
-                .filter(linha -> !linha.endsWith(": ")).collect(Collectors.joining("\n")))
-            .collect(Collectors.joining("\n\n"));
+                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""),
+                    "<b>" + html(seguro.getResumoFinanceiro()) + "</b>",
+                    "<b>" + html(seguro.getResumoCondicoes()) + "</b>")
+                .filter(linha -> !linha.endsWith(": ") && !linha.equals("<b></b>"))
+                .map(linha -> linha.startsWith("<b>") ? linha : html(linha))
+                .collect(Collectors.joining("<br/>")))
+            .collect(Collectors.joining("<br/><br/>"));
     }
 
     public String getResumoESims() {
@@ -142,9 +145,20 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             "Cobertura: " + Objects.toString(esim.getCobertura(), ""),
             "Duração: " + Objects.toString(esim.getDuracaoDias(), "") + " dias", "Quantidade: " + esim.getQuantidade(),
             "Códigos de ativação: " + Objects.toString(esim.getCodigosAtivacao(), ""),
-            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""), esim.getResumoFinanceiro(),
-            "Observações: " + Objects.toString(esim.getObservacoes(), "")).filter(linha -> !linha.endsWith(": "))
-            .collect(Collectors.joining("\n"))).collect(Collectors.joining("\n\n"));
+            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""),
+            "<b>" + html(esim.getResumoFinanceiro()) + "</b>", "<b>" + html(esim.getResumoCondicoes()) + "</b>")
+            .filter(linha -> !linha.endsWith(": ") && !linha.equals("<b></b>"))
+            .map(linha -> linha.startsWith("<b>") ? linha : html(linha))
+            .collect(Collectors.joining("<br/>")))
+            .collect(Collectors.joining("<br/><br/>"));
+    }
+
+    private static String html(String texto) {
+        if (texto == null) {
+            return "";
+        }
+        return texto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+            .replace("\n", "<br/>");
     }
 
     public String getResumoValoresAereos() {
@@ -158,6 +172,20 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 + Objects.toString(trajeto.getOrigem(), "") + " → " + Objects.toString(trajeto.getDestino(), "") + "): "
                 + formatarDinheiro(trajeto.getValorTotal()))
             .collect(Collectors.joining(" • "));
+    }
+
+    public String getResumoPassagensRodoviarias() {
+        return getTrajetosRodoviarios().stream().map(trajeto -> {
+            String titulo = html(Objects.toString(trajeto.getTransportadora(), "Passagem rodoviária") + ": "
+                + Objects.toString(trajeto.getOrigem(), "") + " → " + Objects.toString(trajeto.getDestino(), ""));
+            String detalhes = html(Stream.of(
+                trajeto.getSaida() == null ? null : "Embarque: " + trajeto.getSaida().format(DATA_HORA),
+                trajeto.getChegada() == null ? null : "Chegada: " + trajeto.getChegada().format(DATA_HORA),
+                trajeto.getLocalizador() == null || trajeto.getLocalizador().isBlank() ? null
+                    : "Localizador: " + trajeto.getLocalizador()).filter(Objects::nonNull).collect(Collectors.joining("\n")));
+            return "<b>" + titulo + "</b><br/>" + detalhes + "<br/><b>"
+                + html(trajeto.getResumoFinanceiro()) + "<br/>" + html(trajeto.getResumoCondicoes()) + "</b>";
+        }).collect(Collectors.joining("<br/><br/>"));
     }
 
     private String formatarDinheiro(BigDecimal valor) {

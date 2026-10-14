@@ -78,6 +78,23 @@ public abstract class ServicoRelatorioDTO {
         return resumo.toString();
     }
 
+    public String getResumoCondicoes() {
+        StringBuilder resumo = new StringBuilder();
+        adicionarCondicao(resumo, "Alterações", regrasAlteracao);
+        adicionarCondicao(resumo, "Cancelamento", regrasCancelamento);
+        adicionarCondicao(resumo, "Observações", observacoes);
+        return resumo.toString();
+    }
+
+    private static void adicionarCondicao(StringBuilder resumo, String rotulo, String valor) {
+        if (valor != null && !valor.isBlank()) {
+            if (!resumo.isEmpty()) {
+                resumo.append("\n");
+            }
+            resumo.append(rotulo).append(": ").append(valor);
+        }
+    }
+
     private static void adicionar(StringBuilder resumo, String rotulo, BigDecimal valor, String simbolo,
         java.text.NumberFormat formato) {
         if (valor != null) {
