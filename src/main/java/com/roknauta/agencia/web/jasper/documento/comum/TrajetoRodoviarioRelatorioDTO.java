@@ -40,4 +40,18 @@ public class TrajetoRodoviarioRelatorioDTO extends ServicoRelatorioDTO {
         saida = trajeto.getSaida();
         chegada = trajeto.getChegada();
     }
+
+    public java.util.List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Transportadora", transportadora),
+            AtributoRelatorioDTO.campo("Origem", origem), AtributoRelatorioDTO.campo("Destino", destino),
+            AtributoRelatorioDTO.campo("Terminal de embarque", terminalEmbarque),
+            AtributoRelatorioDTO.campo("Terminal de desembarque", terminalDesembarque),
+            AtributoRelatorioDTO.campo("Categoria", categoria), AtributoRelatorioDTO.campo("Embarque", dataHora(saida)),
+            AtributoRelatorioDTO.campo("Chegada", dataHora(chegada)),
+            AtributoRelatorioDTO.campo("Localizador", localizador), AtributoRelatorioDTO.campo("Bagagem", bagagem));
+    }
+
+    private static String dataHora(LocalDateTime valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
 }

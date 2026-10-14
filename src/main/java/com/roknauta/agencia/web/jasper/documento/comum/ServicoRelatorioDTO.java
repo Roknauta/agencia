@@ -86,6 +86,42 @@ public abstract class ServicoRelatorioDTO {
         return resumo.toString();
     }
 
+    public List<AtributoRelatorioDTO> getValoresRelatorio() {
+        List<AtributoRelatorioDTO> linhas = new ArrayList<>();
+        String simbolo = moeda == null ? "R$" : moeda.getSimbolo();
+        java.text.NumberFormat formato =
+            java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("pt-BR"));
+        if (valor != null) {
+            linhas.add(new AtributoRelatorioDTO("Valor", dinheiro(valor, simbolo, formato)));
+        }
+        if (desconto != null && desconto.signum() != 0) {
+            linhas.add(new AtributoRelatorioDTO("Desconto", dinheiro(desconto, simbolo, formato)));
+        }
+        if (taxas != null) {
+            for (TaxaRelatorioDTO taxa : taxas) {
+                if (taxa != null && taxa.getValor() != null) {
+                    String moedaTaxa = taxa.getMoeda() == null ? simbolo : taxa.getMoeda().getSimbolo();
+                    linhas.add(new AtributoRelatorioDTO("Taxa " + java.util.Objects.toString(taxa.getTipo(), ""),
+                        dinheiro(taxa.getValor(), moedaTaxa, formato)));
+                }
+            }
+        }
+        if (valorTotal != null) {
+            linhas.add(new AtributoRelatorioDTO("Total", dinheiro(valorTotal, simbolo, formato)));
+        }
+        return linhas;
+    }
+
+    public List<AtributoRelatorioDTO> getCondicoesRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Alterações", regrasAlteracao),
+            AtributoRelatorioDTO.campo("Cancelamento", regrasCancelamento),
+            AtributoRelatorioDTO.campo("Observações", observacoes));
+    }
+
+    private static String dinheiro(BigDecimal valor, String simbolo, java.text.NumberFormat formato) {
+        return simbolo + " " + formato.format(valor);
+    }
+
     private static void adicionarCondicao(StringBuilder resumo, String rotulo, String valor) {
         if (valor != null && !valor.isBlank()) {
             if (!resumo.isEmpty()) {

@@ -91,4 +91,13 @@ public class TransferRelatorioDTO extends ServicoRelatorioDTO {
         return rotulo + ": " + simbolo + " "
             + java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Prestador", prestador),
+            AtributoRelatorioDTO.campo("Modalidade", tipo), AtributoRelatorioDTO.campo("Localizador", localizador),
+            AtributoRelatorioDTO.campo("Origem", origem), AtributoRelatorioDTO.campo("Destino", destino),
+            AtributoRelatorioDTO.campo("Data e hora", resumoDatas),
+            AtributoRelatorioDTO.campo("Fuso horário", fusoHorario),
+            AtributoRelatorioDTO.campo("Passageiros", passageiros));
+    }
 }

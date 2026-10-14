@@ -74,6 +74,13 @@ public final class JasperUtils {
         }
         Map<String, Object> parametrosOrcamento = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
         parametrosOrcamento.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("hospedagens-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_TRAJETO_AEREO", compilar("servico-trajeto-aereo-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_TRAJETO_RODOVIARIO",
+            compilar("servico-trajeto-rodoviario-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_TRANSFER", compilar("servico-transfer-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_ALUGUEL_VEICULO", compilar("servico-aluguel-veiculo-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_SEGURO_VIAGEM", compilar("servico-seguro-viagem-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_ESIM", compilar("servico-e-sim-JBD.jrxml"));
         if (!parametrosOrcamento.containsKey("LOGO")) {
             try (InputStream recurso = abrirRecurso("logo-jbd.png")) {
                 Image logo = ImageIO.read(recurso);

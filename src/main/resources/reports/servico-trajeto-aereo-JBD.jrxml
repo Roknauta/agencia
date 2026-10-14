@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="svc_trajeto_aereo" language="java" pageWidth="523" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="0" rightMargin="0" topMargin="24" bottomMargin="24" uuid="a0758f55-53e0-48fc-bdc7-222459dff740">
+ <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler" />
+ <style name="Base" default="true" fontName="DejaVu Sans" fontSize="9" forecolor="#003366" />
+ <dataset name="Campos" uuid="769a6530-d302-4bdc-ac29-8330b3205a60">
+  <field name="rotulo" class="java.lang.String" />
+  <field name="valor" class="java.lang.String" />
+ </dataset>
+ <dataset name="Voos" uuid="a783b1db-b5a2-4be0-90aa-d4d6ccc96a9a">
+  <parameter name="VOO_DIRETO" class="java.lang.Boolean" />
+  <field name="origem" class="java.lang.String" />
+  <field name="saida" class="java.time.LocalDateTime" />
+  <field name="numero" class="java.lang.String" />
+  <field name="chegada" class="java.time.LocalDateTime" />
+  <field name="destino" class="java.lang.String" />
+  <field name="companhia" class="com.roknauta.agencia.web.jasper.documento.comum.CompanhiaAereaRelatorioDTO" />
+  <field name="duracaoFormatada" class="java.lang.String" />
+  <field name="conexaoFormatada" class="java.lang.String" />
+  <field name="cabine" class="java.lang.String" />
+  <field name="tarifa" class="java.lang.String" />
+  <field name="resumoBagagens" class="java.lang.String" />
+ </dataset>
+ <field name="servico" class="com.roknauta.agencia.web.jasper.documento.comum.ServicoDetalheRelatorioDTO">
+  <property name="net.sf.jasperreports.javabean.field.property" value="_THIS" />
+ </field>
+ <detail>
+  <band height="338" splitType="Prevent">
+   <element kind="textField" x="0" y="0" width="523" height="25" fontSize="15" forecolor="#CCAA55" bold="true" hTextAlign="Center">
+    <expression>$F{servico}.getTitulo()</expression>
+   </element>
+   <element kind="component" x="0" y="30" width="523" height="20">
+    <component kind="list" printOrder="Vertical">
+     <datasetRun uuid="51cf89c6-8c5b-4a2c-b007-98224fe4895e" subDataset="Campos">
+      <dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getAtributos())</dataSourceExpression>
+     </datasetRun>
+     <contents height="20" width="523">
+      <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true">
+       <expression>$F{rotulo} + ":"</expression>
+      </element>
+      <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9">
+       <expression>$F{valor}</expression>
+      </element>
+     </contents>
+    </component>
+   </element>
+   <element kind="staticText" x="0" y="58" width="523" height="20" fontSize="11" forecolor="#CCAA55" bold="true"><text>VOOS</text></element>
+   <element kind="component" x="0" y="78" width="523" height="260">
+    <component kind="table" whenNoDataType="AllSectionsNoDetail">
+     <datasetRun uuid="b04ca12c-b103-4bc5-abf2-8483b1c3b5a1" subDataset="Voos">
+      <parameter name="VOO_DIRETO"><expression>$F{servico}.getVoos() != null &amp;&amp; $F{servico}.getVoos().size() == 1</expression></parameter>
+      <dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getVoos() == null ? java.util.Collections.emptyList() : $F{servico}.getVoos())</dataSourceExpression>
+     </datasetRun>
+     <column kind="single" width="58"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="58" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>CIA</text><box leftPadding="3" rightPadding="3" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="58" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" textAdjust="StretchHeight" vTextAlign="Middle"><expression>java.util.Objects.toString($F{companhia} == null ? null : $F{companhia}.getNome(), "")</expression><box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="3"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="44"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="44" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>VOO</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="44" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{numero}</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="78"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="78" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="7" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>ORIGEM</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="78" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{origem}</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="68"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="68" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>SAÍDA</text><box leftPadding="3" rightPadding="3" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="68" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{saida}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n" + $F{saida}.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="68"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="68" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="7" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>CHEGADA</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="68" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{chegada}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "\n" + $F{chegada}.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="78"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="78" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="7" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>DESTINO</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="78" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{destino}</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="60"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="60" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="7" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>DURAÇÃO</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="60" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>$F{duracaoFormatada}</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="69"><columnHeader height="28"><element kind="staticText" mode="Opaque" x="0" y="0" width="69" height="28" forecolor="#FFFFFF" backcolor="#003366" fontSize="7" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>CONEXÃO</text><box leftPadding="2" rightPadding="2" /></element></columnHeader><detailCell height="58"><element kind="textField" mode="Opaque" x="0" y="0" width="69" height="58" forecolor="#003366" backcolor="#F3F6F9" fontSize="7" textAdjust="StretchHeight" vTextAlign="Middle"><expression>Boolean.TRUE.equals($P{VOO_DIRETO}) ? "Direto" : $F{conexaoFormatada}</expression><box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+    </component>
+   </element>
+  </band>
+  <band height="174" splitType="Stretch">
+   <printWhenExpression>$F{servico}.getVoos() != null &amp;&amp; !$F{servico}.getVoos().isEmpty()</printWhenExpression>
+   <element kind="staticText" x="0" y="4" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true"><text>DETALHES ADICIONAIS</text></element>
+   <element kind="component" x="0" y="26" width="523" height="137">
+    <component kind="table" whenNoDataType="AllSectionsNoDetail">
+     <datasetRun uuid="541b32f4-1dfe-42c1-bce4-e850220e98d2" subDataset="Voos"><dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getVoos())</dataSourceExpression></datasetRun>
+     <column kind="single" width="70"><columnHeader height="26"><element kind="staticText" mode="Opaque" x="0" y="0" width="70" height="26" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>VOO</text></element></columnHeader><detailCell height="28"><element kind="textField" mode="Opaque" x="0" y="0" width="70" height="28" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" vTextAlign="Middle"><expression>java.util.Objects.toString($F{numero}, "")</expression><box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="100"><columnHeader height="26"><element kind="staticText" mode="Opaque" x="0" y="0" width="100" height="26" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>CABINE</text></element></columnHeader><detailCell height="28"><element kind="textField" mode="Opaque" x="0" y="0" width="100" height="28" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" vTextAlign="Middle"><expression>java.util.Objects.toString($F{cabine}, "")</expression><box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="130"><columnHeader height="26"><element kind="staticText" mode="Opaque" x="0" y="0" width="130" height="26" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>TARIFA</text></element></columnHeader><detailCell height="28"><element kind="textField" mode="Opaque" x="0" y="0" width="130" height="28" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" textAdjust="StretchHeight" vTextAlign="Middle"><expression>java.util.Objects.toString($F{tarifa}, "")</expression><box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+     <column kind="single" width="223"><columnHeader height="26"><element kind="staticText" mode="Opaque" x="0" y="0" width="223" height="26" forecolor="#FFFFFF" backcolor="#003366" fontSize="8" bold="true" hTextAlign="Center" vTextAlign="Middle"><text>BAGAGEM</text></element></columnHeader><detailCell height="28"><element kind="textField" mode="Opaque" x="0" y="0" width="223" height="28" forecolor="#003366" backcolor="#F3F6F9" fontSize="8" textAdjust="StretchHeight" vTextAlign="Middle"><expression>java.util.Objects.toString($F{resumoBagagens}, "")</expression><box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="4"><bottomPen lineWidth="0.5" lineColor="#D5DFE7" /></box></element></detailCell></column>
+    </component>
+   </element>
+  </band>
+  <band height="90" splitType="Stretch">
+   <element kind="staticText" x="0" y="0" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true">
+    <text>VALORES DO SERVIÇO</text>
+   </element>
+   <element kind="component" x="0" y="25" width="523" height="65">
+    <component kind="list" printOrder="Vertical">
+     <datasetRun uuid="52406305-407e-45d8-9db2-5946d3285a03" subDataset="Campos">
+      <dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getValores())</dataSourceExpression>
+     </datasetRun>
+     <contents height="20" width="523">
+      <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true">
+       <expression>$F{rotulo} + ":"</expression>
+      </element>
+      <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true">
+       <expression>$F{valor}</expression>
+      </element>
+     </contents>
+    </component>
+   </element>
+  </band>
+  <band height="160" splitType="Stretch">
+   <element kind="staticText" x="0" y="0" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true">
+    <text>ALTERAÇÃO, CANCELAMENTO E OBSERVAÇÕES</text>
+   </element>
+   <element kind="component" x="0" y="25" width="523" height="135">
+    <component kind="list" printOrder="Vertical">
+     <datasetRun uuid="9d0d69e1-c7cc-46d2-ae44-2728145be930" subDataset="Campos">
+      <dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getCondicoes())</dataSourceExpression>
+     </datasetRun>
+     <contents height="20" width="523">
+      <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true">
+       <expression>$F{rotulo} + ":"</expression>
+      </element>
+      <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true">
+       <expression>$F{valor}</expression>
+      </element>
+     </contents>
+    </component>
+   </element>
+  </band>
+  <band height="1" splitType="Stretch">
+   <element kind="break" positionType="Float" x="0" y="0" width="100" height="1" />
+  </band>
+ </detail>
+</jasperReport>

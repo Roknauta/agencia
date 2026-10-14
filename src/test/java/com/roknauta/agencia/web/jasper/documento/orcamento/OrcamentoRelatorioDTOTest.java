@@ -30,8 +30,9 @@ class OrcamentoRelatorioDTOTest {
         assertEquals("Apresentar-se com antecedência e conferir os documentos.", relatorio.getObservacoes());
         assertEquals(4, relatorio.getQuantidadePassageiros());
         assertEquals(2, relatorio.getTrajetosAereos().getFirst().getVoos().size());
+        assertEquals("2h 45min", relatorio.getTrajetosAereos().getFirst().getVoos().getFirst().getConexaoFormatada());
         assertEquals(1, relatorio.getVolta().getVoos().size());
-        assertEquals(2, relatorio.getIda().getBagagens().size());
+        assertEquals(3, relatorio.getIda().getBagagens().size());
         assertEquals(1, relatorio.getTrajetosRodoviarios().size());
         assertEquals(1, relatorio.getHospedagens().size());
         assertEquals(2, relatorio.getTransfers().size());
@@ -45,7 +46,8 @@ class OrcamentoRelatorioDTOTest {
         assertEquals(new BigDecimal("60.00"), relatorio.getValorESims());
         assertEquals(new BigDecimal("8005.00"), relatorio.getTotal());
         assertEquals(new BigDecimal("2001.25"), relatorio.getValorPorPessoa());
-        assertTrue(relatorio.getRegras().contains("Cancelamento sujeito a multa"));
+        assertEquals("Cancelamento sujeito a multa do fornecedor.",
+            relatorio.getIda().getVoos().getFirst().getRegraCancelamento());
     }
 
     @Test

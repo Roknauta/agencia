@@ -101,4 +101,16 @@ public class AluguelVeiculoRelatorioDTO extends ServicoRelatorioDTO {
         return (rotulo.isBlank() ? "Aluguel de veículo" : rotulo) + ": " + simbolo + " " + java.text.NumberFormat
             .getNumberInstance(java.util.Locale.forLanguageTag("pt-BR")).format(aluguel.getValorTotal());
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Locadora", locadora),
+            AtributoRelatorioDTO.campo("Categoria / modelo", categoria),
+            AtributoRelatorioDTO.campo("Condutor", condutor), AtributoRelatorioDTO.campo("Localizador", localizador),
+            AtributoRelatorioDTO.campo("Local de retirada", localRetirada),
+            AtributoRelatorioDTO.campo("Retirada", resumoRetirada),
+            AtributoRelatorioDTO.campo("Local de devolução", localDevolucao),
+            AtributoRelatorioDTO.campo("Devolução", resumoDevolucao),
+            AtributoRelatorioDTO.campo("Coberturas / seguros", coberturas),
+            AtributoRelatorioDTO.campo("Franquia, caução, quilometragem e combustível", condicoes));
+    }
 }

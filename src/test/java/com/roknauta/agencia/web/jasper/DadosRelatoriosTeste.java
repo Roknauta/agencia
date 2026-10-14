@@ -89,11 +89,20 @@ public final class DadosRelatoriosTeste {
         TrechoAereoDTO segundoTrecho =
             trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA);
         segundoTrecho.setLocalizador("ABC456");
-        segundoTrecho.setBagagens(List.of(bagagem("Bagagem de mão", 1)));
+        segundoTrecho.setBagagens(List.of(bagagem("Bagagem de mão", 1), bagagem("Item Pessoal", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.IDA);
         trajeto.setTrechos(List.of(primeiroTrecho, segundoTrecho));
         trajeto.setValor(new BigDecimal("2600.00"));
+        return trajeto;
+    }
+
+    public static TrajetoAereoDTO trajetoIdaComQuatroVoos() {
+        TrajetoAereoDTO trajeto = trajetoIda();
+        List<TrechoAereoDTO> trechos = new java.util.ArrayList<>(trajeto.getTrechos());
+        trechos.add(trecho("JJ9012", "LIS", "MAD", LocalTime.of(7, 0), LocalTime.of(8, 15), DATA_PARTIDA.plusDays(1)));
+        trechos.add(trecho("JJ3456", "MAD", "CDG", LocalTime.of(11, 0), LocalTime.of(13, 0), DATA_PARTIDA.plusDays(1)));
+        trajeto.setTrechos(trechos);
         return trajeto;
     }
 
@@ -149,7 +158,11 @@ public final class DadosRelatoriosTeste {
         bagagem.setDescricao(descricao);
         bagagem.setQuantidade(quantidade);
         BagagemCompanhiaAereaDTO referencia = new BagagemCompanhiaAereaDTO();
-        referencia.setTipoBagagem(TipoBagagem.BAGAGEM_DESPACHADA);
+        referencia.setTipoBagagem(switch (descricao) {
+            case "Bagagem de mão" -> TipoBagagem.BAGAGEM_DE_MAO;
+            case "Item Pessoal" -> TipoBagagem.ITEM_PESSOAL;
+            default -> TipoBagagem.BAGAGEM_DESPACHADA;
+        });
         referencia.setDataReferencia(LocalDate.of(2026, 10, 1));
         referencia.setAlturaCm(55.0);
         referencia.setLarguraCm(35.0);

@@ -98,8 +98,10 @@ public class DocumentoViagemRelatorioDTO {
         agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal).filter(Objects::nonNull)
             .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         agregado.setMoeda(moeda);
-        agregado.setRegrasAlteracao(juntar(trajetos.stream().map(TrajetoAereoRelatorioDTO::getRegrasAlteracao).toList()));
-        agregado.setRegrasCancelamento(juntar(trajetos.stream().map(TrajetoAereoRelatorioDTO::getRegrasCancelamento).toList()));
+        agregado
+            .setRegrasAlteracao(juntar(trajetos.stream().map(TrajetoAereoRelatorioDTO::getRegrasAlteracao).toList()));
+        agregado.setRegrasCancelamento(
+            juntar(trajetos.stream().map(TrajetoAereoRelatorioDTO::getRegrasCancelamento).toList()));
         agregado.setObservacoes(juntar(trajetos.stream().map(TrajetoAereoRelatorioDTO::getObservacoes).toList()));
         return agregado;
     }

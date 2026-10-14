@@ -63,4 +63,20 @@ public class HospedagemRelatorioDTO extends ServicoRelatorioDTO {
             this.fotos.add(foto);
         }
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Hotel", nome),
+            AtributoRelatorioDTO.campo("Cidade", cidade), AtributoRelatorioDTO.campo("Endereço", endereco),
+            AtributoRelatorioDTO.campo("Check-in", dataHora(checkIn)),
+            AtributoRelatorioDTO.campo("Check-out", dataHora(checkOut)),
+            AtributoRelatorioDTO.campo("Noites", noites > 0 ? noites : null),
+            AtributoRelatorioDTO.campo("Acomodação", acomodacao), AtributoRelatorioDTO.campo("Quartos", quartos),
+            AtributoRelatorioDTO.campo("Regime", regime), AtributoRelatorioDTO.campo("Incluídos", incluidos),
+            AtributoRelatorioDTO.campo("Não incluídos", naoIncluidos),
+            AtributoRelatorioDTO.campo("Localizador", localizador));
+    }
+
+    private static String dataHora(LocalDateTime valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
 }

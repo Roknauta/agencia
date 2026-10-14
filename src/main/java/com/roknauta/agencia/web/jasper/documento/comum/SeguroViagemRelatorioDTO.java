@@ -39,4 +39,17 @@ public class SeguroViagemRelatorioDTO extends ServicoRelatorioDTO {
             : viajantes.stream().filter(viajante -> viajante != null && viajante.getNome() != null)
                 .map(com.roknauta.agencia.dto.documento.ViajanteDTO::getNome).collect(Collectors.joining(", "));
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Seguradora", seguradora),
+            AtributoRelatorioDTO.campo("Plano", plano), AtributoRelatorioDTO.campo("Apólice", numeroApolice),
+            AtributoRelatorioDTO.campo("Início da vigência", data(inicioVigencia)),
+            AtributoRelatorioDTO.campo("Fim da vigência", data(fimVigencia)),
+            AtributoRelatorioDTO.campo("Viajantes cobertos", viajantesCobertos),
+            AtributoRelatorioDTO.campo("Cobertura", resumoCobertura));
+    }
+
+    private static String data(LocalDate valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
 }

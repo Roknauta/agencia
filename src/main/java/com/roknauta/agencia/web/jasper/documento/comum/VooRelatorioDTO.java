@@ -3,7 +3,11 @@ package com.roknauta.agencia.web.jasper.documento.comum;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.roknauta.agencia.dto.AeroportoDTO;
 import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
@@ -76,6 +80,32 @@ public class VooRelatorioDTO {
             return;
         }
         conexaoFormatada = formatarDuracao(Duration.between(chegada, proximoVoo.getSaida()));
+    }
+
+    public String getResumoBagagens() {
+        Map<String, Integer> quantidadePorTipo = new LinkedHashMap<>();
+        for (BagagemRelatorioDTO bagagem : bagagens) {
+            String tipo = tipoBagagem(bagagem.getDescricaoRelatorio());
+            if (tipo != null && !tipo.isBlank()) {
+                quantidadePorTipo.merge(tipo, bagagem.getQuantidade() == null ? 0 : bagagem.getQuantidade(),
+                    Integer::sum);
+            }
+        }
+        return quantidadePorTipo.entrySet().stream().map(item -> item.getValue() + " " + item.getKey())
+            .collect(Collectors.joining(", "));
+    }
+
+    private static String tipoBagagem(String descricao) {
+        if (descricao == null || descricao.isBlank()) {
+            return null;
+        }
+        return switch (descricao.trim().toLowerCase(Locale.forLanguageTag("pt-BR"))) {
+            case "bagagem despachada" -> "Bagagem Despachada";
+            case "bagagem de mão", "mala de mão" -> "Mala de Mão";
+            case "item pessoal" -> "Item Pessoal";
+            case "bagagem especial" -> "Bagagem Especial";
+            default -> descricao;
+        };
     }
 
     private static String formatarAeroporto(AeroportoDTO aeroporto) {

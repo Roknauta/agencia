@@ -39,4 +39,14 @@ public class ESimRelatorioDTO extends ServicoRelatorioDTO {
             : codigos.stream().filter(codigo -> codigo != null && !codigo.isBlank()).collect(Collectors.joining(", "));
         quantidade = esim.getQuantidade();
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Operadora", operadora),
+            AtributoRelatorioDTO.campo("Plano", plano), AtributoRelatorioDTO.campo("Franquia", franquiaDados),
+            AtributoRelatorioDTO.campo("Cobertura", cobertura),
+            AtributoRelatorioDTO.campo("Duração", duracaoDias == null ? null : duracaoDias + " dias"),
+            AtributoRelatorioDTO.campo("Quantidade", quantidade),
+            AtributoRelatorioDTO.campo("Códigos de ativação", codigosAtivacao),
+            AtributoRelatorioDTO.campo("Instruções de instalação", instrucoesInstalacao));
+    }
 }

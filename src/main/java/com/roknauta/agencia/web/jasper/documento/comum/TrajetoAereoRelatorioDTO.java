@@ -27,8 +27,9 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
         if (trajeto.getTrechos() != null) {
             voos = trajeto.getTrechos().stream().map(VooRelatorioDTO::new).toList();
             for (int indice = 0; indice < voos.size(); indice++) {
+                VooRelatorioDTO voo = voos.get(indice);
                 VooRelatorioDTO proximoVoo = indice + 1 < voos.size() ? voos.get(indice + 1) : null;
-                voos.get(indice).calcularConexaoPara(proximoVoo);
+                voo.calcularConexaoPara(proximoVoo);
             }
         }
     }
@@ -49,8 +50,9 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
     }
 
     public String getResumoRegrasTarifarias() {
-        return voos.stream().flatMap(voo -> java.util.stream.Stream.of(voo.getRegraAlteracao(),
-            voo.getRegraCancelamento(), voo.getOutrasInformacoesTarifarias()))
+        return voos.stream()
+            .flatMap(voo -> java.util.stream.Stream.of(voo.getRegraAlteracao(), voo.getRegraCancelamento(),
+                voo.getOutrasInformacoesTarifarias()))
             .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
     }
 
@@ -58,4 +60,11 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
         return java.util.stream.Stream.of(getResumoCondicoes(), getResumoRegrasTarifarias())
             .filter(texto -> texto != null && !texto.isBlank()).collect(Collectors.joining("\n"));
     }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        List<AtributoRelatorioDTO> atributos = new ArrayList<>();
+        atributos.add(AtributoRelatorioDTO.campo("Sentido", sentido));
+        return atributos.stream().filter(java.util.Objects::nonNull).toList();
+    }
+
 }
