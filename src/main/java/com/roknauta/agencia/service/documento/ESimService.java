@@ -104,8 +104,8 @@ public class ESimService implements CrudService<ESimDTO> {
             eSim = mapper.toEntity(dto);
             orcamento.getESims().add(eSim);
         } else {
-            eSim = orcamento.getESims().stream().filter(item -> dto.getId().equals(item.getId()))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("eSIM não pertence ao orçamento."));
+            eSim = orcamento.getESims().stream().filter(item -> dto.getId().equals(item.getId())).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("eSIM não pertence ao orçamento."));
             mapper.updateEntity(dto, eSim);
         }
         orcamentoRepository.save(orcamento);

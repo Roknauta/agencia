@@ -15,7 +15,7 @@
     </ui:define>
     <ui:define name="resultados">
         <m:crudDataTable>
-            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
+            <!--<p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
                 <p:menuButton id="optionsSeguro" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}"
                               ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
                     <p:menuitem id="editSeguro" value="#{msg['editar']}" icon="pi pi-pencil"
@@ -27,7 +27,7 @@
                                    message="#{msg['interface.confirma.esta.acao']}"/>
                     </p:menuitem>
                 </p:menuButton>
-            </p:column>
+            </p:column>-->
             <t:column headerText="#{msg['seguradora']}" value="#{item.seguradora}"/>
             <t:column headerText="#{msg['plano']}" value="#{item.plano}"/>
             <t:column headerText="#{msg['numero.apolice']}" value="#{item.numeroApolice}"/>
@@ -66,6 +66,8 @@
         </p:panelGrid>
         <m:inputTextarea id="resumoCobertura" label="#{msg['resumo.cobertura']}"
                          value="#{seguroViagemController.editForm.resumoCobertura}" rows="4"/>
+        <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                         value="#{seguroViagemController.editForm.observacoes}" maxlength="3000" rows="4"/>
         <p:panel header="#{msg['viajantes.cobertos']}" styleClass="form-field">
             <m:autoComplete id="viajantesCobertos" label="#{msg['viajantes.cobertos']}"
                             value="#{seguroViagemController.editForm.viajantesCobertos}"

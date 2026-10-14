@@ -34,7 +34,8 @@
 			<element kind="textField" uuid="5617c287-ba13-485c-8e23-b1ff625d8093" positionType="Float" x="0" y="244" width="523" height="26" forecolor="#003366" fontSize="9.0" textAdjust="StretchHeight" blankWhenNull="true" vTextAlign="Middle">
 				<expression><![CDATA["Cancelamento: " + $F{hospedagem}.getCancelamento()]]></expression>
 			</element>
-			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="285" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
+			<element kind="textField" positionType="Float" x="0" y="273" width="523" height="24" forecolor="#003366" fontSize="10" bold="true" blankWhenNull="true"><expression><![CDATA[$F{hospedagem}.getValorTotal() == null ? "" : "Valor: " + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format($F{hospedagem}.getValorTotal())]]></expression></element>
+			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="303" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
 		</band><band height="216" splitType="Stretch">
             <printWhenExpression><![CDATA[!$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression>
             <element kind="staticText" uuid="c5fc03ae-a80e-4c04-8339-3da348fa72f8" x="0" y="0" width="523" height="22" forecolor="#003366" fontSize="12" bold="true">

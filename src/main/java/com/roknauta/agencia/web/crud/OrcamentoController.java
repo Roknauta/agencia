@@ -49,6 +49,10 @@ public class OrcamentoController extends CrudControllerBase<OrcamentoDTO, Orcame
         return TipoDocumentoViajante.values();
     }
 
+    public void novoViajante() {
+        viajanteForm = new ViajanteDTO();
+    }
+
     public void adicionarViajante() {
         if (viajanteForm == null || viajanteForm.getNome() == null || viajanteForm.getNome().isBlank()) {
             throw new IllegalArgumentException("Informe o nome do viajante.");

@@ -31,6 +31,7 @@ public class AluguelVeiculoRelatorioDTO {
     private BigDecimal valorTotal;
     private String resumoRetirada;
     private String resumoDevolucao;
+    private String resumoValores;
 
     public AluguelVeiculoRelatorioDTO(AluguelVeiculoDTO aluguel) {
         if (aluguel == null) {
@@ -76,6 +77,8 @@ public class AluguelVeiculoRelatorioDTO {
             .collect(Collectors.joining(" • "));
         resumoDevolucao = itens.stream().map(item -> dataHora(item.getDevolucao())).filter(texto -> !texto.isBlank())
             .collect(Collectors.joining(" • "));
+        resumoValores = itens.stream().map(AluguelVeiculoRelatorioDTO::textoValor).filter(texto -> !texto.isBlank())
+            .collect(Collectors.joining(" • "));
     }
 
     private static String juntar(List<String> valores) {
@@ -84,5 +87,15 @@ public class AluguelVeiculoRelatorioDTO {
 
     private static String dataHora(LocalDateTime valor) {
         return valor == null ? "" : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    private static String textoValor(AluguelVeiculoRelatorioDTO aluguel) {
+        if (aluguel.getValorTotal() == null) {
+            return "";
+        }
+        String rotulo = java.util.stream.Stream.of(aluguel.getLocadora(), aluguel.getCategoria())
+            .filter(valor -> valor != null && !valor.isBlank()).collect(Collectors.joining(" "));
+        return (rotulo.isBlank() ? "Aluguel de veículo" : rotulo) + ": " + java.text.NumberFormat
+            .getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(aluguel.getValorTotal());
     }
 }

@@ -15,7 +15,7 @@
     </ui:define>
     <ui:define name="resultados">
         <m:crudDataTable>
-            <p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
+            <!--<p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
                 <p:menuButton id="optionsESim" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}"
                               ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
                     <p:menuitem id="editESim" value="#{msg['editar']}" icon="pi pi-pencil"
@@ -27,7 +27,7 @@
                                    message="#{msg['interface.confirma.esta.acao']}"/>
                     </p:menuitem>
                 </p:menuButton>
-            </p:column>
+            </p:column>-->
             <t:column headerText="#{msg['operadora']}" value="#{item.operadora}"/>
             <t:column headerText="#{msg['plano']}" value="#{item.plano}"/>
             <t:column headerText="#{msg['franquia.dados']}" value="#{item.franquiaDados}"/>
@@ -64,6 +64,8 @@
                          value="#{eSimController.editForm.cobertura}" rows="3"/>
         <m:inputTextarea id="instrucoes" label="#{msg['instrucoes.instalacao']}"
                          value="#{eSimController.editForm.instrucoesInstalacao}" rows="4"/>
+        <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                         value="#{eSimController.editForm.observacoes}" maxlength="3000" rows="4"/>
         <p:panel header="#{msg['codigos.ativacao']}" styleClass="form-field">
             <p:commandButton id="adicionarCodigo" value="#{msg['adicionar.codigo']}" icon="pi pi-plus"
                              action="#{eSimController.adicionarCodigo}" process="@this" update="codigosTabela"/>

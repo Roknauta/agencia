@@ -26,6 +26,8 @@ public class SeguroViagem extends EntidadeBase {
     private String plano;
     @Column(columnDefinition = "clob")
     private String resumoCobertura;
+    @Column(length = 3000)
+    private String observacoes;
     @Column(length = 100)
     private String numeroApolice;
     private LocalDate inicioVigencia;

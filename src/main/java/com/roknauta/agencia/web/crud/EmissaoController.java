@@ -91,8 +91,8 @@ public class EmissaoController extends CrudControllerBase<EmissaoDTO, EmissaoSer
         }
         List<ViajanteDTO> viajantes = editForm.getViajantes();
         List<TrechoAereoDTO> trechos = getTrechosDisponiveis();
-        if (indiceViajanteBilhete < 0 || indiceViajanteBilhete >= viajantes.size()
-            || indiceTrechoBilhete < 0 || indiceTrechoBilhete >= trechos.size()) {
+        if (indiceViajanteBilhete < 0 || indiceViajanteBilhete >= viajantes.size() || indiceTrechoBilhete < 0
+            || indiceTrechoBilhete >= trechos.size()) {
             throw new IllegalArgumentException("Viajante ou trecho aéreo inválido.");
         }
         bilheteForm.setViajante(viajantes.get(indiceViajanteBilhete));

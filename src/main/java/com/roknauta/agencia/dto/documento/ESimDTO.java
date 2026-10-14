@@ -21,6 +21,7 @@ public class ESimDTO extends BaseDTO {
     private String cobertura;
     private Integer duracaoDias;
     private String instrucoesInstalacao;
+    private String observacoes;
     private List<String> codigosAtivacao = new ArrayList<>();
     private int quantidade = 1;
     private BigDecimal valorTotal;

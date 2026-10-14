@@ -7,8 +7,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.List;
 
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import com.roknauta.agencia.dto.documento.ViajanteDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.DocumentoViagemRelatorioDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +47,8 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private BigDecimal desconto = BigDecimal.ZERO;
     private BigDecimal total = BigDecimal.ZERO;
     private BigDecimal valorPorPessoa = BigDecimal.ZERO;
+    private boolean possuiPassagensAereas;
+    private boolean possuiPassagensRodoviarias;
     private String consultaPrecosEm;
     private String aviso =
         "Esta cotação é preliminar: não representa reserva nem garante preço ou disponibilidade. Se o cliente desejar prosseguir, a agência fará nova consulta e poderá solicitar uma pré-reserva. Os valores e o prazo da pré-reserva serão confirmados no contrato antes do aceite e do pagamento.";
@@ -52,19 +63,15 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         consultaPrecosEm = elaboradoEm;
         validade = orcamento.getValidadeAte() == null ? null : orcamento.getValidadeAte().format(DATA);
         pagamento = orcamento.getPagamento();
-        valorAereo = soma(getTrajetosAereos().stream()
-            .map(com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO::getValorTotal));
+        possuiPassagensAereas = !getTrajetosAereos().isEmpty();
+        possuiPassagensRodoviarias = !getTrajetosRodoviarios().isEmpty();
+        valorAereo = soma(getTrajetosAereos().stream().map(TrajetoAereoRelatorioDTO::getValorTotal));
         valorRodoviario = totalRodoviario();
-        valorHospedagem = soma(getHospedagens().stream()
-            .map(com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO::getValorTotal));
-        valorTransfer = soma(getTransfers().stream()
-            .map(com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO::getValorTotal));
-        valorAlugueis = soma(getAlugueis().stream()
-            .map(com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO::getValorTotal));
-        valorSeguros = soma(getSegurosViagem().stream()
-            .map(com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO::getValorTotal));
-        valorESims = soma(
-            getESims().stream().map(com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO::getValorTotal));
+        valorHospedagem = soma(getHospedagens().stream().map(HospedagemRelatorioDTO::getValorTotal));
+        valorTransfer = soma(getTransfers().stream().map(TransferRelatorioDTO::getValorTotal));
+        valorAlugueis = soma(getAlugueis().stream().map(AluguelVeiculoRelatorioDTO::getValorTotal));
+        valorSeguros = soma(getSegurosViagem().stream().map(SeguroViagemRelatorioDTO::getValorTotal));
+        valorESims = soma(getESims().stream().map(ESimRelatorioDTO::getValorTotal));
         servicos = valor(orcamento.getServicos());
         desconto = valor(orcamento.getDesconto());
         total = valorAereo.add(valorRodoviario).add(valorHospedagem).add(valorTransfer).add(valorAlugueis)
@@ -79,7 +86,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             : total.divide(BigDecimal.valueOf(quantidadePassageiros), 2, RoundingMode.HALF_UP);
     }
 
-    public java.util.List<com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO> getPassagensRodoviarias() {
+    public List<TrajetoRodoviarioRelatorioDTO> getPassagensRodoviarias() {
         return getTrajetosRodoviarios();
     }
 
@@ -88,6 +95,73 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
                 voo.getOutrasInformacoesTarifarias()))
             .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
+    }
+
+    public boolean isPossuiSeguros() {
+        return !getSegurosViagem().isEmpty();
+    }
+
+    public boolean isPossuiESims() {
+        return !getESims().isEmpty();
+    }
+
+    public boolean isPossuiHospedagens() {
+        return !getHospedagens().isEmpty();
+    }
+
+    public boolean isPossuiTransfers() {
+        return !getTransfers().isEmpty();
+    }
+
+    public boolean isPossuiAlugueis() {
+        return !getAlugueis().isEmpty();
+    }
+
+    public String getResumoSeguros() {
+        return getSegurosViagem().stream()
+            .map(seguro -> Stream
+                .of("Seguradora: " + Objects.toString(seguro.getSeguradora(), ""),
+                    "Plano: " + Objects.toString(seguro.getPlano(), ""),
+                    "Apólice: " + Objects.toString(seguro.getNumeroApolice(), ""),
+                    "Vigência: " + Objects.toString(seguro.getInicioVigencia(), "") + " a "
+                        + Objects.toString(seguro.getFimVigencia(), ""),
+                    "Viajantes: " + Objects.toString(seguro.getViajantesCobertos(), ""),
+                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""),
+                    "Observações: " + Objects.toString(seguro.getObservacoes(), ""),
+                    "Valor: " + formatarDinheiro(seguro.getValorTotal()))
+                .filter(linha -> !linha.endsWith(": ")).collect(Collectors.joining("\n")))
+            .collect(Collectors.joining("\n\n"));
+    }
+
+    public String getResumoESims() {
+        return getESims().stream().map(esim -> Stream.of("Operadora: " + Objects.toString(esim.getOperadora(), ""),
+            "Plano: " + Objects.toString(esim.getPlano(), ""),
+            "Franquia: " + Objects.toString(esim.getFranquiaDados(), ""),
+            "Cobertura: " + Objects.toString(esim.getCobertura(), ""),
+            "Duração: " + Objects.toString(esim.getDuracaoDias(), "") + " dias", "Quantidade: " + esim.getQuantidade(),
+            "Códigos de ativação: " + Objects.toString(esim.getCodigosAtivacao(), ""),
+            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""),
+            "Observações: " + Objects.toString(esim.getObservacoes(), ""),
+            "Valor: " + formatarDinheiro(esim.getValorTotal())).filter(linha -> !linha.endsWith(": "))
+            .collect(Collectors.joining("\n"))).collect(Collectors.joining("\n\n"));
+    }
+
+    public String getResumoValoresAereos() {
+        return getTrajetosAereos().stream().map(trajeto -> Objects.toString(trajeto.getSentido(), "Trecho") + ": "
+            + formatarDinheiro(trajeto.getValorTotal())).collect(Collectors.joining(" • "));
+    }
+
+    public String getResumoValoresRodoviarios() {
+        return getTrajetosRodoviarios().stream()
+            .map(trajeto -> Objects.toString(trajeto.getTransportadora(), "Passagem rodoviária") + " ("
+                + Objects.toString(trajeto.getOrigem(), "") + " → " + Objects.toString(trajeto.getDestino(), "") + "): "
+                + formatarDinheiro(trajeto.getValorTotal()))
+            .collect(Collectors.joining(" • "));
+    }
+
+    private static String formatarDinheiro(BigDecimal valor) {
+        return valor == null ? ""
+            : java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
     }
 
     private BigDecimal totalRodoviario() {

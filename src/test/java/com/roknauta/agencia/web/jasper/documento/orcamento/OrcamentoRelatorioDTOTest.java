@@ -57,7 +57,7 @@ class OrcamentoRelatorioDTOTest {
         aereoComHotel.setESims(List.of());
         aereoComHotel.setTrajetosRodoviarios(List.of());
         OrcamentoRelatorioDTO primeiro = new OrcamentoRelatorioDTO(aereoComHotel);
-        assertEquals(new BigDecimal("6600.00"), primeiro.getTotal());
+        assertEquals(new BigDecimal("6350.00"), primeiro.getTotal());
         assertEquals(BigDecimal.ZERO, primeiro.getValorTransfer());
         assertEquals(2, primeiro.getIda().getVoos().size());
 

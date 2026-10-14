@@ -19,6 +19,7 @@ public class SeguroViagemDTO extends BaseDTO {
     private String seguradora;
     private String plano;
     private String resumoCobertura;
+    private String observacoes;
     private String numeroApolice;
     private LocalDate inicioVigencia;
     private LocalDate fimVigencia;

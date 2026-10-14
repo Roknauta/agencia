@@ -20,6 +20,7 @@ public class ESimRelatorioDTO {
     private String cobertura;
     private Integer duracaoDias;
     private String instrucoesInstalacao;
+    private String observacoes;
     private String codigosAtivacao;
     private int quantidade;
     private BigDecimal valorTotal;
@@ -34,6 +35,7 @@ public class ESimRelatorioDTO {
         cobertura = esim.getCobertura();
         duracaoDias = esim.getDuracaoDias();
         instrucoesInstalacao = esim.getInstrucoesInstalacao();
+        observacoes = esim.getObservacoes();
         List<String> codigos = esim.getCodigosAtivacao();
         codigosAtivacao = codigos == null ? ""
             : codigos.stream().filter(codigo -> codigo != null && !codigo.isBlank()).collect(Collectors.joining(", "));

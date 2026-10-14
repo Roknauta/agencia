@@ -109,8 +109,8 @@ public class SeguroViagemService implements CrudService<SeguroViagemDTO> {
             seguro = mapper.toEntity(dto);
             orcamento.getSegurosViagem().add(seguro);
         } else {
-            seguro = orcamento.getSegurosViagem().stream().filter(item -> dto.getId().equals(item.getId()))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Seguro viagem não pertence ao orçamento."));
+            seguro = orcamento.getSegurosViagem().stream().filter(item -> dto.getId().equals(item.getId())).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Seguro viagem não pertence ao orçamento."));
             mapper.updateEntity(dto, seguro);
         }
         if (dto.getInicioVigencia() != null && dto.getFimVigencia() != null

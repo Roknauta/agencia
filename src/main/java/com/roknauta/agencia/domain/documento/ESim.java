@@ -31,6 +31,8 @@ public class ESim extends EntidadeBase {
     private Integer duracaoDias;
     @Column(columnDefinition = "clob")
     private String instrucoesInstalacao;
+    @Column(length = 3000)
+    private String observacoes;
     @ElementCollection
     @CollectionTable(name = "esim_codigos_ativacao", joinColumns = @JoinColumn(name = "esim_id"))
     @Column(name = "codigo", nullable = false, length = 1000)

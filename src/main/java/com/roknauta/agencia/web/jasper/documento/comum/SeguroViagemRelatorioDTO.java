@@ -18,6 +18,7 @@ public class SeguroViagemRelatorioDTO {
     private String seguradora;
     private String plano;
     private String resumoCobertura;
+    private String observacoes;
     private String numeroApolice;
     private LocalDate inicioVigencia;
     private LocalDate fimVigencia;
@@ -31,6 +32,7 @@ public class SeguroViagemRelatorioDTO {
         seguradora = seguro.getSeguradora();
         plano = seguro.getPlano();
         resumoCobertura = seguro.getResumoCobertura();
+        observacoes = seguro.getObservacoes();
         numeroApolice = seguro.getNumeroApolice();
         inicioVigencia = seguro.getInicioVigencia();
         fimVigencia = seguro.getFimVigencia();

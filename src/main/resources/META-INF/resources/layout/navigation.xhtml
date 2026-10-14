@@ -6,12 +6,12 @@
                 <p:menuitem value="#{msg['pais']}" outcome="/crud/pais" icon="pi pi-globe"
                             styleClass="#{view.viewId eq '/crud/pais.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/pais.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['cidade']}" outcome="/crud/cidade" icon="pi pi-map"
+                            styleClass="#{view.viewId eq '/crud/cidade.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/cidade.xhtml' ? 'page' : null}"/>
                 <p:menuitem value="#{msg['companhia.aerea']}" outcome="/crud/companhia-aerea" icon="pi pi-send"
                             styleClass="#{view.viewId eq '/crud/companhia-aerea.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/companhia-aerea.xhtml' ? 'page' : null}"/>
-                <p:menuitem value="#{msg['hotel']}" outcome="/crud/hotel" icon="pi pi-building"
-                            styleClass="#{view.viewId eq '/crud/hotel.xhtml' ? 'menu-atual' : ''}"
-                            pt:aria-current="#{view.viewId eq '/crud/hotel.xhtml' ? 'page' : null}"/>
                 <p:menuitem value="#{msg['aeroporto']}" outcome="/crud/aeroporto" icon="pi pi-send"
                             styleClass="#{view.viewId eq '/crud/aeroporto.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/aeroporto.xhtml' ? 'page' : null}"/>
@@ -24,9 +24,9 @@
                 <p:menuitem value="#{msg['voo']}" outcome="/crud/voo" icon="pi pi-send"
                             styleClass="#{view.viewId eq '/crud/voo.xhtml' ? 'menu-atual' : ''}"
                             pt:aria-current="#{view.viewId eq '/crud/voo.xhtml' ? 'page' : null}"/>
-                <p:menuitem value="#{msg['cidade']}" outcome="/crud/cidade" icon="pi pi-map"
-                            styleClass="#{view.viewId eq '/crud/cidade.xhtml' ? 'menu-atual' : ''}"
-                            pt:aria-current="#{view.viewId eq '/crud/cidade.xhtml' ? 'page' : null}"/>
+                <p:menuitem value="#{msg['hotel']}" outcome="/crud/hotel" icon="pi pi-building"
+                            styleClass="#{view.viewId eq '/crud/hotel.xhtml' ? 'menu-atual' : ''}"
+                            pt:aria-current="#{view.viewId eq '/crud/hotel.xhtml' ? 'page' : null}"/>
             </p:submenu>
             <p:submenu label="#{msg['documentos.menu']}" expanded="true">
                 <p:menuitem value="#{msg['orcamento']}" outcome="/crud/orcamento" icon="pi pi-file-edit"

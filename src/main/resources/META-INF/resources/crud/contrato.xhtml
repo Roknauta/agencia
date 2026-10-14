@@ -10,7 +10,7 @@
         <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
                         value="#{contratoController.searchForm.orcamento}"
                         completeMethod="#{contratoController.completeOrcamento}"
-                        var="orcamento" itemLabel="#{orcamento.numero} - #{orcamento.cliente} (#{orcamento.status.descricao})" itemValue="#{orcamento}"
+                        var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                         converter="#{orcamentoConverter}" required="false" minQueryLength="0"/>
     </ui:define>
     <ui:define name="resultados">
@@ -36,7 +36,7 @@
             <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
                             value="#{contratoController.orcamentoSelecionado}"
                             completeMethod="#{contratoController.completeOrcamento}"
-                            var="orcamento" itemLabel="#{orcamento.numero} - #{orcamento.cliente} (#{orcamento.status.descricao})" itemValue="#{orcamento}"
+                            var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                             converter="#{orcamentoConverter}" required="true" minQueryLength="0">
                 <p:ajax event="itemSelect" listener="#{contratoController.selecionarOrcamento}"
                         process="@this" update=":crudContent"/>

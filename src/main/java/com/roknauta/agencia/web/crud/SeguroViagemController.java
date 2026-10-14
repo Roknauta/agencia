@@ -75,8 +75,8 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
                 if (editForm.getViajantesCobertos() == null) {
                     editForm.setViajantesCobertos(new ArrayList<>());
                 }
-                editForm.getViajantesCobertos().removeIf(viajante -> viajantes.stream()
-                    .noneMatch(item -> item.getId().equals(viajante.getId())));
+                editForm.getViajantesCobertos()
+                    .removeIf(viajante -> viajantes.stream().noneMatch(item -> item.getId().equals(viajante.getId())));
             }
         }
         atualizarResultados();
@@ -122,9 +122,18 @@ public class SeguroViagemController extends CrudControllerBase<SeguroViagemDTO, 
         idOrcamento = null;
     }
 
-    public Long getIdOrcamento() { return idOrcamento; }
-    public void setIdOrcamento(Long idOrcamento) { this.idOrcamento = idOrcamento; }
-    public OrcamentoDTO getOrcamentoSelecionado() { return orcamentoSelecionado; }
+    public Long getIdOrcamento() {
+        return idOrcamento;
+    }
+
+    public void setIdOrcamento(Long idOrcamento) {
+        this.idOrcamento = idOrcamento;
+    }
+
+    public OrcamentoDTO getOrcamentoSelecionado() {
+        return orcamentoSelecionado;
+    }
+
     public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
         this.orcamentoSelecionado = orcamentoSelecionado;
         idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();

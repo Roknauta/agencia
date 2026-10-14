@@ -27,8 +27,8 @@ public class ViajanteDTOConverter implements Converter<ViajanteDTO> {
             Long id = Long.parseLong(value);
             return viajanteService.buscarPorId(id);
         } catch (NumberFormatException e) {
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Identificador de viajante inválido.", null), e);
+            throw new ConverterException(
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Identificador de viajante inválido.", null), e);
         }
     }
 

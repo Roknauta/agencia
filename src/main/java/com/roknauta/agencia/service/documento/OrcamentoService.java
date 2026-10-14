@@ -50,7 +50,11 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
 
     @Transactional(readOnly = true)
     public byte[] gerarPdf(Long id, Map<String, Object> parametros) throws IOException, JRException {
-        OrcamentoDTO orcamento = buscarPorId(id);
+        Orcamento entidade =
+            repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        entidade.getSegurosViagem().size();
+        entidade.getESims().size();
+        OrcamentoDTO orcamento = mapper.toDTO(entidade);
         return JasperUtils.gerarOrcamentoPdf(new OrcamentoRelatorioDTO(orcamento), parametros);
     }
 
@@ -75,11 +79,11 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
         Orcamento orcamento = repository.findById(idOrcamento)
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
         return orcamento.getViajantes().stream()
-            .filter(viajante -> filtro.isEmpty() || (viajante.getNome() != null
-                && viajante.getNome().toLowerCase().contains(filtro.toLowerCase())) || (viajante.getDocumento() != null
-                && viajante.getDocumento().toLowerCase().contains(filtro.toLowerCase())))
-            .map(viajanteMapper::toDTO)
-            .toList();
+            .filter(viajante -> filtro.isEmpty()
+                || (viajante.getNome() != null && viajante.getNome().toLowerCase().contains(filtro.toLowerCase()))
+                || (viajante.getDocumento() != null
+                    && viajante.getDocumento().toLowerCase().contains(filtro.toLowerCase())))
+            .map(viajanteMapper::toDTO).toList();
     }
 
     @Transactional

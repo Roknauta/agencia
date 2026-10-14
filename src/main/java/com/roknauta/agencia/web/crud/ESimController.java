@@ -113,9 +113,18 @@ public class ESimController extends CrudControllerBase<ESimDTO, ESimService> {
         }
     }
 
-    public Long getIdOrcamento() { return idOrcamento; }
-    public void setIdOrcamento(Long idOrcamento) { this.idOrcamento = idOrcamento; }
-    public OrcamentoDTO getOrcamentoSelecionado() { return orcamentoSelecionado; }
+    public Long getIdOrcamento() {
+        return idOrcamento;
+    }
+
+    public void setIdOrcamento(Long idOrcamento) {
+        this.idOrcamento = idOrcamento;
+    }
+
+    public OrcamentoDTO getOrcamentoSelecionado() {
+        return orcamentoSelecionado;
+    }
+
     public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
         this.orcamentoSelecionado = orcamentoSelecionado;
         idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();

@@ -142,12 +142,13 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 linha("Vigência", formatarLista(" a ", seguro.getInicioVigencia(), seguro.getFimVigencia())),
                 linha("Viajantes cobertos", seguro.getViajantesCobertos()),
                 linha("Resumo da cobertura", seguro.getResumoCobertura()), linha("Apólice", seguro.getNumeroApolice()),
-                linha("Valor", seguro.getValorTotal()))));
+                linha("Observações", seguro.getObservacoes()), linha("Valor", seguro.getValorTotal()))));
         getESims().forEach(esim -> adicionar(blocos, "eSIM",
             juntar(linha("Operadora", esim.getOperadora()), linha("Plano", esim.getPlano()),
                 linha("Franquia de dados", esim.getFranquiaDados()), linha("Cobertura", esim.getCobertura()),
                 linha("Duração", esim.getDuracaoDias() == null ? null : esim.getDuracaoDias() + " dias"),
-                linha("Quantidade", esim.getQuantidade()), linha("Valor", esim.getValorTotal()))));
+                linha("Quantidade", esim.getQuantidade()), linha("Observações", esim.getObservacoes()),
+                linha("Valor", esim.getValorTotal()))));
         BigDecimal total = totalServicos();
         if (total.signum() > 0) {
             adicionar(blocos, "Valor total dos serviços", linha("Total", total));

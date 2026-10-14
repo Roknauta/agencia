@@ -26,6 +26,7 @@ public class TransferRelatorioDTO {
     private java.math.BigDecimal valorTotal;
     private String resumoPercursos;
     private String resumoDatas;
+    private String resumoValores;
     private int quantidade;
 
     public TransferRelatorioDTO(TransferDTO transfer) {
@@ -73,5 +74,16 @@ public class TransferRelatorioDTO {
         resumoDatas = itens.stream().filter(item -> item.getDataHora() != null)
             .map(item -> item.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")))
             .collect(Collectors.joining(" • "));
+        resumoValores = itens.stream().map(item -> textoValor(item.getPrestador(), item.getValorTotal()))
+            .filter(texto -> !texto.isBlank()).collect(Collectors.joining(" • "));
+    }
+
+    private static String textoValor(String prestador, java.math.BigDecimal valor) {
+        if (valor == null) {
+            return "";
+        }
+        String rotulo = prestador == null || prestador.isBlank() ? "Transfer" : prestador;
+        return rotulo + ": "
+            + java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
     }
 }
