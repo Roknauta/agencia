@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class HospedagemRelatorioDTO {
+public class HospedagemRelatorioDTO extends ServicoRelatorioDTO {
 
     private String nome;
     private String cidade;
@@ -29,12 +29,11 @@ public class HospedagemRelatorioDTO {
     private String naoIncluidos;
     private String cancelamento;
     private String localizador;
-    private String observacoes;
-    private BigDecimal valorTotal;
     private List<FotoHospedagemRelatorioDTO> fotos = new ArrayList<>();
     private List<FotoHospedagemRelatorioDTO> paresFotos = new ArrayList<>();
 
     public HospedagemRelatorioDTO(HospedagemDTO hospedagem) {
+        super(hospedagem);
         if (hospedagem == null) {
             return;
         }
@@ -54,10 +53,8 @@ public class HospedagemRelatorioDTO {
         regime = hospedagem.getRegime() == null ? null : hospedagem.getRegime().getDescricao();
         incluidos = hospedagem.getIncluidos();
         naoIncluidos = hospedagem.getNaoIncluidos();
-        cancelamento = hospedagem.getCancelamento();
+        cancelamento = hospedagem.getRegrasCancelamento();
         localizador = hospedagem.getLocalizador();
-        observacoes = hospedagem.getObservacoes();
-        valorTotal = hospedagem.getValorTotal();
         List<FotoHospedagemDTO> fotos = hospedagem.getFotos() == null ? List.of() : hospedagem.getFotos();
         for (int i = 0; i < fotos.size(); i += 2) {
             FotoHospedagemRelatorioDTO foto =
@@ -65,5 +62,21 @@ public class HospedagemRelatorioDTO {
             paresFotos.add(foto);
             this.fotos.add(foto);
         }
+    }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Hotel", nome),
+            AtributoRelatorioDTO.campo("Cidade", cidade), AtributoRelatorioDTO.campo("Endereço", endereco),
+            AtributoRelatorioDTO.campo("Check-in", dataHora(checkIn)),
+            AtributoRelatorioDTO.campo("Check-out", dataHora(checkOut)),
+            AtributoRelatorioDTO.campo("Noites", noites > 0 ? noites : null),
+            AtributoRelatorioDTO.campo("Acomodação", acomodacao), AtributoRelatorioDTO.campo("Quartos", quartos),
+            AtributoRelatorioDTO.campo("Regime", regime), AtributoRelatorioDTO.campo("Incluídos", incluidos),
+            AtributoRelatorioDTO.campo("Não incluídos", naoIncluidos),
+            AtributoRelatorioDTO.campo("Localizador", localizador));
+    }
+
+    private static String dataHora(LocalDateTime valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }

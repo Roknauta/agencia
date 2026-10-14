@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AluguelVeiculoRelatorioDTO {
+public class AluguelVeiculoRelatorioDTO extends ServicoRelatorioDTO {
 
     private String locadora;
     private String categoria;
@@ -23,17 +23,16 @@ public class AluguelVeiculoRelatorioDTO {
     private String localDevolucao;
     private String coberturas;
     private String condicoes;
-    private String observacoes;
     private LocalDateTime retirada;
     private LocalDateTime devolucao;
     private String fusoHorarioRetirada;
     private String fusoHorarioDevolucao;
-    private BigDecimal valorTotal;
     private String resumoRetirada;
     private String resumoDevolucao;
     private String resumoValores;
 
     public AluguelVeiculoRelatorioDTO(AluguelVeiculoDTO aluguel) {
+        super(aluguel);
         if (aluguel == null) {
             return;
         }
@@ -47,12 +46,10 @@ public class AluguelVeiculoRelatorioDTO {
         localDevolucao = aluguel.getLocalDevolucao();
         coberturas = aluguel.getCoberturas();
         condicoes = aluguel.getCondicoes();
-        observacoes = aluguel.getObservacoes();
         retirada = aluguel.getRetirada();
         devolucao = aluguel.getDevolucao();
         fusoHorarioRetirada = aluguel.getFusoHorarioRetirada();
         fusoHorarioDevolucao = aluguel.getFusoHorarioDevolucao();
-        valorTotal = aluguel.getValorTotal();
         resumoRetirada = retirada == null ? "" : retirada.toString();
         resumoDevolucao = devolucao == null ? "" : devolucao.toString();
     }
@@ -70,9 +67,14 @@ public class AluguelVeiculoRelatorioDTO {
         localDevolucao = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getLocalDevolucao).toList());
         coberturas = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getCoberturas).toList());
         condicoes = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getCondicoes).toList());
-        observacoes = juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getObservacoes).toList());
-        valorTotal = itens.stream().map(AluguelVeiculoRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        setObservacoes(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getObservacoes).toList()));
+        setRegrasAlteracao(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getRegrasAlteracao).toList()));
+        setRegrasCancelamento(juntar(itens.stream().map(AluguelVeiculoRelatorioDTO::getRegrasCancelamento).toList()));
+        setValorTotal(itens.stream().map(AluguelVeiculoRelatorioDTO::getValorTotal).filter(java.util.Objects::nonNull)
+            .reduce(BigDecimal.ZERO, BigDecimal::add));
+        if (!itens.isEmpty()) {
+            setMoeda(itens.get(0).getMoeda());
+        }
         resumoRetirada = itens.stream().map(item -> dataHora(item.getRetirada())).filter(texto -> !texto.isBlank())
             .collect(Collectors.joining(" • "));
         resumoDevolucao = itens.stream().map(item -> dataHora(item.getDevolucao())).filter(texto -> !texto.isBlank())
@@ -95,7 +97,20 @@ public class AluguelVeiculoRelatorioDTO {
         }
         String rotulo = java.util.stream.Stream.of(aluguel.getLocadora(), aluguel.getCategoria())
             .filter(valor -> valor != null && !valor.isBlank()).collect(Collectors.joining(" "));
-        return (rotulo.isBlank() ? "Aluguel de veículo" : rotulo) + ": " + java.text.NumberFormat
-            .getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(aluguel.getValorTotal());
+        String simbolo = aluguel.getMoeda() == null ? "R$" : aluguel.getMoeda().getSimbolo();
+        return (rotulo.isBlank() ? "Aluguel de veículo" : rotulo) + ": " + simbolo + " " + java.text.NumberFormat
+            .getNumberInstance(java.util.Locale.forLanguageTag("pt-BR")).format(aluguel.getValorTotal());
+    }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Locadora", locadora),
+            AtributoRelatorioDTO.campo("Categoria / modelo", categoria),
+            AtributoRelatorioDTO.campo("Condutor", condutor), AtributoRelatorioDTO.campo("Localizador", localizador),
+            AtributoRelatorioDTO.campo("Local de retirada", localRetirada),
+            AtributoRelatorioDTO.campo("Retirada", resumoRetirada),
+            AtributoRelatorioDTO.campo("Local de devolução", localDevolucao),
+            AtributoRelatorioDTO.campo("Devolução", resumoDevolucao),
+            AtributoRelatorioDTO.campo("Coberturas / seguros", coberturas),
+            AtributoRelatorioDTO.campo("Franquia, caução, quilometragem e combustível", condicoes));
     }
 }

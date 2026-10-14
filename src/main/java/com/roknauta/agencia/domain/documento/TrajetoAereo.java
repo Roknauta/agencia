@@ -1,11 +1,9 @@
 package com.roknauta.agencia.domain.documento;
 
 import com.roknauta.agencia.domain.SentidoVoo;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.roknauta.agencia.domain.EntidadeBase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class TrajetoAereo extends EntidadeBase {
+@AssociationOverride(name = "taxas", joinTable = @JoinTable(name = "trajeto_aereo_taxas",
+    joinColumns = @JoinColumn(name = "servico_id"), inverseJoinColumns = @JoinColumn(name = "taxa_id")))
+public class TrajetoAereo extends Servico {
 
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
@@ -25,6 +25,4 @@ public class TrajetoAereo extends EntidadeBase {
     @JoinColumn(name = "trajeto_aereo_id")
     @OrderColumn(name = "ordem")
     private List<TrechoAereo> trechos = new ArrayList<>();
-    @Column(precision = 19, scale = 2)
-    private BigDecimal valorTotal;
 }

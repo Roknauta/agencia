@@ -1,44 +1,27 @@
 package com.roknauta.agencia.web.crud;
 
-import java.util.List;
-
 import com.roknauta.agencia.domain.documento.RegimeHospedagem;
 import com.roknauta.agencia.dto.documento.HospedagemDTO;
 import com.roknauta.agencia.dto.documento.FotoHospedagemDTO;
-import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import java.util.List;
 import com.roknauta.agencia.service.documento.HospedagemService;
 import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.web.Msg;
 import jakarta.faces.view.ViewScoped;
-import org.apache.commons.collections4.CollectionUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.springframework.stereotype.Component;
 
 @Component("hospedagemController")
 @ViewScoped
-public class HospedagemController extends CrudControllerBase<HospedagemDTO, HospedagemService> {
-
-    private final OrcamentoService orcamentoService;
-    private Long idOrcamento;
-    private OrcamentoDTO orcamentoSelecionado;
+public class HospedagemController extends ServicoControllerBase<HospedagemDTO, HospedagemService> {
 
     public HospedagemController(HospedagemService service, OrcamentoService orcamentoService) {
-        super(service);
-        this.orcamentoService = orcamentoService;
+        super(service, orcamentoService);
     }
 
     @Override
     public String pageTitle() {
         return Msg.get("hospedagem");
-    }
-
-    public List<OrcamentoDTO> completeOrcamento(String texto) {
-        return orcamentoService.findByTexto(texto);
-    }
-
-    public void selecionarOrcamento() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
-        atualizarResultados();
     }
 
     public RegimeHospedagem[] getRegimes() {
@@ -55,42 +38,18 @@ public class HospedagemController extends CrudControllerBase<HospedagemDTO, Hosp
         editForm.getFotos().remove(indice);
     }
 
-    private List<HospedagemDTO> getHospedagensDoOrcamento() {
-        return idOrcamento == null ? List.of() : service.findByOrcamento(idOrcamento);
+    @Override
+    protected List<HospedagemDTO> buscarServicosDoOrcamento(Long idOrcamento) {
+        return service.findByOrcamento(idOrcamento);
     }
 
     @Override
-    public void save() {
-        if (idOrcamento == null) {
-            throw new IllegalArgumentException("Selecione um orçamento.");
-        }
-        service.salvarNoOrcamento(idOrcamento, editForm);
-        atualizarResultados();
-        voltarPesquisa();
-        addInfoMessage("entidade.salva", pageTitle());
+    protected HospedagemDTO salvarNoOrcamento(Long idOrcamento, HospedagemDTO servico) {
+        return service.salvarNoOrcamento(idOrcamento, servico);
     }
 
     @Override
-    protected void atualizarResultados() {
-        setResult(getHospedagensDoOrcamento());
-        pesquisaRealizada = idOrcamento != null && CollectionUtils.isNotEmpty(getResult());
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (idOrcamento == null) {
-            return;
-        }
-        service.excluirDoOrcamento(idOrcamento, id);
-        atualizarResultados();
-    }
-
-    public OrcamentoDTO getOrcamentoSelecionado() {
-        return orcamentoSelecionado;
-    }
-
-    public void setOrcamentoSelecionado(OrcamentoDTO orcamentoSelecionado) {
-        this.orcamentoSelecionado = orcamentoSelecionado;
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
+    protected void excluirDoOrcamento(Long idOrcamento, Long idServico) {
+        service.excluirDoOrcamento(idOrcamento, idServico);
     }
 }

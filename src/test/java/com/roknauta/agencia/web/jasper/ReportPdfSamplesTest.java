@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -25,7 +26,6 @@ import com.roknauta.agencia.web.jasper.documento.contrato.ContratoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.emissao.EmissaoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.orcamento.OrcamentoRelatorioDTO;
 
-import net.sf.jasperreports.engine.JasperReport;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.parser.PdfTextExtractor;
 
@@ -40,14 +40,13 @@ class ReportPdfSamplesTest {
         try (InputStream recurso = JasperUtils.abrirRecurso("logo-jbd.png")) {
             logo = ImageIO.read(recurso);
         }
-        JasperReport relatorioHospedagens = JasperUtils.compilar("hospedagens-JBD.jrxml");
         Map<String, Object> parametros = new HashMap<>();
         parametros.put("LOGO", logo);
-        parametros.put("RELATORIO_HOSPEDAGENS", relatorioHospedagens);
 
         OrcamentoDTO orcamento = DadosRelatoriosTeste.orcamentoCompleto();
-        byte[] pdfOrcamento = JasperUtils.gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml",
-            new OrcamentoRelatorioDTO(orcamento), parametros);
+        orcamento.setTrajetosAereos(
+            List.of(DadosRelatoriosTeste.trajetoIdaComQuatroVoos(), DadosRelatoriosTeste.trajetoVolta()));
+        byte[] pdfOrcamento = JasperUtils.gerarOrcamentoPdf(new OrcamentoRelatorioDTO(orcamento), parametros);
         gravar(diretorio.resolve("orcamento-teste.pdf"), pdfOrcamento);
 
         EmissaoDTO emissao = new EmissaoDTO();
@@ -98,10 +97,29 @@ class ReportPdfSamplesTest {
         String textoEmissao = textoPdf(pdfEmissao).replaceAll("\\s+", "");
         assertTrue(textoOrcamentoNormalizado.contains("JJ1234"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("JJ5678"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("JJ9012"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("JJ3456"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TP1020"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("VOOS"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TRAJETOAÉREO—IDA"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TRAJETOAÉREO—VOLTA"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("DETALHESADICIONAIS"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("CABINE"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TARIFA"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("BAGAGEM"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("Desconto:R$5"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TaxaEmbarque:R$8,5"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("ValorTotal:R$78,5"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("1BagagemDespachada"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("1MaladeMão"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("1ItemPessoal"), textoOrcamento);
         assertTrue(textoContratoNormalizado.contains("Passagensaéreas"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("PR-123456"), textoContratoNormalizado);
         assertTrue(textoEmissao.contains("CTR-2026-001"), textoEmissao);
+        assertTrue(textoEmissao.contains("TRAJETOAÉREO—IDA"), textoEmissao);
+        assertTrue(textoEmissao.contains("TRAJETOAÉREO—VOLTA"), textoEmissao);
+        assertTrue(textoEmissao.contains("JJ1234"), textoEmissao);
+        assertTrue(textoEmissao.contains("JJ5678"), textoEmissao);
         assertTrue(textoContratoNormalizado.contains("ViaçãoExemplo"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("HotelCentralLisboa"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("TransferExemplo"), textoContratoNormalizado);
@@ -110,7 +128,7 @@ class ReportPdfSamplesTest {
         assertTrue(textoContratoNormalizado.contains("eSIM"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("Valor total dos serviços".replaceAll("\\s+", "")),
             textoContratoNormalizado);
-        assertTrue(textoContratoNormalizado.contains("R$7.955,00"), textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("R$7.958,50"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("regrasespecíficasaplicáveisaotransporteeaocasoconcreto."),
             textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("Outrosserviçosrodoviáriosobservarãosuaregulamentaçãoprópria."),

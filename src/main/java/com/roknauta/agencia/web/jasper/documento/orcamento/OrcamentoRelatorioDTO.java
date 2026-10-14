@@ -10,15 +10,9 @@ import java.util.stream.Stream;
 import java.util.List;
 
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
+import com.roknauta.agencia.domain.documento.Moeda;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.TransferRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.AluguelVeiculoRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.ESimRelatorioDTO;
-import com.roknauta.agencia.web.jasper.documento.comum.DocumentoViagemRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +30,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private String perfilPassageiros;
     private int quantidadePassageiros;
     private String pagamento;
+    private Moeda moeda;
     private BigDecimal valorAereo = BigDecimal.ZERO;
     private BigDecimal valorRodoviario = BigDecimal.ZERO;
     private BigDecimal valorHospedagem = BigDecimal.ZERO;
@@ -63,6 +58,7 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         consultaPrecosEm = elaboradoEm;
         validade = orcamento.getValidadeAte() == null ? null : orcamento.getValidadeAte().format(DATA);
         pagamento = orcamento.getPagamento();
+        moeda = orcamento.getMoeda();
         possuiPassagensAereas = !getTrajetosAereos().isEmpty();
         possuiPassagensRodoviarias = !getTrajetosRodoviarios().isEmpty();
         valorAereo = soma(getTrajetosAereos().stream().map(TrajetoAereoRelatorioDTO::getValorTotal));
@@ -90,11 +86,44 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         return getTrajetosRodoviarios();
     }
 
-    public String getRegras() {
-        return getTrajetosAereos().stream().flatMap(trajeto -> trajeto.getVoos().stream())
-            .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
-                voo.getOutrasInformacoesTarifarias()))
-            .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
+    public List<ServicoDetalheRelatorioDTO> getBlocosTrajetosAereos() {
+        return getTrajetosAereos().stream().map(trajeto -> {
+            String sentido = switch (Objects.toString(trajeto.getSentido(), "")) {
+                case "IDA" -> "IDA";
+                case "VOLTA" -> "VOLTA";
+                default -> "Trecho aéreo";
+            };
+            ServicoDetalheRelatorioDTO bloco = new ServicoDetalheRelatorioDTO("TRAJETO AÉREO — " + sentido, trajeto);
+            return bloco;
+        }).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosTrajetosRodoviarios() {
+        return getTrajetosRodoviarios().stream().map(trajeto -> bloco("PASSAGEM RODOVIÁRIA", trajeto)).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosHospedagens() {
+        return getHospedagens().stream().map(hospedagem -> bloco("HOSPEDAGEM", hospedagem)).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosTransfers() {
+        return getTransfers().stream().map(transfer -> bloco("TRANSFER", transfer)).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosAlugueis() {
+        return getAlugueis().stream().map(aluguel -> bloco("ALUGUEL DE CARRO", aluguel)).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosSeguros() {
+        return getSegurosViagem().stream().map(seguro -> bloco("SEGURO VIAGEM", seguro)).toList();
+    }
+
+    public List<ServicoDetalheRelatorioDTO> getBlocosESims() {
+        return getESims().stream().map(esim -> bloco("eSIM", esim)).toList();
+    }
+
+    private static ServicoDetalheRelatorioDTO bloco(String titulo, ServicoRelatorioDTO servico) {
+        return new ServicoDetalheRelatorioDTO(titulo, servico);
     }
 
     public boolean isPossuiSeguros() {
@@ -117,35 +146,6 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
         return !getAlugueis().isEmpty();
     }
 
-    public String getResumoSeguros() {
-        return getSegurosViagem().stream()
-            .map(seguro -> Stream
-                .of("Seguradora: " + Objects.toString(seguro.getSeguradora(), ""),
-                    "Plano: " + Objects.toString(seguro.getPlano(), ""),
-                    "Apólice: " + Objects.toString(seguro.getNumeroApolice(), ""),
-                    "Vigência: " + Objects.toString(seguro.getInicioVigencia(), "") + " a "
-                        + Objects.toString(seguro.getFimVigencia(), ""),
-                    "Viajantes: " + Objects.toString(seguro.getViajantesCobertos(), ""),
-                    "Cobertura: " + Objects.toString(seguro.getResumoCobertura(), ""),
-                    "Observações: " + Objects.toString(seguro.getObservacoes(), ""),
-                    "Valor: " + formatarDinheiro(seguro.getValorTotal()))
-                .filter(linha -> !linha.endsWith(": ")).collect(Collectors.joining("\n")))
-            .collect(Collectors.joining("\n\n"));
-    }
-
-    public String getResumoESims() {
-        return getESims().stream().map(esim -> Stream.of("Operadora: " + Objects.toString(esim.getOperadora(), ""),
-            "Plano: " + Objects.toString(esim.getPlano(), ""),
-            "Franquia: " + Objects.toString(esim.getFranquiaDados(), ""),
-            "Cobertura: " + Objects.toString(esim.getCobertura(), ""),
-            "Duração: " + Objects.toString(esim.getDuracaoDias(), "") + " dias", "Quantidade: " + esim.getQuantidade(),
-            "Códigos de ativação: " + Objects.toString(esim.getCodigosAtivacao(), ""),
-            "Instruções: " + Objects.toString(esim.getInstrucoesInstalacao(), ""),
-            "Observações: " + Objects.toString(esim.getObservacoes(), ""),
-            "Valor: " + formatarDinheiro(esim.getValorTotal())).filter(linha -> !linha.endsWith(": "))
-            .collect(Collectors.joining("\n"))).collect(Collectors.joining("\n\n"));
-    }
-
     public String getResumoValoresAereos() {
         return getTrajetosAereos().stream().map(trajeto -> Objects.toString(trajeto.getSentido(), "Trecho") + ": "
             + formatarDinheiro(trajeto.getValorTotal())).collect(Collectors.joining(" • "));
@@ -159,9 +159,13 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
             .collect(Collectors.joining(" • "));
     }
 
-    private static String formatarDinheiro(BigDecimal valor) {
-        return valor == null ? ""
-            : java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
+    private String formatarDinheiro(BigDecimal valor) {
+        if (valor == null) {
+            return "";
+        }
+        String simbolo = moeda == null ? "R$" : moeda.getSimbolo();
+        return simbolo + " "
+            + java.text.NumberFormat.getNumberInstance(java.util.Locale.forLanguageTag("pt-BR")).format(valor);
     }
 
     private BigDecimal totalRodoviario() {

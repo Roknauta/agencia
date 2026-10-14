@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ESimRelatorioDTO {
+public class ESimRelatorioDTO extends ServicoRelatorioDTO {
 
     private String operadora;
     private String plano;
@@ -20,12 +20,11 @@ public class ESimRelatorioDTO {
     private String cobertura;
     private Integer duracaoDias;
     private String instrucoesInstalacao;
-    private String observacoes;
     private String codigosAtivacao;
     private int quantidade;
-    private BigDecimal valorTotal;
 
     public ESimRelatorioDTO(ESimDTO esim) {
+        super(esim);
         if (esim == null) {
             return;
         }
@@ -35,11 +34,19 @@ public class ESimRelatorioDTO {
         cobertura = esim.getCobertura();
         duracaoDias = esim.getDuracaoDias();
         instrucoesInstalacao = esim.getInstrucoesInstalacao();
-        observacoes = esim.getObservacoes();
         List<String> codigos = esim.getCodigosAtivacao();
         codigosAtivacao = codigos == null ? ""
             : codigos.stream().filter(codigo -> codigo != null && !codigo.isBlank()).collect(Collectors.joining(", "));
         quantidade = esim.getQuantidade();
-        valorTotal = esim.getValorTotal();
+    }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Operadora", operadora),
+            AtributoRelatorioDTO.campo("Plano", plano), AtributoRelatorioDTO.campo("Franquia", franquiaDados),
+            AtributoRelatorioDTO.campo("Cobertura", cobertura),
+            AtributoRelatorioDTO.campo("Duração", duracaoDias == null ? null : duracaoDias + " dias"),
+            AtributoRelatorioDTO.campo("Quantidade", quantidade),
+            AtributoRelatorioDTO.campo("Códigos de ativação", codigosAtivacao),
+            AtributoRelatorioDTO.campo("Instruções de instalação", instrucoesInstalacao));
     }
 }

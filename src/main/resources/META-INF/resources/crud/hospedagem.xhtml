@@ -22,9 +22,7 @@
             <t:column headerText="#{msg['campo.check.out']}" value="#{item.checkOut}"
                       converter="localDateTimeGridConverter"/>
             <t:column headerText="#{msg['localizador']}" value="#{item.localizador}"/>
-            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
-                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
-            </t:column>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">
@@ -57,18 +55,15 @@
                 <f:selectItems value="#{hospedagemController.regimes}" var="regime"
                                itemValue="#{regime}" itemLabel="#{regime.descricao}"/>
             </m:selectOneMenu>
-            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
-                           value="#{hospedagemController.editForm.valorTotal}" minValue="0"
-                           decimalPlaces="2"/>
-            <m:inputTextarea id="cancelamento" label="#{msg['regra.cancelamento']}"
-                             value="#{hospedagemController.editForm.cancelamento}" rows="3"/>
             <m:inputTextarea id="incluidos" label="#{msg['incluidos']}"
                              value="#{hospedagemController.editForm.incluidos}" rows="3"/>
             <m:inputTextarea id="naoIncluidos" label="#{msg['nao.incluidos']}"
                              value="#{hospedagemController.editForm.naoIncluidos}" rows="3"/>
-            <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                             value="#{hospedagemController.editForm.observacoes}" rows="3"/>
         </p:panelGrid>
+        <ui:include src="/resources/components/servicoFields.xhtml">
+            <ui:param name="servico" value="#{hospedagemController.editForm}"/>
+            <ui:param name="controller" value="#{hospedagemController}"/>
+        </ui:include>
         <p:outputPanel id="fotosPanel">
             <p:fileUpload id="uploadFoto" mode="advanced" auto="true" multiple="true"
                           listener="#{hospedagemController.adicionarFoto}" update="fotosTabela"
@@ -83,5 +78,10 @@
                 </p:column>
             </p:dataTable>
         </p:outputPanel>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <ui:include src="servico-taxa-dialog.xhtml">
+            <ui:param name="controller" value="#{hospedagemController}"/>
+        </ui:include>
     </ui:define>
 </ui:composition>

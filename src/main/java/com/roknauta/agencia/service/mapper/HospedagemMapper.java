@@ -3,6 +3,7 @@ package com.roknauta.agencia.service.mapper;
 import com.roknauta.agencia.domain.documento.Hospedagem;
 import com.roknauta.agencia.dto.documento.HospedagemDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.AfterMapping;
 
@@ -11,8 +12,10 @@ public interface HospedagemMapper {
 
     HospedagemDTO toDTO(Hospedagem entity);
 
+    @Mapping(target = "taxas", ignore = true)
     Hospedagem toEntity(HospedagemDTO dto);
 
+    @Mapping(target = "taxas", ignore = true)
     void updateEntity(HospedagemDTO dto, @MappingTarget Hospedagem entity);
 
     @AfterMapping

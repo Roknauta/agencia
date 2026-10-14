@@ -1,16 +1,17 @@
 package com.roknauta.agencia.domain.documento;
 
 import com.roknauta.agencia.domain.Cidade;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.roknauta.agencia.domain.EntidadeBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.AssociationOverride;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class TrajetoRodoviario extends EntidadeBase {
+@AssociationOverride(name = "taxas", joinTable = @JoinTable(name = "trajeto_rodoviario_taxas",
+    joinColumns = @JoinColumn(name = "servico_id"), inverseJoinColumns = @JoinColumn(name = "taxa_id")))
+public class TrajetoRodoviario extends Servico {
 
     @Column(length = 200)
     private String transportadora;
@@ -39,6 +42,4 @@ public class TrajetoRodoviario extends EntidadeBase {
     private String bagagem;
     private LocalDateTime saida;
     private LocalDateTime chegada;
-    @Column(precision = 19, scale = 2)
-    private BigDecimal valorTotal;
 }

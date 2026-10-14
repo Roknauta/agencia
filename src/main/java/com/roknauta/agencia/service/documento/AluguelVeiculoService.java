@@ -15,10 +15,13 @@ public class AluguelVeiculoService {
 
     private final AluguelVeiculoRepository repository;
     private final AluguelVeiculoMapper mapper;
+    private final ServicoTaxaService servicoTaxaService;
 
-    public AluguelVeiculoService(AluguelVeiculoRepository repository, AluguelVeiculoMapper mapper) {
+    public AluguelVeiculoService(AluguelVeiculoRepository repository, AluguelVeiculoMapper mapper,
+        ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.mapper = mapper;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -43,6 +46,7 @@ public class AluguelVeiculoService {
                 .orElseThrow(() -> new IllegalArgumentException("AluguelVeiculo não encontrado."));
             mapper.updateEntity(dto, entidade);
         }
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 }

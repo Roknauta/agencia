@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="svc_trajeto_rodoviario" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="24" bottomMargin="24" uuid="8771deb6-e6aa-4aec-9a75-6dd4aeb4b3c1">
+ <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+ <style name="Base" default="true" fontName="DejaVu Sans" fontSize="9" forecolor="#003366"/>
+ <dataset name="Campos" uuid="56f40c2a-843a-4512-8cc0-defc41a75908"><field name="rotulo" class="java.lang.String"/><field name="valor" class="java.lang.String"/></dataset>
+ <field name="servico" class="com.roknauta.agencia.web.jasper.documento.comum.ServicoDetalheRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field>
+ <detail><band height="550" splitType="Stretch">
+  <element kind="textField" x="0" y="0" width="523" height="28" fontSize="15" forecolor="#CCAA55" bold="true" hTextAlign="Center"><expression><![CDATA[$F{servico}.getTitulo()]]></expression></element>
+  <element kind="rectangle" x="189" y="31" width="145" height="2" mode="Opaque" backcolor="#003366"><pen lineWidth="0"/></element>
+  <element kind="frame" positionType="Float" x="0" y="60" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTransportadora() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTransportadora().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Transportadora:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTransportadora()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="80" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getOrigem() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getOrigem().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Origem:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getOrigem()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="100" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getDestino() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getDestino().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Destino:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getDestino()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="120" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalEmbarque() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalEmbarque().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Terminal de embarque:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalEmbarque()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="140" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalDesembarque() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalDesembarque().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Terminal de desembarque:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getTerminalDesembarque()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="160" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getCategoria() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getCategoria().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Categoria:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getCategoria()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="180" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getSaida() != null]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Embarque:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getSaida() == null ? "" : ((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getSaida().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="200" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getChegada() != null]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Chegada:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getChegada() == null ? "" : ((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getChegada().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="220" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getLocalizador() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getLocalizador().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Localizador:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getLocalizador()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="240" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getBagagem() != null && !((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getBagagem().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Bagagem:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.TrajetoRodoviarioRelatorioDTO)$F{servico}.getDados()).getBagagem()]]></expression></element>
+  </element>
+  <element kind="staticText" positionType="Float" x="0" y="290" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true"><text><![CDATA[VALORES DO SERVIÇO]]></text></element>
+  <element kind="component" positionType="Float" x="0" y="315" width="523" height="80">
+ <component kind="list" printOrder="Vertical">
+  <datasetRun uuid="02ed91bc-ccb0-4fb4-985c-0a099c1b101f" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getValores())]]></dataSourceExpression></datasetRun>
+  <contents height="20" width="523">
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element>
+  </contents>
+ </component>
+</element>
+  <element kind="staticText" positionType="Float" x="0" y="420" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true"><text><![CDATA[ALTERAÇÃO, CANCELAMENTO E OBSERVAÇÕES]]></text></element>
+  <element kind="component" positionType="Float" x="0" y="445" width="523" height="90">
+ <component kind="list" printOrder="Vertical">
+  <datasetRun uuid="727ada3e-fae3-4ed6-9fd4-d80cbf60a12f" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getCondicoes())]]></dataSourceExpression></datasetRun>
+  <contents height="20" width="523">
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element>
+  </contents>
+ </component>
+</element>
+  <element kind="break" positionType="Float" x="0" y="545" width="100" height="1"/>
+ </band></detail>
+</jasperReport>

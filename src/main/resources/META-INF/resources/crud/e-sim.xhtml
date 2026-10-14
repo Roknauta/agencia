@@ -33,9 +33,7 @@
             <t:column headerText="#{msg['franquia.dados']}" value="#{item.franquiaDados}"/>
             <t:column headerText="#{msg['duracao.dias']}" value="#{item.duracaoDias}"/>
             <t:column headerText="#{msg['quantidade']}" value="#{item.quantidade}"/>
-            <t:column headerText="#{msg['valor.total']}" value="#{item.valorTotal}">
-                <f:convertNumber type="currency" currencyCode="BRL" locale="pt_BR"/>
-            </t:column>
+            <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">
@@ -57,29 +55,24 @@
                            value="#{eSimController.editForm.duracaoDias}" minValue="1" decimalPlaces="0"/>
             <m:inputNumber id="quantidade" label="#{msg['quantidade']}"
                            value="#{eSimController.editForm.quantidade}" minValue="1" decimalPlaces="0" required="true"/>
-            <m:inputNumber id="valorTotal" label="#{msg['valor.total']}"
-                           value="#{eSimController.editForm.valorTotal}" minValue="0" decimalPlaces="2"/>
-        </p:panelGrid>
         <m:inputTextarea id="cobertura" label="#{msg['cobertura']}"
                          value="#{eSimController.editForm.cobertura}" rows="3"/>
         <m:inputTextarea id="instrucoes" label="#{msg['instrucoes.instalacao']}"
                          value="#{eSimController.editForm.instrucoesInstalacao}" rows="4"/>
-        <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                         value="#{eSimController.editForm.observacoes}" maxlength="3000" rows="4"/>
-        <p:panel header="#{msg['codigos.ativacao']}" styleClass="form-field">
-            <p:commandButton id="adicionarCodigo" value="#{msg['adicionar.codigo']}" icon="pi pi-plus"
-                             action="#{eSimController.adicionarCodigo}" process="@this" update="codigosTabela"/>
-            <p:dataTable id="codigosTabela" value="#{eSimController.editForm.codigosAtivacao}" var="codigo"
-                         rowIndexVar="indiceCodigo" emptyMessage="#{msg['nenhum.codigo.ativacao']}"
-                         style="margin-top: 10px" showGridlines="true">
-                <p:column headerText="#{msg['interface.acoes']}" style="width: 70px">
-                    <p:commandButton action="#{eSimController.removerCodigo(indiceCodigo)}"
-                                     process="@this" update="codigosTabela" icon="pi pi-trash"/>
-                </p:column>
-                <p:column headerText="#{msg['codigo.ativacao']}">
-                    <p:inputText id="codigo" value="#{codigo}" maxlength="1000"/>
-                </p:column>
-            </p:dataTable>
-        </p:panel>
+        <m:autoComplete id="codigosAtivacao" label="#{msg['codigos.ativacao']}"
+                        value="#{eSimController.editForm.codigosAtivacao}"
+                        completeMethod="#{eSimController.completeCodigoAtivacao}"
+                        var="codigo" itemLabel="#{codigo}" itemValue="#{codigo}"
+                        multiple="true" forceSelection="false" required="false" minQueryLength="0"/>
+        </p:panelGrid>
+        <ui:include src="/resources/components/servicoFields.xhtml">
+            <ui:param name="servico" value="#{eSimController.editForm}"/>
+            <ui:param name="controller" value="#{eSimController}"/>
+        </ui:include>
+    </ui:define>
+    <ui:define name="contentDialogs">
+        <ui:include src="servico-taxa-dialog.xhtml">
+            <ui:param name="controller" value="#{eSimController}"/>
+        </ui:include>
     </ui:define>
 </ui:composition>

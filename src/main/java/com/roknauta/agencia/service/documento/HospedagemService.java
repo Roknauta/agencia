@@ -21,13 +21,15 @@ public class HospedagemService implements CrudService<HospedagemDTO> {
     private final OrcamentoRepository orcamentoRepository;
     private final HotelRepository hotelRepository;
     private final HospedagemMapper mapper;
+    private final ServicoTaxaService servicoTaxaService;
 
     public HospedagemService(HospedagemRepository repository, OrcamentoRepository orcamentoRepository,
-        HotelRepository hotelRepository, HospedagemMapper mapper) {
+        HotelRepository hotelRepository, HospedagemMapper mapper, ServicoTaxaService servicoTaxaService) {
         this.repository = repository;
         this.orcamentoRepository = orcamentoRepository;
         this.hotelRepository = hotelRepository;
         this.mapper = mapper;
+        this.servicoTaxaService = servicoTaxaService;
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +55,7 @@ public class HospedagemService implements CrudService<HospedagemDTO> {
             mapper.updateEntity(dto, entidade);
         }
         entidade.setHotelSelecionado(hotelReference(dto));
+        servicoTaxaService.resolver(dto, entidade);
         return mapper.toDTO(repository.save(entidade));
     }
 
@@ -99,6 +102,7 @@ public class HospedagemService implements CrudService<HospedagemDTO> {
     public HospedagemDTO salvarNoOrcamento(Long idOrcamento, HospedagemDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)
             .orElseThrow(() -> new IllegalArgumentException("Orçamento não encontrado."));
+        servicoTaxaService.validarMoedaOrcamento(List.of(dto), orcamento.getMoeda());
         Hospedagem hospedagem;
         if (dto.getId() == null) {
             hospedagem = mapper.toEntity(dto);
@@ -109,6 +113,7 @@ public class HospedagemService implements CrudService<HospedagemDTO> {
             mapper.updateEntity(dto, hospedagem);
         }
         hospedagem.setHotelSelecionado(hotelReference(dto));
+        servicoTaxaService.resolver(dto, hospedagem);
         if (hospedagem.getFotos() != null) {
             hospedagem.getFotos().forEach(foto -> foto.setHospedagem(hospedagem));
         }

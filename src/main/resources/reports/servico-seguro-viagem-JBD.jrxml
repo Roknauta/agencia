@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="svc_seguro_viagem" language="java" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="523" leftMargin="36" rightMargin="36" topMargin="24" bottomMargin="24" uuid="07fbffa6-e315-46a9-9edb-c3372dc6e01a">
+ <property name="net.sf.jasperreports.compiler.java" value="net.sf.jasperreports.jdt.JRJdtCompiler"/>
+ <style name="Base" default="true" fontName="DejaVu Sans" fontSize="9" forecolor="#003366"/>
+ <dataset name="Campos" uuid="d3a46b1f-45fd-4511-836a-805aa2fb508d"><field name="rotulo" class="java.lang.String"/><field name="valor" class="java.lang.String"/></dataset>
+ <field name="servico" class="com.roknauta.agencia.web.jasper.documento.comum.ServicoDetalheRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field>
+ <detail><band height="550" splitType="Stretch">
+  <element kind="textField" x="0" y="0" width="523" height="28" fontSize="15" forecolor="#CCAA55" bold="true" hTextAlign="Center"><expression><![CDATA[$F{servico}.getTitulo()]]></expression></element>
+  <element kind="rectangle" x="189" y="31" width="145" height="2" mode="Opaque" backcolor="#003366"><pen lineWidth="0"/></element>
+  <element kind="frame" positionType="Float" x="0" y="60" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getSeguradora() != null && !((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getSeguradora().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Seguradora:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getSeguradora()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="80" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getPlano() != null && !((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getPlano().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Plano:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getPlano()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="100" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getNumeroApolice() != null && !((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getNumeroApolice().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Apólice:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getNumeroApolice()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="120" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getInicioVigencia() != null]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Início da vigência:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getInicioVigencia() == null ? "" : ((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getInicioVigencia().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="140" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getFimVigencia() != null]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Fim da vigência:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getFimVigencia() == null ? "" : ((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getFimVigencia().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="160" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getViajantesCobertos() != null && !((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getViajantesCobertos().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Viajantes cobertos:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getViajantesCobertos()]]></expression></element>
+  </element>
+  <element kind="frame" positionType="Float" x="0" y="180" width="523" height="20">
+   <printWhenExpression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getResumoCobertura() != null && !((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getResumoCobertura().isBlank()]]></printWhenExpression>
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Cobertura:"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[((com.roknauta.agencia.web.jasper.documento.comum.SeguroViagemRelatorioDTO)$F{servico}.getDados()).getResumoCobertura()]]></expression></element>
+  </element>
+  <element kind="staticText" positionType="Float" x="0" y="290" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true"><text><![CDATA[VALORES DO SERVIÇO]]></text></element>
+  <element kind="component" positionType="Float" x="0" y="315" width="523" height="80">
+ <component kind="list" printOrder="Vertical">
+  <datasetRun uuid="f972ef74-1846-49fb-8578-f3f38a7d80c6" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getValores())]]></dataSourceExpression></datasetRun>
+  <contents height="20" width="523">
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element>
+  </contents>
+ </component>
+</element>
+  <element kind="staticText" positionType="Float" x="0" y="420" width="523" height="22" fontSize="11" forecolor="#CCAA55" bold="true"><text><![CDATA[ALTERAÇÃO, CANCELAMENTO E OBSERVAÇÕES]]></text></element>
+  <element kind="component" positionType="Float" x="0" y="445" width="523" height="90">
+ <component kind="list" printOrder="Vertical">
+  <datasetRun uuid="e8ce4f0e-e3c0-4c93-bd17-ec2860b90f1c" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getCondicoes())]]></dataSourceExpression></datasetRun>
+  <contents height="20" width="523">
+   <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element>
+   <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element>
+  </contents>
+ </component>
+</element>
+  <element kind="break" positionType="Float" x="0" y="545" width="100" height="1"/>
+ </band></detail>
+</jasperReport>

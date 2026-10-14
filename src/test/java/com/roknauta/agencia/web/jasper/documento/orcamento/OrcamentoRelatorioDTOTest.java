@@ -30,8 +30,9 @@ class OrcamentoRelatorioDTOTest {
         assertEquals("Apresentar-se com antecedência e conferir os documentos.", relatorio.getObservacoes());
         assertEquals(4, relatorio.getQuantidadePassageiros());
         assertEquals(2, relatorio.getTrajetosAereos().getFirst().getVoos().size());
+        assertEquals("2h 45min", relatorio.getTrajetosAereos().getFirst().getVoos().getFirst().getConexaoFormatada());
         assertEquals(1, relatorio.getVolta().getVoos().size());
-        assertEquals(2, relatorio.getIda().getBagagens().size());
+        assertEquals(3, relatorio.getIda().getBagagens().size());
         assertEquals(1, relatorio.getTrajetosRodoviarios().size());
         assertEquals(1, relatorio.getHospedagens().size());
         assertEquals(2, relatorio.getTransfers().size());
@@ -45,7 +46,8 @@ class OrcamentoRelatorioDTOTest {
         assertEquals(new BigDecimal("60.00"), relatorio.getValorESims());
         assertEquals(new BigDecimal("8005.00"), relatorio.getTotal());
         assertEquals(new BigDecimal("2001.25"), relatorio.getValorPorPessoa());
-        assertTrue(relatorio.getRegras().contains("Cancelamento sujeito a multa"));
+        assertEquals("Cancelamento sujeito a multa do fornecedor.",
+            relatorio.getIda().getVoos().getFirst().getRegraCancelamento());
     }
 
     @Test
@@ -63,10 +65,10 @@ class OrcamentoRelatorioDTOTest {
 
         OrcamentoDTO apenasTransferESim = new OrcamentoDTO();
         TransferDTO transfer = new TransferDTO();
-        transfer.setValorTotal(new BigDecimal("80.00"));
+        transfer.setValor(new BigDecimal("80.00"));
         apenasTransferESim.setTransfers(List.of(transfer));
         ESimDTO esim = new ESimDTO();
-        esim.setValorTotal(new BigDecimal("30.00"));
+        esim.setValor(new BigDecimal("30.00"));
         apenasTransferESim.setESims(List.of(esim));
         OrcamentoRelatorioDTO segundo = new OrcamentoRelatorioDTO(apenasTransferESim);
         assertEquals(new BigDecimal("110.00"), segundo.getTotal());

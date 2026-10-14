@@ -25,20 +25,13 @@ import java.util.List;
 
 @Component("trajetoAereoController")
 @ViewScoped
-public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, TrajetoAereoService> {
+public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDTO, TrajetoAereoService> {
 
-    private final OrcamentoService orcamentoService;
     private final VooService vooService;
     private final TarifaAereaService tarifaAereaService;
     @Getter
     @Setter
-    private Long idOrcamento;
-    @Getter
-    @Setter
     private CompanhiaAereaDTO companhiaAerea;
-    @Getter
-    @Setter
-    private OrcamentoDTO orcamentoSelecionado;
     @Getter
     @Setter
     private TrechoAereoDTO trechoForm;
@@ -50,8 +43,7 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
 
     public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService, VooService vooService,
         TarifaAereaService tarifaAereaService) {
-        super(service);
-        this.orcamentoService = orcamentoService;
+        super(service, orcamentoService);
         this.vooService = vooService;
         this.tarifaAereaService = tarifaAereaService;
     }
@@ -78,10 +70,6 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
         // Edição de trajetos é iniciada a partir do orçamento selecionado.
     }
 
-    public List<OrcamentoDTO> completeOrcamento(String texto) {
-        return orcamentoService.findByTexto(texto);
-    }
-
     public List<VooDTO> completeVoo(String texto) {
         return companhiaAerea == null ? List.of()
             : vooService.findByNumeroCompanhiaAerea(texto, companhiaAerea.getId());
@@ -98,10 +86,6 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
 
     public CabineAerea[] getCabines() {
         return CabineAerea.values();
-    }
-
-    public void selecionarOrcamento() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
     }
 
     public List<TrajetoAereoDTO> getTrajetosDoOrcamento() {
@@ -149,13 +133,18 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
     }
 
     @Override
-    public void save() {
-        if (idOrcamento == null)
-            throw new IllegalArgumentException("Selecione um orçamento.");
-        service.salvarNoOrcamento(idOrcamento, editForm);
-        atualizarResultados();
-        voltarPesquisa();
-        addInfoMessage("entidade.salva", pageTitle());
+    protected List<TrajetoAereoDTO> buscarServicosDoOrcamento(Long idOrcamento) {
+        return service.findByOrcamento(idOrcamento);
+    }
+
+    @Override
+    protected TrajetoAereoDTO salvarNoOrcamento(Long idOrcamento, TrajetoAereoDTO servico) {
+        return service.salvarNoOrcamento(idOrcamento, servico);
+    }
+
+    @Override
+    protected void excluirDoOrcamento(Long idOrcamento, Long idServico) {
+        service.excluirDoOrcamento(idOrcamento, idServico);
     }
 
     @Override
@@ -164,15 +153,4 @@ public class TrajetoAereoController extends CrudControllerBase<TrajetoAereoDTO, 
         pesquisaRealizada = CollectionUtils.isNotEmpty(getResult());
     }
 
-    public void excluir(Long id) {
-        if (idOrcamento == null)
-            return;
-        service.excluirDoOrcamento(idOrcamento, id);
-        atualizarResultados();
-    }
-
-    @Override
-    public void delete(Long id) {
-        excluir(id);
-    }
 }

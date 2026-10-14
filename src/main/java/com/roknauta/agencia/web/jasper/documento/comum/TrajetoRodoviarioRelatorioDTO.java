@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TrajetoRodoviarioRelatorioDTO {
+public class TrajetoRodoviarioRelatorioDTO extends ServicoRelatorioDTO {
 
     private String transportadora;
     private String origem;
@@ -23,9 +23,9 @@ public class TrajetoRodoviarioRelatorioDTO {
     private String bagagem;
     private LocalDateTime saida;
     private LocalDateTime chegada;
-    private BigDecimal valorTotal;
 
     public TrajetoRodoviarioRelatorioDTO(TrajetoRodoviarioDTO trajeto) {
+        super(trajeto);
         if (trajeto == null) {
             return;
         }
@@ -39,6 +39,19 @@ public class TrajetoRodoviarioRelatorioDTO {
         bagagem = trajeto.getBagagem();
         saida = trajeto.getSaida();
         chegada = trajeto.getChegada();
-        valorTotal = trajeto.getValorTotal();
+    }
+
+    public java.util.List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Transportadora", transportadora),
+            AtributoRelatorioDTO.campo("Origem", origem), AtributoRelatorioDTO.campo("Destino", destino),
+            AtributoRelatorioDTO.campo("Terminal de embarque", terminalEmbarque),
+            AtributoRelatorioDTO.campo("Terminal de desembarque", terminalDesembarque),
+            AtributoRelatorioDTO.campo("Categoria", categoria), AtributoRelatorioDTO.campo("Embarque", dataHora(saida)),
+            AtributoRelatorioDTO.campo("Chegada", dataHora(chegada)),
+            AtributoRelatorioDTO.campo("Localizador", localizador), AtributoRelatorioDTO.campo("Bagagem", bagagem));
+    }
+
+    private static String dataHora(LocalDateTime valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }

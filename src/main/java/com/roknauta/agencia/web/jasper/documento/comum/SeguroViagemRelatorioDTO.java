@@ -13,33 +13,43 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SeguroViagemRelatorioDTO {
+public class SeguroViagemRelatorioDTO extends ServicoRelatorioDTO {
 
     private String seguradora;
     private String plano;
     private String resumoCobertura;
-    private String observacoes;
     private String numeroApolice;
     private LocalDate inicioVigencia;
     private LocalDate fimVigencia;
-    private BigDecimal valorTotal;
     private String viajantesCobertos;
 
     public SeguroViagemRelatorioDTO(SeguroViagemDTO seguro) {
+        super(seguro);
         if (seguro == null) {
             return;
         }
         seguradora = seguro.getSeguradora();
         plano = seguro.getPlano();
         resumoCobertura = seguro.getResumoCobertura();
-        observacoes = seguro.getObservacoes();
         numeroApolice = seguro.getNumeroApolice();
         inicioVigencia = seguro.getInicioVigencia();
         fimVigencia = seguro.getFimVigencia();
-        valorTotal = seguro.getValorTotal();
         List<com.roknauta.agencia.dto.documento.ViajanteDTO> viajantes = seguro.getViajantesCobertos();
         viajantesCobertos = viajantes == null ? ""
             : viajantes.stream().filter(viajante -> viajante != null && viajante.getNome() != null)
                 .map(com.roknauta.agencia.dto.documento.ViajanteDTO::getNome).collect(Collectors.joining(", "));
+    }
+
+    public List<AtributoRelatorioDTO> getAtributosRelatorio() {
+        return AtributoRelatorioDTO.lista(AtributoRelatorioDTO.campo("Seguradora", seguradora),
+            AtributoRelatorioDTO.campo("Plano", plano), AtributoRelatorioDTO.campo("Apólice", numeroApolice),
+            AtributoRelatorioDTO.campo("Início da vigência", data(inicioVigencia)),
+            AtributoRelatorioDTO.campo("Fim da vigência", data(fimVigencia)),
+            AtributoRelatorioDTO.campo("Viajantes cobertos", viajantesCobertos),
+            AtributoRelatorioDTO.campo("Cobertura", resumoCobertura));
+    }
+
+    private static String data(LocalDate valor) {
+        return valor == null ? null : valor.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }

@@ -1,11 +1,9 @@
 package com.roknauta.agencia.domain.documento;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.roknauta.agencia.domain.EntidadeBase;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class AluguelVeiculo extends EntidadeBase {
+@AssociationOverride(name = "taxas", joinTable = @JoinTable(name = "aluguel_veiculo_taxas",
+    joinColumns = @JoinColumn(name = "servico_id"), inverseJoinColumns = @JoinColumn(name = "taxa_id")))
+public class AluguelVeiculo extends Servico {
 
     @Column(length = 20)
     @Enumerated(EnumType.STRING)
@@ -36,14 +36,10 @@ public class AluguelVeiculo extends EntidadeBase {
     private String coberturas;
     @Column(columnDefinition = "clob")
     private String condicoes;
-    @Column(columnDefinition = "clob")
-    private String observacoes;
     private LocalDateTime retirada;
     private LocalDateTime devolucao;
     @Column(length = 50)
     private String fusoHorarioRetirada;
     @Column(length = 50)
     private String fusoHorarioDevolucao;
-    @Column(precision = 19, scale = 2)
-    private BigDecimal valorTotal;
 }
