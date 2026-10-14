@@ -89,48 +89,41 @@ public class OrcamentoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     public List<ServicoDetalheRelatorioDTO> getBlocosTrajetosAereos() {
         return getTrajetosAereos().stream().map(trajeto -> {
             String sentido = switch (Objects.toString(trajeto.getSentido(), "")) {
-                case "IDA" -> "Ida";
-                case "VOLTA" -> "Volta";
+                case "IDA" -> "IDA";
+                case "VOLTA" -> "VOLTA";
                 default -> "Trecho aéreo";
             };
-            ServicoDetalheRelatorioDTO bloco =
-                new ServicoDetalheRelatorioDTO("TRAJETO AÉREO — " + sentido, trajeto.getAtributosRelatorio(), trajeto);
+            ServicoDetalheRelatorioDTO bloco = new ServicoDetalheRelatorioDTO("TRAJETO AÉREO — " + sentido, trajeto);
             return bloco;
         }).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosTrajetosRodoviarios() {
-        return getTrajetosRodoviarios().stream()
-            .map(trajeto -> bloco("PASSAGEM RODOVIÁRIA", trajeto.getAtributosRelatorio(), trajeto)).toList();
+        return getTrajetosRodoviarios().stream().map(trajeto -> bloco("PASSAGEM RODOVIÁRIA", trajeto)).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosHospedagens() {
-        return getHospedagens().stream()
-            .map(hospedagem -> bloco("HOSPEDAGEM", hospedagem.getAtributosRelatorio(), hospedagem)).toList();
+        return getHospedagens().stream().map(hospedagem -> bloco("HOSPEDAGEM", hospedagem)).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosTransfers() {
-        return getTransfers().stream().map(transfer -> bloco("TRANSFER", transfer.getAtributosRelatorio(), transfer))
-            .toList();
+        return getTransfers().stream().map(transfer -> bloco("TRANSFER", transfer)).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosAlugueis() {
-        return getAlugueis().stream()
-            .map(aluguel -> bloco("ALUGUEL DE CARRO", aluguel.getAtributosRelatorio(), aluguel)).toList();
+        return getAlugueis().stream().map(aluguel -> bloco("ALUGUEL DE CARRO", aluguel)).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosSeguros() {
-        return getSegurosViagem().stream().map(seguro -> bloco("SEGURO VIAGEM", seguro.getAtributosRelatorio(), seguro))
-            .toList();
+        return getSegurosViagem().stream().map(seguro -> bloco("SEGURO VIAGEM", seguro)).toList();
     }
 
     public List<ServicoDetalheRelatorioDTO> getBlocosESims() {
-        return getESims().stream().map(esim -> bloco("eSIM", esim.getAtributosRelatorio(), esim)).toList();
+        return getESims().stream().map(esim -> bloco("eSIM", esim)).toList();
     }
 
-    private static ServicoDetalheRelatorioDTO bloco(String titulo, List<AtributoRelatorioDTO> atributos,
-        ServicoRelatorioDTO servico) {
-        return new ServicoDetalheRelatorioDTO(titulo, atributos, servico);
+    private static ServicoDetalheRelatorioDTO bloco(String titulo, ServicoRelatorioDTO servico) {
+        return new ServicoDetalheRelatorioDTO(titulo, servico);
     }
 
     public boolean isPossuiSeguros() {

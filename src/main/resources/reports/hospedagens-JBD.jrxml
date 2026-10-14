@@ -5,26 +5,83 @@
 <dataset name="Campos" uuid="32794c9c-7529-44e4-85e6-4c5483ba68ed"><field name="rotulo" class="java.lang.String"/><field name="valor" class="java.lang.String"/></dataset><dataset name="FotosHospedagem" uuid="c715b53b-c518-4c0b-aba5-7f68d08eeaf7">
         <field name="esquerda" class="java.io.InputStream"/>
         <field name="direita" class="java.io.InputStream"/>
-    </dataset><field name="hospedagem" class="com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field><detail><band height="465" splitType="Stretch">
+    </dataset><field name="hospedagem" class="com.roknauta.agencia.web.jasper.documento.comum.HospedagemRelatorioDTO"><property name="net.sf.jasperreports.javabean.field.property" value="_THIS"/></field><detail><band height="560" splitType="Stretch">
 			
 			<element kind="staticText" uuid="fa123da0-e193-464a-931c-6db9d0a292f5" key="TITULO_HOSPEDAGEM" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 				<text><![CDATA[HOSPEDAGEM]]></text>
 			</element>
-<element kind="component" positionType="Float" x="0" y="34" width="523" height="160">
- <component kind="list" printOrder="Vertical"><datasetRun uuid="acf83337-c778-4b3d-aa52-26db075e2fe5" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagem}.getAtributosRelatorio())]]></dataSourceExpression></datasetRun>
-  <contents height="20" width="523"><element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element><element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element></contents>
- </component></element>
-<element kind="staticText" positionType="Float" x="0" y="205" width="523" height="22" forecolor="#CCAA55" fontSize="11" bold="true"><text><![CDATA[VALORES DO SERVIÇO]]></text></element>
-<element kind="component" positionType="Float" x="0" y="230" width="523" height="75">
+            <element kind="rectangle" x="189" y="33" width="145" height="2" mode="Opaque" backcolor="#003366"><pen lineWidth="0"/></element>
+<element kind="frame" positionType="Float" x="0" y="63" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getNome() != null && !$F{hospedagem}.getNome().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Hotel:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getNome()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="83" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getCidade() != null && !$F{hospedagem}.getCidade().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Cidade:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getCidade()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="103" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getEndereco() != null && !$F{hospedagem}.getEndereco().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Endereço:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getEndereco()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="123" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getCheckIn() != null]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Check-in:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getCheckIn() == null ? "" : $F{hospedagem}.getCheckIn().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="143" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getCheckOut() != null]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Check-out:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getCheckOut() == null ? "" : $F{hospedagem}.getCheckOut().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="163" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getNoites() > 0]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Noites:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getNoites()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="183" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getAcomodacao() != null && !$F{hospedagem}.getAcomodacao().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Acomodação:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getAcomodacao()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="203" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getQuartos() > 0]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Quartos:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getQuartos()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="223" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getRegime() != null && !$F{hospedagem}.getRegime().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Regime:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getRegime()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="243" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getIncluidos() != null && !$F{hospedagem}.getIncluidos().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Incluídos:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getIncluidos()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="263" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getNaoIncluidos() != null && !$F{hospedagem}.getNaoIncluidos().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Não incluídos:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getNaoIncluidos()]]></expression></element>
+</element>
+<element kind="frame" positionType="Float" x="0" y="283" width="523" height="20">
+ <printWhenExpression><![CDATA[$F{hospedagem}.getLocalizador() != null && !$F{hospedagem}.getLocalizador().isBlank()]]></printWhenExpression>
+ <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight"><expression><![CDATA["Localizador:"]]></expression></element>
+ <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight"><expression><![CDATA[$F{hospedagem}.getLocalizador()]]></expression></element>
+</element>
+<element kind="staticText" positionType="Float" x="0" y="315" width="523" height="22" forecolor="#CCAA55" fontSize="11" bold="true"><text><![CDATA[VALORES DO SERVIÇO]]></text></element>
+<element kind="component" positionType="Float" x="0" y="340" width="523" height="75">
  <component kind="list" printOrder="Vertical"><datasetRun uuid="81bd40cc-65ca-4b5f-a7f6-71bb3259429c" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagem}.getValoresRelatorio())]]></dataSourceExpression></datasetRun>
   <contents height="20" width="523"><element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element><element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element></contents>
  </component></element>
-<element kind="staticText" positionType="Float" x="0" y="320" width="523" height="22" forecolor="#CCAA55" fontSize="11" bold="true"><text><![CDATA[ALTERAÇÃO, CANCELAMENTO E OBSERVAÇÕES]]></text></element>
-<element kind="component" positionType="Float" x="0" y="345" width="523" height="75">
+<element kind="staticText" positionType="Float" x="0" y="425" width="523" height="22" forecolor="#CCAA55" fontSize="11" bold="true"><text><![CDATA[ALTERAÇÃO, CANCELAMENTO E OBSERVAÇÕES]]></text></element>
+<element kind="component" positionType="Float" x="0" y="450" width="523" height="75">
  <component kind="list" printOrder="Vertical"><datasetRun uuid="57045b9c-3111-479c-8de7-735233dd9ada" subDataset="Campos"><dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagem}.getCondicoesRelatorio())]]></dataSourceExpression></datasetRun>
   <contents height="20" width="523"><element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{rotulo} + ":"]]></expression></element><element kind="textField" x="140" y="0" width="383" height="20" fontSize="9" textAdjust="StretchHeight" blankWhenNull="true"><expression><![CDATA[$F{valor}]]></expression></element></contents>
  </component></element>
-			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" x="0" y="459" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
+			<element kind="break" uuid="5537eb48-073c-4243-8a34-2196d15cb839" positionType="Float" x="0" y="554" width="100" height="1"><printWhenExpression><![CDATA[$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression></element>
 		</band><band height="216" splitType="Stretch">
             <printWhenExpression><![CDATA[!$F{hospedagem}.getFotos().isEmpty()]]></printWhenExpression>
             <element kind="staticText" uuid="c5fc03ae-a80e-4c04-8339-3da348fa72f8" x="0" y="0" width="523" height="22" forecolor="#003366" fontSize="12" bold="true">

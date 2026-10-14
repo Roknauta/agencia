@@ -107,7 +107,7 @@ public abstract class ServicoRelatorioDTO {
             }
         }
         if (valorTotal != null) {
-            linhas.add(new AtributoRelatorioDTO("Total", dinheiro(valorTotal, simbolo, formato)));
+            linhas.add(new AtributoRelatorioDTO("Valor Total", dinheiro(valorTotal, simbolo, formato)));
         }
         return linhas;
     }

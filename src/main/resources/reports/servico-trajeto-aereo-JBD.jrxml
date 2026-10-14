@@ -24,27 +24,17 @@
   <property name="net.sf.jasperreports.javabean.field.property" value="_THIS" />
  </field>
  <detail>
-  <band height="338" splitType="Prevent">
-   <element kind="textField" x="0" y="0" width="523" height="25" fontSize="15" forecolor="#CCAA55" bold="true" hTextAlign="Center">
+  <band height="373" splitType="Prevent">
+   <element kind="textField" x="0" y="0" width="523" height="30" fontSize="15" forecolor="#CCAA55" bold="true" hTextAlign="Center">
     <expression>$F{servico}.getTitulo()</expression>
    </element>
-   <element kind="component" x="0" y="30" width="523" height="20">
-    <component kind="list" printOrder="Vertical">
-     <datasetRun uuid="51cf89c6-8c5b-4a2c-b007-98224fe4895e" subDataset="Campos">
-      <dataSourceExpression>new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{servico}.getAtributos())</dataSourceExpression>
-     </datasetRun>
-     <contents height="20" width="523">
-      <element kind="textField" x="0" y="0" width="140" height="20" fontSize="9" bold="true">
-       <expression>$F{rotulo} + ":"</expression>
-      </element>
-      <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9">
-       <expression>$F{valor}</expression>
-      </element>
-     </contents>
-    </component>
+   <element kind="rectangle" x="189" y="33" width="145" height="2" mode="Opaque" backcolor="#003366"><pen lineWidth="0" /></element>
+   <element kind="frame" x="0" y="67" width="523" height="20">
+    <element kind="staticText" x="0" y="0" width="140" height="20" fontSize="9" bold="true"><text>Sentido:</text></element>
+    <element kind="textField" x="140" y="0" width="383" height="20" fontSize="9"><expression>$F{servico}.getDados() == null ? "" : ((com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO)$F{servico}.getDados()).getSentido()</expression></element>
    </element>
-   <element kind="staticText" x="0" y="58" width="523" height="20" fontSize="11" forecolor="#CCAA55" bold="true"><text>VOOS</text></element>
-   <element kind="component" x="0" y="78" width="523" height="260">
+   <element kind="staticText" x="0" y="93" width="523" height="20" fontSize="11" forecolor="#CCAA55" bold="true"><text>VOOS</text></element>
+   <element kind="component" x="0" y="113" width="523" height="260">
     <component kind="table" whenNoDataType="AllSectionsNoDetail">
      <datasetRun uuid="b04ca12c-b103-4bc5-abf2-8483b1c3b5a1" subDataset="Voos">
       <parameter name="VOO_DIRETO"><expression>$F{servico}.getVoos() != null &amp;&amp; $F{servico}.getVoos().size() == 1</expression></parameter>

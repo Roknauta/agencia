@@ -101,16 +101,25 @@ class ReportPdfSamplesTest {
         assertTrue(textoOrcamentoNormalizado.contains("JJ3456"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TP1020"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("VOOS"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TRAJETOAÉREO—IDA"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TRAJETOAÉREO—VOLTA"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("DETALHESADICIONAIS"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("CABINE"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TARIFA"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("BAGAGEM"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("Desconto:R$5"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("TaxaEmbarque:R$8,5"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("ValorTotal:R$78,5"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("1BagagemDespachada"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("1MaladeMão"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("1ItemPessoal"), textoOrcamento);
         assertTrue(textoContratoNormalizado.contains("Passagensaéreas"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("PR-123456"), textoContratoNormalizado);
         assertTrue(textoEmissao.contains("CTR-2026-001"), textoEmissao);
+        assertTrue(textoEmissao.contains("TRAJETOAÉREO—IDA"), textoEmissao);
+        assertTrue(textoEmissao.contains("TRAJETOAÉREO—VOLTA"), textoEmissao);
+        assertTrue(textoEmissao.contains("JJ1234"), textoEmissao);
+        assertTrue(textoEmissao.contains("JJ5678"), textoEmissao);
         assertTrue(textoContratoNormalizado.contains("ViaçãoExemplo"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("HotelCentralLisboa"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("TransferExemplo"), textoContratoNormalizado);
@@ -119,7 +128,7 @@ class ReportPdfSamplesTest {
         assertTrue(textoContratoNormalizado.contains("eSIM"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("Valor total dos serviços".replaceAll("\\s+", "")),
             textoContratoNormalizado);
-        assertTrue(textoContratoNormalizado.contains("R$7.955,00"), textoContratoNormalizado);
+        assertTrue(textoContratoNormalizado.contains("R$7.958,50"), textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("regrasespecíficasaplicáveisaotransporteeaocasoconcreto."),
             textoContratoNormalizado);
         assertTrue(textoContratoNormalizado.contains("Outrosserviçosrodoviáriosobservarãosuaregulamentaçãoprópria."),

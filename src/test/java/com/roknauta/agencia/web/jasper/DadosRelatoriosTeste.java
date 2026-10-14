@@ -32,6 +32,8 @@ import com.roknauta.agencia.dto.documento.OrcamentoDTO;
 import com.roknauta.agencia.dto.documento.SeguroViagemDTO;
 import com.roknauta.agencia.dto.documento.TrajetoAereoDTO;
 import com.roknauta.agencia.dto.documento.TrajetoRodoviarioDTO;
+import com.roknauta.agencia.dto.documento.TaxaDTO;
+import com.roknauta.agencia.dto.documento.TipoTaxaDTO;
 import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import com.roknauta.agencia.dto.documento.TransferDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
@@ -185,6 +187,13 @@ public final class DadosRelatoriosTeste {
         trajeto.setSaida(DATA_PARTIDA.plusDays(2).atTime(9, 30));
         trajeto.setChegada(DATA_PARTIDA.plusDays(2).atTime(13, 0));
         trajeto.setValor(new BigDecimal("75.00"));
+        trajeto.setDesconto(new BigDecimal("5.00"));
+        TipoTaxaDTO taxaEmbarque = new TipoTaxaDTO();
+        taxaEmbarque.setNome("Embarque");
+        TaxaDTO taxa = new TaxaDTO();
+        taxa.setTipoTaxa(taxaEmbarque);
+        taxa.setValor(new BigDecimal("8.50"));
+        trajeto.setTaxas(List.of(taxa));
         return trajeto;
     }
 

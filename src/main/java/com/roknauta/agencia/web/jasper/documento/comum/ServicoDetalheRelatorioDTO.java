@@ -13,15 +13,14 @@ import lombok.Setter;
 public class ServicoDetalheRelatorioDTO {
 
     private String titulo;
-    private List<AtributoRelatorioDTO> atributos = List.of();
     private List<AtributoRelatorioDTO> valores = List.of();
     private List<AtributoRelatorioDTO> condicoes = List.of();
     private List<VooRelatorioDTO> voos = List.of();
+    private ServicoRelatorioDTO dados;
 
-    public ServicoDetalheRelatorioDTO(String titulo, List<AtributoRelatorioDTO> atributos,
-        ServicoRelatorioDTO servico) {
+    public ServicoDetalheRelatorioDTO(String titulo, ServicoRelatorioDTO servico) {
         this.titulo = titulo;
-        this.atributos = atributos == null ? List.of() : atributos;
+        this.dados = servico;
         valores = servico == null ? List.of() : new ArrayList<>(servico.getValoresRelatorio());
         condicoes = servico == null ? List.of() : new ArrayList<>(servico.getCondicoesRelatorio());
         if (servico instanceof TrajetoAereoRelatorioDTO trajetoAereo) {
