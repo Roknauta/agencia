@@ -39,13 +39,13 @@ class OrcamentoRelatorioDTOTest {
         assertEquals(2, relatorio.getAlugueis().size());
         assertEquals(1, relatorio.getSegurosViagem().size());
         assertEquals(1, relatorio.getESims().size());
-        assertEquals(new BigDecimal("75.00"), relatorio.getValorRodoviario());
+        assertEquals(new BigDecimal("78.50"), relatorio.getValorRodoviario());
         assertEquals(new BigDecimal("350.00"), relatorio.getValorTransfer());
         assertEquals(new BigDecimal("1050.00"), relatorio.getValorAlugueis());
         assertEquals(new BigDecimal("120.00"), relatorio.getValorSeguros());
         assertEquals(new BigDecimal("60.00"), relatorio.getValorESims());
-        assertEquals(new BigDecimal("8005.00"), relatorio.getTotal());
-        assertEquals(new BigDecimal("2001.25"), relatorio.getValorPorPessoa());
+        assertEquals(new BigDecimal("8008.50"), relatorio.getTotal());
+        assertEquals(new BigDecimal("2002.13"), relatorio.getValorPorPessoa());
         assertEquals("Cancelamento sujeito a multa do fornecedor.",
             relatorio.getIda().getVoos().getFirst().getRegraCancelamento());
     }

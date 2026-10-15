@@ -94,6 +94,7 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
 
     public void novoTrecho() {
         trechoForm = new TrechoAereoDTO();
+        bagagensForm.clear();
         PrimeFaces.current().executeScript("PF('trechoDialogWidget').show();");
     }
 

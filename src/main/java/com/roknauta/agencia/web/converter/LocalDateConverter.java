@@ -10,8 +10,8 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.ConverterException;
 import jakarta.faces.convert.FacesConverter;
 
-@FacesConverter("localDateGridConverter")
-public class LocalDateGridConverter implements Converter<LocalDate> {
+@FacesConverter("localDateConverter")
+public class LocalDateConverter implements Converter<LocalDate> {
 
     private static final DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 

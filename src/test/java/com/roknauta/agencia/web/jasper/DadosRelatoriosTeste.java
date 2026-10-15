@@ -1,11 +1,28 @@
 package com.roknauta.agencia.web.jasper;
 
 import java.math.BigDecimal;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Base64;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 
 import com.roknauta.agencia.domain.CabineAerea;
 import com.roknauta.agencia.domain.SentidoVoo;
@@ -215,11 +232,76 @@ public final class DadosRelatoriosTeste {
         hospedagem.setNaoIncluidos("Estacionamento");
         hospedagem.setValor(new BigDecimal("1800.00"));
         hospedagem.setObservacoes("Quarto para dois adultos e duas crianças.");
+        hospedagem.setFotos(fotosHospedagem());
+        return hospedagem;
+    }
+
+    private static List<FotoHospedagemDTO> fotosHospedagem() {
+        Path diretorio = Path.of(System.getProperty("agencia.test.hospedagem.fotos", "/home/douglas/tmp/img"));
+        if (!Files.isDirectory(diretorio)) {
+            return List.of(fotoFallback());
+        }
+        try (Stream<Path> arquivos = Files.list(diretorio)) {
+            List<FotoHospedagemDTO> fotos = arquivos.filter(Files::isRegularFile).filter(DadosRelatoriosTeste::ehImagem)
+                .sorted(Comparator.comparing(Path::getFileName)).map(DadosRelatoriosTeste::carregarFoto).toList();
+            return fotos.isEmpty() ? List.of(fotoFallback()) : fotos;
+        } catch (IOException e) {
+            throw new UncheckedIOException("Não foi possível carregar as fotos de hospedagem para o relatório de teste",
+                e);
+        }
+    }
+
+    private static boolean ehImagem(Path arquivo) {
+        String nome = arquivo.getFileName().toString().toLowerCase(java.util.Locale.ROOT);
+        return nome.endsWith(".png") || nome.endsWith(".jpg") || nome.endsWith(".jpeg");
+    }
+
+    private static FotoHospedagemDTO carregarFoto(Path arquivo) {
+        try {
+            BufferedImage original = ImageIO.read(arquivo.toFile());
+            if (original == null) {
+                throw new IOException("Formato de imagem não reconhecido: " + arquivo);
+            }
+            double escala = Math.min(1.0, Math.min(1200.0 / original.getWidth(), 800.0 / original.getHeight()));
+            int largura = Math.max(1, (int) Math.round(original.getWidth() * escala));
+            int altura = Math.max(1, (int) Math.round(original.getHeight() * escala));
+            BufferedImage redimensionada = new BufferedImage(largura, altura, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics = redimensionada.createGraphics();
+            graphics.setColor(java.awt.Color.WHITE);
+            graphics.fillRect(0, 0, largura, altura);
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            graphics.drawImage(original, 0, 0, largura, altura, null);
+            graphics.dispose();
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
+            if (!writers.hasNext()) {
+                throw new IOException("Não há codificador JPEG disponível");
+            }
+            ImageWriter writer = writers.next();
+            try (ImageOutputStream output = ImageIO.createImageOutputStream(bytes)) {
+                writer.setOutput(output);
+                ImageWriteParam params = writer.getDefaultWriteParam();
+                params.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                params.setCompressionQuality(0.75f);
+                writer.write(null, new IIOImage(redimensionada, null, null), params);
+            } finally {
+                writer.dispose();
+            }
+            FotoHospedagemDTO foto = new FotoHospedagemDTO();
+            foto.setConteudo(bytes.toByteArray());
+            return foto;
+        } catch (IOException e) {
+            throw new UncheckedIOException("Não foi possível preparar a foto " + arquivo, e);
+        }
+    }
+
+    private static FotoHospedagemDTO fotoFallback() {
         FotoHospedagemDTO foto = new FotoHospedagemDTO();
         foto.setConteudo(Base64.getDecoder()
             .decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l1sAAAAASUVORK5CYII="));
-        hospedagem.setFotos(List.of(foto));
-        return hospedagem;
+        return foto;
     }
 
     private static TransferDTO transfer(String percurso, BigDecimal valor) {

@@ -35,7 +35,7 @@
             </m:selectOneMenu>
         </p:panelGrid>
         <p:commandButton id="adicionarVoo" value="#{msg['adicionar.voo']}" icon="pi pi-plus" action="#{trajetoAereoController.novoTrecho}"
-                         process="@this" update=":trechoForm"
+                         process="@this" update=":trechoForm" resetValues="true"
                          disabled="#{empty trajetoAereoController.idOrcamento or empty trajetoAereoController.editForm.sentido}"/>
         <p:dataTable id="trechos" value="#{trajetoAereoController.editForm.trechos}" var="trecho" emptyMessage="#{msg['nenhum.registro.encontrado']}"
                      style="margin-top: 10px" showGridlines="true">
@@ -49,9 +49,9 @@
             <t:column headerText="#{msg['campo.origem']}" value="#{trecho.voo.origem.getCidadeAndIata()}"/>
             <t:column headerText="#{msg['campo.destino']}" value="#{trecho.voo.destino.getCidadeAndIata()}"/>
             <t:column headerText="#{msg['campo.partida']}" value="#{trecho.dataPartida}"
-                      converter="localDateGridConverter"/>
+                      converter="localDateConverter"/>
             <t:column headerText="#{msg['campo.chegada']}" value="#{trecho.dataChegada}"
-                      converter="localDateGridConverter"/>
+                      converter="localDateConverter"/>
         </p:dataTable>
         <ui:include src="/resources/components/servicoFields.xhtml">
             <ui:param name="servico" value="#{trajetoAereoController.editForm}"/>
