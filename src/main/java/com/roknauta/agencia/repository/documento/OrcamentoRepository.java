@@ -24,4 +24,7 @@ public interface OrcamentoRepository extends JpaRepository<Orcamento, Long> {
     @Query("select distinct o from Orcamento o join o.eSims e where e.id = :eSimId")
     java.util.Optional<Orcamento> findByESimId(@Param("eSimId") Long eSimId);
 
+    @Query("select distinct o from Orcamento o join o.trajetosAereos t where t.id = :trajetoAereoId")
+    java.util.Optional<Orcamento> findByTrajetoAereoId(@Param("trajetoAereoId") Long trajetoAereoId);
+
 }

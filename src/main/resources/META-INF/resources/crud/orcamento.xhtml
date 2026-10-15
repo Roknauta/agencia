@@ -80,10 +80,12 @@
             <m:inputNumber id="bebes" label="#{msg['bebes']}" value="#{orcamentoController.editForm.bebes}" required="true" minValue="0"/>
             <m:inputNumber id="desconto" label="#{msg['desconto']}" value="#{orcamentoController.editForm.desconto}"
                            decimalPlaces="2" minValue="0"/>
+            <m:inputTextarea id="pagamento" label="#{msg['pagamento']}"
+                             value="#{orcamentoController.editForm.pagamento}" maxlength="3000"/>
+            <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
+                             value="#{orcamentoController.editForm.observacoes}" maxlength="3000"/>
         </p:panelGrid>
-        <m:inputTextarea id="pagamento" label="#{msg['pagamento']}"
-                         value="#{orcamentoController.editForm.pagamento}" maxlength="3000" rows="4"/>
-        <p:panel header="#{msg['viajantes']}" styleClass="form-field">
+<!--        <p:panel header="#{msg['viajantes']}" styleClass="form-field">-->
             <p:commandButton id="novoViajante" value="#{msg['adicionar.viajante']}" icon="pi pi-plus"
                              action="#{orcamentoController.novoViajante}" process="@this"
                              update=":viajanteDialogForm:viajanteCampos"
@@ -99,9 +101,9 @@
                 <t:column headerText="#{msg['tipo.documento']}" value="#{viajante.tipoDocumento}"/>
                 <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
                 <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
-                          converter="localDateGridConverter"/>
+                          converter="localDateConverter"/>
             </p:dataTable>
-        </p:panel>
+<!--        </p:panel>-->
     </ui:define>
     <ui:define name="contentDialogs">
         <p:dialog id="viajanteDialog" widgetVar="viajanteDialogWidget" modal="true"

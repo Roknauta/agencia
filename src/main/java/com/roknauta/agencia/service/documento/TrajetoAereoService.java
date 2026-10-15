@@ -95,6 +95,12 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
             .map(orcamento -> orcamento.getTrajetosAereos().stream().map(mapper::toDTO).toList()).orElse(List.of());
     }
 
+    @Transactional(readOnly = true)
+    public Long findIdByTrajetoAereo(Long id) {
+        return orcamentoRepository.findByTrajetoAereoId(id).map(orcamento -> orcamento.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Trajeto aéreo não está vinculado a um orçamento."));
+    }
+
     @Transactional
     public TrajetoAereoDTO salvarNoOrcamento(Long idOrcamento, TrajetoAereoDTO dto) {
         var orcamento = orcamentoRepository.findById(idOrcamento)

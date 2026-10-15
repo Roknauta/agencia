@@ -56,14 +56,10 @@
                                itemValue="#{regime}" itemLabel="#{regime.descricao}"/>
             </m:selectOneMenu>
             <m:inputTextarea id="incluidos" label="#{msg['incluidos']}"
-                             value="#{hospedagemController.editForm.incluidos}" rows="3"/>
+                             value="#{hospedagemController.editForm.incluidos}"/>
             <m:inputTextarea id="naoIncluidos" label="#{msg['nao.incluidos']}"
-                             value="#{hospedagemController.editForm.naoIncluidos}" rows="3"/>
+                             value="#{hospedagemController.editForm.naoIncluidos}" />
         </p:panelGrid>
-        <ui:include src="/resources/components/servicoFields.xhtml">
-            <ui:param name="servico" value="#{hospedagemController.editForm}"/>
-            <ui:param name="controller" value="#{hospedagemController}"/>
-        </ui:include>
         <p:outputPanel id="fotosPanel">
             <p:fileUpload id="uploadFoto" mode="advanced" auto="true" multiple="true"
                           listener="#{hospedagemController.adicionarFoto}" update="fotosTabela"
@@ -78,6 +74,10 @@
                 </p:column>
             </p:dataTable>
         </p:outputPanel>
+        <ui:include src="/resources/components/servicoFields.xhtml">
+            <ui:param name="servico" value="#{hospedagemController.editForm}"/>
+            <ui:param name="controller" value="#{hospedagemController}"/>
+        </ui:include>
     </ui:define>
     <ui:define name="contentDialogs">
         <ui:include src="servico-taxa-dialog.xhtml">

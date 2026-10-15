@@ -32,9 +32,9 @@
             <t:column headerText="#{msg['plano']}" value="#{item.plano}"/>
             <t:column headerText="#{msg['numero.apolice']}" value="#{item.numeroApolice}"/>
             <t:column headerText="#{msg['inicio.vigencia']}" value="#{item.inicioVigencia}"
-                      converter="localDateGridConverter"/>
+                      converter="localDateConverter"/>
             <t:column headerText="#{msg['fim.vigencia']}" value="#{item.fimVigencia}"
-                      converter="localDateGridConverter"/>
+                      converter="localDateConverter"/>
             <t:column headerText="#{msg['valor.total']}" value="#{item.moeda.simbolo} #{item.valorTotal}"/>
             <t:column headerText="#{msg['viajantes']}" value="#{item.viajantesCobertos.size()}"/>
         </m:crudDataTable>
@@ -77,7 +77,7 @@
                 <t:column headerText="#{msg['viajante.nome']}" value="#{viajante.nome}"/>
                 <t:column headerText="#{msg['documento']}" value="#{viajante.documento}"/>
                 <t:column headerText="#{msg['data.nascimento']}" value="#{viajante.dataNascimento}"
-                          converter="localDateGridConverter"/>
+                          converter="localDateConverter"/>
             </p:dataTable>
         </p:panel>
     </ui:define>

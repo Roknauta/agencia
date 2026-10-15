@@ -93,8 +93,7 @@ public class OrcamentoService implements CrudService<OrcamentoDTO> {
     public OrcamentoDTO salvar(OrcamentoDTO dto) {
         Orcamento entidade;
         if (dto.getId() == null) {
-            dto.setNumero("ORC-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS").format(LocalDateTime.now()) + "-"
-                + UUID.randomUUID().toString().substring(0, 8));
+            dto.setNumero("ORC-" + DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()));
             entidade = mapper.toEntity(dto);
         } else {
             entidade = repository.findById(dto.getId())

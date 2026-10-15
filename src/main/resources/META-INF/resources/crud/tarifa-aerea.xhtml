@@ -18,7 +18,7 @@
             <t:column headerText="#{msg['campo.nome']}" value="#{item.nome}" sortBy="#{item.nome}"/>
             <t:column headerText="#{msg['companhia.aerea']}" value="#{item.companhiaAerea.nome}" sortBy="#{item.companhiaAerea.nome}"/>
             <t:column headerText="#{msg['data.referencia']}" value="#{item.dataReferencia}"
-                      sortBy="#{item.dataReferencia}" converter="localDateGridConverter"/>
+                      sortBy="#{item.dataReferencia}" converter="localDateConverter"/>
         </m:crudDataTable>
     </ui:define>
     <ui:define name="editField">

@@ -3,14 +3,14 @@
                 xmlns:t="http://agencia.com/jsf">
 
     <p:spacer height="20"/>
-    <p:panel header="Pagamento">
+    <p:panel header="Valores">
         <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
             <m:inputTextarea id="regrasAlteracao" label="#{msg['regras.alteracao']}"
-                             value="#{servico.regrasAlteracao}" maxlength="3000" rows="3"/>
+                             value="#{servico.regrasAlteracao}" maxlength="3000" />
             <m:inputTextarea id="regrasCancelamento" label="#{msg['regras.cancelamento']}"
-                             value="#{servico.regrasCancelamento}" maxlength="3000" rows="3"/>
+                             value="#{servico.regrasCancelamento}" maxlength="3000" />
             <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                             value="#{servico.observacoes}" maxlength="3000" rows="4"/>
+                             value="#{servico.observacoes}" maxlength="3000" />
             <m:inputNumber id="valor" label="#{msg['valor']}" value="#{servico.valor}"
                            minValue="0" decimalPlaces="2"/>
             <m:inputNumber id="desconto" label="#{msg['desconto']}" value="#{servico.desconto}"

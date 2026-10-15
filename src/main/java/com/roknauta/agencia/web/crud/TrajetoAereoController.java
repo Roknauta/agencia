@@ -139,6 +139,11 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
     }
 
     @Override
+    protected Long localizarOrcamento(Long idServico) {
+        return service.findIdByTrajetoAereo(idServico);
+    }
+
+    @Override
     protected TrajetoAereoDTO salvarNoOrcamento(Long idOrcamento, TrajetoAereoDTO servico) {
         return service.salvarNoOrcamento(idOrcamento, servico);
     }
