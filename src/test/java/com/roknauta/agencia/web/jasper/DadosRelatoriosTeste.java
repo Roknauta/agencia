@@ -34,14 +34,12 @@ import com.roknauta.agencia.domain.documento.RegimeHospedagem;
 import com.roknauta.agencia.domain.documento.TipoDocumentoViajante;
 import com.roknauta.agencia.domain.documento.TipoTransfer;
 import com.roknauta.agencia.dto.AeroportoDTO;
-import com.roknauta.agencia.dto.BagagemCompanhiaAereaDTO;
 import com.roknauta.agencia.dto.CompanhiaAereaDTO;
 import com.roknauta.agencia.dto.HotelDTO;
 import com.roknauta.agencia.dto.CidadeDTO;
 import com.roknauta.agencia.dto.PaisDTO;
-import com.roknauta.agencia.dto.TarifaAereaDTO;
 import com.roknauta.agencia.dto.documento.AluguelVeiculoDTO;
-import com.roknauta.agencia.dto.documento.BagagemTrechoAereoDTO;
+import com.roknauta.agencia.dto.documento.BagagemTrajetoAereoDTO;
 import com.roknauta.agencia.dto.documento.ESimDTO;
 import com.roknauta.agencia.dto.documento.FotoHospedagemDTO;
 import com.roknauta.agencia.dto.documento.HospedagemDTO;
@@ -104,15 +102,17 @@ public final class DadosRelatoriosTeste {
         TrechoAereoDTO primeiroTrecho =
             trecho("JJ1234", "CNF", "GRU", LocalTime.of(8, 0), LocalTime.of(9, 15), DATA_PARTIDA);
         primeiroTrecho.setLocalizador("ABC123");
-        primeiroTrecho.setBagagens(List.of(bagagem("Despachada", 1)));
         TrechoAereoDTO segundoTrecho =
             trecho("JJ5678", "GRU", "LIS", LocalTime.of(12, 0), LocalTime.of(23, 5), DATA_PARTIDA);
         segundoTrecho.setLocalizador("ABC456");
-        segundoTrecho.setBagagens(List.of(bagagem("Bagagem de mão", 1), bagagem("Item Pessoal", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.IDA);
         trajeto.setTrechos(List.of(primeiroTrecho, segundoTrecho));
+        trajeto.setBagagens(List.of(bagagem(TipoBagagem.BAGAGEM_DESPACHADA, 1), bagagem(TipoBagagem.BAGAGEM_DE_MAO, 1),
+            bagagem(TipoBagagem.ITEM_PESSOAL, 1)));
         trajeto.setValor(new BigDecimal("2600.00"));
+        trajeto.setRegrasCancelamento("Cancelamento sujeito a multa do fornecedor.");
+        trajeto.setRegrasAlteracao("Alteração sujeita à diferença tarifária.");
         return trajeto;
     }
 
@@ -129,10 +129,10 @@ public final class DadosRelatoriosTeste {
         TrechoAereoDTO trecho =
             trecho("TP1020", "LIS", "CNF", LocalTime.of(10, 0), LocalTime.of(18, 20), DATA_PARTIDA.plusDays(8));
         trecho.setLocalizador("XYZ789");
-        trecho.setBagagens(List.of(bagagem("Despachada", 1)));
         TrajetoAereoDTO trajeto = new TrajetoAereoDTO();
         trajeto.setSentido(SentidoVoo.VOLTA);
         trajeto.setTrechos(List.of(trecho));
+        trajeto.setBagagens(List.of(bagagem(TipoBagagem.BAGAGEM_DESPACHADA, 1)));
         trajeto.setValor(new BigDecimal("1900.00"));
         return trajeto;
     }
@@ -154,13 +154,7 @@ public final class DadosRelatoriosTeste {
         trecho.setDataPartida(data);
         trecho.setDataChegada(chegada.isBefore(partida) ? data.plusDays(1) : data);
         trecho.setCabine(CabineAerea.ECONOMICA);
-        TarifaAereaDTO tarifa = new TarifaAereaDTO();
-        tarifa.setNome("Light Flex");
-        tarifa.setDataReferencia(data);
-        tarifa.setRegraCancelamento("Cancelamento sujeito a multa do fornecedor.");
-        tarifa.setRegraAlteracao("Alteração sujeita à diferença tarifária.");
-        tarifa.setOutrasInformacoes("Bagagem conforme franquia contratada.");
-        trecho.setTarifaAerea(tarifa);
+        trecho.setTarifaAerea("Light Flex");
         return trecho;
     }
 
@@ -172,22 +166,10 @@ public final class DadosRelatoriosTeste {
         return aeroporto;
     }
 
-    private static BagagemTrechoAereoDTO bagagem(String descricao, int quantidade) {
-        BagagemTrechoAereoDTO bagagem = new BagagemTrechoAereoDTO();
-        bagagem.setDescricao(descricao);
+    private static BagagemTrajetoAereoDTO bagagem(TipoBagagem tipoBagagem, int quantidade) {
+        BagagemTrajetoAereoDTO bagagem = new BagagemTrajetoAereoDTO();
+        bagagem.setTipoBagagem(tipoBagagem);
         bagagem.setQuantidade(quantidade);
-        BagagemCompanhiaAereaDTO referencia = new BagagemCompanhiaAereaDTO();
-        referencia.setTipoBagagem(switch (descricao) {
-            case "Bagagem de mão" -> TipoBagagem.BAGAGEM_DE_MAO;
-            case "Item Pessoal" -> TipoBagagem.ITEM_PESSOAL;
-            default -> TipoBagagem.BAGAGEM_DESPACHADA;
-        });
-        referencia.setDataReferencia(LocalDate.of(2026, 10, 1));
-        referencia.setAlturaCm(55.0);
-        referencia.setLarguraCm(35.0);
-        referencia.setProfundidadeCm(25.0);
-        referencia.setPesoMaximo(23.0);
-        bagagem.setBagagemCompanhiaAerea(referencia);
         return bagagem;
     }
 

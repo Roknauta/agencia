@@ -16,4 +16,5 @@ public class TrajetoAereoDTO extends ServicoDTO {
 
     private SentidoVoo sentido;
     private List<TrechoAereoDTO> trechos = new ArrayList<>();
+    private List<BagagemTrajetoAereoDTO> bagagens = new ArrayList<>();
 }

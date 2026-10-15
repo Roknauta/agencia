@@ -53,6 +53,25 @@
             <t:column headerText="#{msg['campo.chegada']}" value="#{trecho.dataChegada}"
                       converter="localDateConverter"/>
         </p:dataTable>
+        <p:outputPanel styleClass="crud-grid-section">
+            <h3>#{msg['bagagem.aerea']}</h3>
+            <p:commandButton id="adicionarBagagem" value="#{msg['adicionar.bagagem']}" icon="pi pi-plus"
+                             action="#{trajetoAereoController.novaBagagem}" process="@this"
+                             update=":bagagemDialogForm"/>
+            <p:dataTable id="bagagens" value="#{trajetoAereoController.editForm.bagagens}" var="bagagem"
+                         emptyMessage="#{msg['nenhum.registro.encontrado']}" style="margin-top: 10px"
+                         showGridlines="true">
+                <p:column headerText="#{msg['interface.acoes']}" style="width: 85px">
+                    <p:commandButton action="#{trajetoAereoController.editarBagagem(trajetoAereoController.editForm.bagagens.indexOf(bagagem))}"
+                                     process="@this" update=":bagagemDialogForm" icon="pi pi-pencil"
+                                     style="margin-right: 3px"/>
+                    <p:commandButton action="#{trajetoAereoController.removerBagagem(trajetoAereoController.editForm.bagagens.indexOf(bagagem))}"
+                                     process="@this" update=":trajetoAereoEditForm:bagagens" icon="pi pi-trash"/>
+                </p:column>
+                <t:column headerText="#{msg['tipo.bagagem']}" value="#{bagagem.tipoBagagem.label}"/>
+                <t:column headerText="#{msg['quantidade.inclusa']}" value="#{bagagem.quantidade}"/>
+            </p:dataTable>
+        </p:outputPanel>
         <ui:include src="/resources/components/servicoFields.xhtml">
             <ui:param name="servico" value="#{trajetoAereoController.editForm}"/>
             <ui:param name="controller" value="#{trajetoAereoController}"/>
@@ -63,5 +82,6 @@
             <ui:param name="controller" value="#{trajetoAereoController}"/>
         </ui:include>
         <ui:include src="aereo/inclusao-voo.xhtml"/>
+        <ui:include src="aereo/inclusao-bagagem.xhtml"/>
     </ui:define>
 </ui:composition>

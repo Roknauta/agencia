@@ -105,7 +105,7 @@ class ReportPdfSamplesTest {
         assertTrue(textoOrcamentoNormalizado.contains("DETALHESADICIONAIS"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("CABINE"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TARIFA"), textoOrcamento);
-        assertTrue(textoOrcamentoNormalizado.contains("BAGAGEM"), textoOrcamento);
+        assertTrue(textoOrcamentoNormalizado.contains("BAGAGENS"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("Desconto:R$5"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("TaxaEmbarque:R$8,5"), textoOrcamento);
         assertTrue(textoOrcamentoNormalizado.contains("ValorTotal:R$78,5"), textoOrcamento);

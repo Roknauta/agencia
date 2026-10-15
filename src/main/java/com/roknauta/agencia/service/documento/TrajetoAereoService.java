@@ -115,7 +115,7 @@ public class TrajetoAereoService implements CrudService<TrajetoAereoDTO> {
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("Trajeto não pertence ao orçamento."));
             mapper.updateEntity(dto, trajeto);
         }
-        trechoAereoService.resolverReferencias(dto, trajeto);
+        //trechoAereoService.resolverReferencias(dto, trajeto);
         servicoTaxaService.resolver(dto, trajeto);
         orcamentoRepository.save(orcamento);
         return mapper.toDTO(trajeto);

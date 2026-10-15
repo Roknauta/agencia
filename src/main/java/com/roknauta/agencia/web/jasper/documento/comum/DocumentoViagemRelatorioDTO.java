@@ -95,6 +95,7 @@ public class DocumentoViagemRelatorioDTO {
         TrajetoAereoRelatorioDTO agregado = new TrajetoAereoRelatorioDTO();
         agregado.setSentido(sentido.name());
         agregado.setVoos(trajetos.stream().flatMap(trajeto -> trajeto.getVoos().stream()).toList());
+        agregado.setBagagens(trajetos.stream().flatMap(trajeto -> trajeto.getBagagens().stream()).toList());
         agregado.setValorTotal(trajetos.stream().map(TrajetoAereoRelatorioDTO::getValorTotal).filter(Objects::nonNull)
             .reduce(java.math.BigDecimal.ZERO, java.math.BigDecimal::add));
         agregado.setMoeda(moeda);

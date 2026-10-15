@@ -2,11 +2,9 @@ package com.roknauta.agencia.web.crud;
 
 import com.roknauta.agencia.domain.CabineAerea;
 import com.roknauta.agencia.domain.SentidoVoo;
+import com.roknauta.agencia.domain.TipoBagagem;
 import com.roknauta.agencia.dto.CompanhiaAereaDTO;
-import com.roknauta.agencia.dto.TarifaAereaDTO;
 import com.roknauta.agencia.dto.documento.*;
-import com.roknauta.agencia.service.BagagemCompanhiaAereaService;
-import com.roknauta.agencia.service.TarifaAereaService;
 import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.service.documento.TrajetoAereoService;
 import com.roknauta.agencia.service.documento.VooService;
@@ -17,10 +15,8 @@ import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component("trajetoAereoController")
@@ -28,7 +24,6 @@ import java.util.List;
 public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDTO, TrajetoAereoService> {
 
     private final VooService vooService;
-    private final TarifaAereaService tarifaAereaService;
     @Getter
     @Setter
     private CompanhiaAereaDTO companhiaAerea;
@@ -37,15 +32,13 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
     private TrechoAereoDTO trechoForm;
     @Getter
     @Setter
-    private List<BagagemTrechoAereoDTO> bagagensForm = new ArrayList<>();
-    @Autowired
-    private BagagemCompanhiaAereaService bagagemCompanhiaAereaService;
+    private BagagemTrajetoAereoDTO bagagemForm;
+    private int indiceBagagem = -1;
 
-    public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService, VooService vooService,
-        TarifaAereaService tarifaAereaService) {
+    public TrajetoAereoController(TrajetoAereoService service, OrcamentoService orcamentoService,
+        VooService vooService) {
         super(service, orcamentoService);
         this.vooService = vooService;
-        this.tarifaAereaService = tarifaAereaService;
     }
 
     @Override
@@ -59,25 +52,22 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
         orcamentoSelecionado = null;
         idOrcamento = null;
         trechoForm = new TrechoAereoDTO();
-        bagagensForm = new ArrayList<>();
+        bagagemForm = null;
+        indiceBagagem = -1;
     }
 
     @Override
     public void edit(Long id) {
         super.edit(id);
         trechoForm = new TrechoAereoDTO();
-        bagagensForm = new ArrayList<>();
+        bagagemForm = null;
+        indiceBagagem = -1;
         // Edição de trajetos é iniciada a partir do orçamento selecionado.
     }
 
     public List<VooDTO> completeVoo(String texto) {
         return companhiaAerea == null ? List.of()
             : vooService.findByNumeroCompanhiaAerea(texto, companhiaAerea.getId());
-    }
-
-    public List<TarifaAereaDTO> completeTarifaAerea(String texto) {
-        return companhiaAerea == null ? List.of()
-            : tarifaAereaService.findByNomeCompanhiaAerea(texto, companhiaAerea.getId());
     }
 
     public SentidoVoo[] getSentidos() {
@@ -92,9 +82,12 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
         return idOrcamento == null ? List.of() : service.findByOrcamento(idOrcamento);
     }
 
+    public TipoBagagem[] getTiposBagagem() {
+        return TipoBagagem.values();
+    }
+
     public void novoTrecho() {
         trechoForm = new TrechoAereoDTO();
-        bagagensForm.clear();
         PrimeFaces.current().executeScript("PF('trechoDialogWidget').show();");
     }
 
@@ -102,18 +95,8 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
         this.companhiaAerea = event.getObject();
     }
 
-    public void carregarBagagens() {
-        bagagemCompanhiaAereaService.findByCompanhiaId(companhiaAerea.getId()).forEach(bagagem -> {
-            BagagemTrechoAereoDTO item = new BagagemTrechoAereoDTO();
-            item.setBagagemCompanhiaAerea(bagagem);
-            item.setQuantidade(0);
-            bagagensForm.add(item);
-        });
-    }
-
     public void confirmarTrecho() {
         if (trechoForm != null) {
-            trechoForm.setBagagens(bagagensForm.stream().filter(item -> item.getQuantidade() > 0).toList());
             int index = editForm.getTrechos().indexOf(trechoForm);
             if (index >= 0)
                 editForm.getTrechos().set(index, trechoForm);
@@ -126,7 +109,39 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
 
     public void editarTrecho(int indice) {
         trechoForm = editForm.getTrechos().get(indice);
-        bagagensForm = trechoForm.getBagagens() == null ? List.of() : trechoForm.getBagagens().stream().toList();
+        companhiaAerea = trechoForm.getVoo() == null ? null : trechoForm.getVoo().getCompanhiaAerea();
+    }
+
+    public void novaBagagem() {
+        bagagemForm = new BagagemTrajetoAereoDTO();
+        indiceBagagem = -1;
+        PrimeFaces.current().executeScript("PF('bagagemDialogWidget').show();");
+    }
+
+    public void editarBagagem(int indice) {
+        bagagemForm = editForm.getBagagens().get(indice);
+        indiceBagagem = indice;
+        PrimeFaces.current().executeScript("PF('bagagemDialogWidget').show();");
+    }
+
+    public void confirmarBagagem() {
+        if (bagagemForm == null || bagagemForm.getTipoBagagem() == null || bagagemForm.getQuantidade() < 1) {
+            return;
+        }
+        if (indiceBagagem >= 0) {
+            editForm.getBagagens().set(indiceBagagem, bagagemForm);
+        } else {
+            editForm.getBagagens().add(bagagemForm);
+        }
+        bagagemForm = null;
+        indiceBagagem = -1;
+        PrimeFaces.current().executeScript("PF('bagagemDialogWidget').hide();");
+    }
+
+    public void removerBagagem(int indice) {
+        if (indice >= 0 && indice < editForm.getBagagens().size()) {
+            editForm.getBagagens().remove(indice);
+        }
     }
 
     public void removerTrecho(int indice) {

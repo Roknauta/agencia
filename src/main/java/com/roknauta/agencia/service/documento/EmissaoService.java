@@ -216,7 +216,6 @@ public class EmissaoService implements CrudService<EmissaoDTO> {
             trajeto.setId(null);
             trajeto.getTrechos().forEach(trecho -> {
                 trecho.setId(null);
-                trecho.getBagagens().forEach(bagagem -> bagagem.setId(null));
             });
         });
         emissao.getTrajetosRodoviarios().forEach(trajeto -> trajeto.setId(null));

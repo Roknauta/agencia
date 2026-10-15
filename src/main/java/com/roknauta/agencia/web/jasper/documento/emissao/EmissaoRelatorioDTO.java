@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.roknauta.agencia.dto.documento.BilheteAereoDTO;
 import com.roknauta.agencia.dto.documento.EmissaoDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.DocumentoViagemRelatorioDTO;
+import com.roknauta.agencia.web.jasper.documento.comum.TrajetoAereoRelatorioDTO;
 import com.roknauta.agencia.web.jasper.documento.comum.VooRelatorioDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,9 +53,7 @@ public class EmissaoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     }
 
     public String getRegras() {
-        return getTrajetosAereos().stream().flatMap(trajeto -> trajeto.getVoos().stream())
-            .flatMap(voo -> Stream.of(voo.getRegraCancelamento(), voo.getRegraAlteracao(),
-                voo.getOutrasInformacoesTarifarias()))
+        return getTrajetosAereos().stream().map(TrajetoAereoRelatorioDTO::getResumoCondicoes)
             .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
     }
 

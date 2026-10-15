@@ -1,10 +1,6 @@
 package com.roknauta.agencia.web.jasper.documento.comum;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.roknauta.agencia.dto.documento.BagagemTrechoAereoDTO;
+import com.roknauta.agencia.dto.documento.BagagemTrajetoAereoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,25 +11,19 @@ import lombok.Setter;
 public class BagagemRelatorioDTO {
 
     private String descricaoRelatorio;
-    private String dimensoes;
-    private Double pesoMaximo;
     private Integer quantidade;
 
-    public BagagemRelatorioDTO(BagagemTrechoAereoDTO bagagem) {
-        if (bagagem == null) {
-            return;
-        }
-        quantidade = bagagem.getQuantidade();
-        var referencia = bagagem.getBagagemCompanhiaAerea();
-        if (referencia != null) {
-            descricaoRelatorio =
-                referencia.getTipoBagagem() == null ? bagagem.getDescricao() : referencia.getTipoBagagem().getLabel();
-            dimensoes = Stream.of(referencia.getAlturaCm(), referencia.getLarguraCm(), referencia.getProfundidadeCm())
-                .map(valor -> valor == null ? null : String.valueOf(valor)).filter(Objects::nonNull)
-                .collect(Collectors.joining(" x "));
-            pesoMaximo = referencia.getPesoMaximo();
-        } else {
-            descricaoRelatorio = bagagem.getDescricao();
+    public BagagemRelatorioDTO(BagagemTrajetoAereoDTO bagagem) {
+        if (bagagem != null) {
+            if (bagagem.getTipoBagagem() != null) {
+                descricaoRelatorio = switch (bagagem.getTipoBagagem()) {
+                    case ITEM_PESSOAL -> "Item Pessoal";
+                    case BAGAGEM_DE_MAO -> "Mala de Mão";
+                    case BAGAGEM_DESPACHADA -> "Bagagem Despachada";
+                    case BAGAGEM_ESPECIAL -> "Bagagem Especial";
+                };
+            }
+            quantidade = bagagem.getQuantidade();
         }
     }
 }

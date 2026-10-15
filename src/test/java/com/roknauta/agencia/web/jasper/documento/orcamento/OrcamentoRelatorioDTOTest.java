@@ -46,8 +46,7 @@ class OrcamentoRelatorioDTOTest {
         assertEquals(new BigDecimal("60.00"), relatorio.getValorESims());
         assertEquals(new BigDecimal("8008.50"), relatorio.getTotal());
         assertEquals(new BigDecimal("2002.13"), relatorio.getValorPorPessoa());
-        assertEquals("Cancelamento sujeito a multa do fornecedor.",
-            relatorio.getIda().getVoos().getFirst().getRegraCancelamento());
+        assertEquals("Cancelamento sujeito a multa do fornecedor.", relatorio.getIda().getRegrasCancelamento());
     }
 
     @Test

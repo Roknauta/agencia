@@ -160,6 +160,10 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
     private String reservasAereas() {
         StringJoiner texto = new StringJoiner("\n\n");
         for (TrajetoAereoRelatorioDTO trajeto : getTrajetosAereos()) {
+            if (trajeto.getBagagens() != null) {
+                trajeto.getBagagens().forEach(bagagem -> adicionarLinha(texto, "Bagagem",
+                    bagagem.getQuantidade() + " " + bagagem.getDescricaoRelatorio()));
+            }
             for (var voo : trajeto.getVoos()) {
                 StringJoiner trechoTexto = new StringJoiner("\n");
                 adicionarLinha(trechoTexto, "Sentido", trajeto.getSentido());
@@ -171,10 +175,6 @@ public class ContratoRelatorioDTO extends DocumentoViagemRelatorioDTO {
                 adicionarLinha(trechoTexto, "Voo",
                     formatarLista(" ", voo.getNumero(), formatarLista(" → ", voo.getOrigem(), voo.getDestino()),
                         dataHora(voo.getSaida()), dataHora(voo.getChegada())));
-                if (voo.getBagagens() != null) {
-                    voo.getBagagens()
-                        .forEach(bagagem -> adicionarLinha(trechoTexto, "Bagagem", bagagem.getDescricaoRelatorio()));
-                }
                 texto.add(trechoTexto.toString());
             }
             adicionarLinha(texto, "Valor total " + trajeto.getSentido(), trajeto.getValorTotal());

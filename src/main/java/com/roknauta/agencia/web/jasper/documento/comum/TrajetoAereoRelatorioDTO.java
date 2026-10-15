@@ -2,7 +2,9 @@ package com.roknauta.agencia.web.jasper.documento.comum;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.roknauta.agencia.dto.documento.TrajetoAereoDTO;
@@ -17,6 +19,7 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
 
     private String sentido;
     private List<VooRelatorioDTO> voos = new ArrayList<>();
+    private List<BagagemRelatorioDTO> bagagens = new ArrayList<>();
 
     public TrajetoAereoRelatorioDTO(TrajetoAereoDTO trajeto) {
         super(trajeto);
@@ -24,6 +27,9 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
             return;
         }
         sentido = trajeto.getSentido() == null ? null : trajeto.getSentido().name();
+        if (trajeto.getBagagens() != null) {
+            bagagens = trajeto.getBagagens().stream().map(BagagemRelatorioDTO::new).toList();
+        }
         if (trajeto.getTrechos() != null) {
             voos = trajeto.getTrechos().stream().map(VooRelatorioDTO::new).toList();
             for (int indice = 0; indice < voos.size(); indice++) {
@@ -45,20 +51,23 @@ public class TrajetoAereoRelatorioDTO extends ServicoRelatorioDTO {
     }
 
     public List<BagagemRelatorioDTO> getBagagens() {
-        return voos.stream().filter(voo -> voo.getBagagens() != null).flatMap(voo -> voo.getBagagens().stream())
-            .toList();
+        return bagagens;
     }
 
-    public String getResumoRegrasTarifarias() {
-        return voos.stream()
-            .flatMap(voo -> java.util.stream.Stream.of(voo.getRegraAlteracao(), voo.getRegraCancelamento(),
-                voo.getOutrasInformacoesTarifarias()))
-            .filter(texto -> texto != null && !texto.isBlank()).distinct().collect(Collectors.joining("\n"));
+    public String getResumoBagagens() {
+        Map<String, Integer> quantidadePorTipo = new LinkedHashMap<>();
+        for (BagagemRelatorioDTO bagagem : bagagens) {
+            if (bagagem.getDescricaoRelatorio() != null && !bagagem.getDescricaoRelatorio().isBlank()) {
+                quantidadePorTipo.merge(bagagem.getDescricaoRelatorio(),
+                    bagagem.getQuantidade() == null ? 0 : bagagem.getQuantidade(), Integer::sum);
+            }
+        }
+        return quantidadePorTipo.entrySet().stream().map(item -> item.getValue() + " " + item.getKey())
+            .collect(Collectors.joining(", "));
     }
 
     public String getResumoCondicoesComTarifas() {
-        return java.util.stream.Stream.of(getResumoCondicoes(), getResumoRegrasTarifarias())
-            .filter(texto -> texto != null && !texto.isBlank()).collect(Collectors.joining("\n"));
+        return getResumoCondicoes();
     }
 
     public List<AtributoRelatorioDTO> getAtributosRelatorio() {

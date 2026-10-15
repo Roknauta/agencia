@@ -224,7 +224,6 @@ public class ContratoService implements CrudService<ContratoDTO> {
             trajeto.getTaxas().forEach(taxa -> taxa.setId(null));
             trajeto.getTrechos().forEach(trecho -> {
                 trecho.setId(null);
-                trecho.getBagagens().forEach(bagagem -> bagagem.setId(null));
             });
         });
         contrato.getTrajetosRodoviarios().forEach(trajeto -> {

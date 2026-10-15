@@ -1,6 +1,10 @@
 package com.roknauta.agencia.domain.documento;
 
 import com.roknauta.agencia.domain.SentidoVoo;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OrderColumn;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,4 +29,9 @@ public class TrajetoAereo extends Servico {
     @JoinColumn(name = "trajeto_aereo_id")
     @OrderColumn(name = "ordem")
     private List<TrechoAereo> trechos = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "trajeto_aereo_bagagens", joinColumns = @JoinColumn(name = "trajeto_aereo_id"))
+    @OrderColumn(name = "ordem")
+    private List<BagagemTrajetoAereo> bagagens = new ArrayList<>();
 }

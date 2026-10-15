@@ -22,8 +22,6 @@
 	</dataset>
 	<dataset name="Bagagens" uuid="3b05ec7d-2a26-4717-8710-6cd449f38afe">
 		<field name="descricaoRelatorio" class="java.lang.String"/>
-		<field name="dimensoes" class="java.lang.String"/>
-		<field name="pesoMaximo" class="java.lang.Double"/>
 		<field name="quantidade" class="java.lang.Integer"/>
 	</dataset>
 	<dataset name="TrechosAereos" uuid="98f78297-c080-4f48-987e-ed740655d7cc">
@@ -275,9 +273,9 @@
 					<datasetRun uuid="70f4e94e-bd9f-4046-91cf-c12548bd3938" subDataset="Bagagens">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{ida}.getBagagens())]]></dataSourceExpression>
 					</datasetRun>
-					<column kind="single" uuid="7b486da4-e876-44e2-817a-58a4296e92f0" width="170">
+					<column kind="single" uuid="7b486da4-e876-44e2-817a-58a4296e92f0" width="340">
 						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="3d82b057-4d7d-41e6-9e7c-e30f220eabca" mode="Opaque" x="0" y="0" width="170" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+							<element kind="staticText" uuid="3d82b057-4d7d-41e6-9e7c-e30f220eabca" mode="Opaque" x="0" y="0" width="340" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 								<text><![CDATA[TIPO]]></text>
 								<box padding="0">
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -289,7 +287,7 @@
 							</element>
 						</columnHeader>
 						<detailCell height="32">
-							<element kind="textField" uuid="ca17ffbb-2e2e-4538-8b6c-db735ce71f02" mode="Opaque" x="0" y="0" width="170" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+							<element kind="textField" uuid="ca17ffbb-2e2e-4538-8b6c-db735ce71f02" mode="Opaque" x="0" y="0" width="340" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
 								<expression><![CDATA[$F{descricaoRelatorio}]]></expression>
 								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
 									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
@@ -298,55 +296,11 @@
 						</detailCell>
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 					</column>
-					<column kind="single" uuid="16830ee4-fee9-48d3-ada8-dabad8f3c2d5" width="160">
+
+
+					<column kind="single" uuid="644af929-82c0-4b19-85ea-16c897ae26ec" width="183">
 						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="e2db6ed0-00f9-4d7a-a1af-c2b65c779996" mode="Opaque" x="0" y="0" width="160" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-								<text><![CDATA[DIMENSÕES]]></text>
-								<box padding="0">
-									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-							</element>
-						</columnHeader>
-						<detailCell height="32">
-							<element kind="textField" uuid="62c16de8-f0ca-435f-8738-77973a4fe735" mode="Opaque" x="0" y="0" width="160" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
-								<expression><![CDATA[$F{dimensoes} == null || $F{dimensoes}.trim().isEmpty() ? "Não informado" : $F{dimensoes}]]></expression>
-								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
-									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
-								</box>
-							</element>
-						</detailCell>
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-					</column>
-					<column kind="single" uuid="62bfa373-b816-4eff-9b82-fcb137719c0e" width="103">
-						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="ea4dcc12-a64a-48b8-b6fd-d430d7ffa7b5" mode="Opaque" x="0" y="0" width="103" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-								<text><![CDATA[PESO MÁXIMO]]></text>
-								<box padding="0">
-									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-							</element>
-						</columnHeader>
-						<detailCell height="32">
-							<element kind="textField" uuid="86c6a96e-7d66-426a-92e4-a64e3f0d65e8" mode="Opaque" x="0" y="0" width="103" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
-								<expression><![CDATA[$F{pesoMaximo} == null ? "Não informado" : new java.text.DecimalFormat("0.##").format($F{pesoMaximo}) + " kg"]]></expression>
-								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
-									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
-								</box>
-							</element>
-						</detailCell>
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-					</column>
-					<column kind="single" uuid="644af929-82c0-4b19-85ea-16c897ae26ec" width="90">
-						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="49e72cec-fdd9-48d9-8495-f93d09a97614" mode="Opaque" x="0" y="0" width="90" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+							<element kind="staticText" uuid="49e72cec-fdd9-48d9-8495-f93d09a97614" mode="Opaque" x="0" y="0" width="183" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 								<text><![CDATA[QUANTIDADE]]></text>
 								<box padding="0">
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -358,7 +312,7 @@
 							</element>
 						</columnHeader>
 						<detailCell height="32">
-							<element kind="textField" uuid="adb3d340-ef46-4611-9c63-24f769facdc2" mode="Opaque" x="0" y="0" width="90" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+							<element kind="textField" uuid="adb3d340-ef46-4611-9c63-24f769facdc2" mode="Opaque" x="0" y="0" width="183" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
 								<expression><![CDATA[$F{quantidade} == null ? 0 : $F{quantidade}]]></expression>
 								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
 									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
@@ -570,9 +524,9 @@
 					<datasetRun uuid="eafe3cd3-8e8c-44d7-a7f8-f53efe8c9d8c" subDataset="Bagagens">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{volta}.getBagagens())]]></dataSourceExpression>
 					</datasetRun>
-					<column kind="single" uuid="bbabfe05-f22f-4bd3-a875-b08e3d52ee48" width="170">
+					<column kind="single" uuid="bbabfe05-f22f-4bd3-a875-b08e3d52ee48" width="340">
 						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="980f22e7-0a0a-4063-b73d-4609bae06560" mode="Opaque" x="0" y="0" width="170" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+							<element kind="staticText" uuid="980f22e7-0a0a-4063-b73d-4609bae06560" mode="Opaque" x="0" y="0" width="340" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 								<text><![CDATA[TIPO]]></text>
 								<box padding="0">
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -584,7 +538,7 @@
 							</element>
 						</columnHeader>
 						<detailCell height="32">
-							<element kind="textField" uuid="6228ca91-d57e-4a03-ba08-4c74581edaa9" mode="Opaque" x="0" y="0" width="170" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+							<element kind="textField" uuid="6228ca91-d57e-4a03-ba08-4c74581edaa9" mode="Opaque" x="0" y="0" width="340" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
 								<expression><![CDATA[$F{descricaoRelatorio}]]></expression>
 								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
 									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
@@ -593,55 +547,11 @@
 						</detailCell>
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 					</column>
-					<column kind="single" uuid="b1660a85-87aa-4448-999b-a88eda3cb99f" width="160">
+
+
+					<column kind="single" uuid="81fb49e8-c95d-441b-9f6d-7478edfb14e5" width="183">
 						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="cd904b18-c56f-41d7-b27a-0983697fbc43" mode="Opaque" x="0" y="0" width="160" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-								<text><![CDATA[DIMENSÕES]]></text>
-								<box padding="0">
-									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-							</element>
-						</columnHeader>
-						<detailCell height="32">
-							<element kind="textField" uuid="c36c1b56-be64-4a90-8d75-a51784b71cda" mode="Opaque" x="0" y="0" width="160" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
-								<expression><![CDATA[$F{dimensoes} == null || $F{dimensoes}.trim().isEmpty() ? "Não informado" : $F{dimensoes}]]></expression>
-								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
-									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
-								</box>
-							</element>
-						</detailCell>
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-					</column>
-					<column kind="single" uuid="24f06a54-9e69-48f5-81e8-1e60ae23318e" width="103">
-						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="af64dcea-fe31-4a9e-a672-b27cc5229315" mode="Opaque" x="0" y="0" width="103" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
-								<text><![CDATA[PESO MÁXIMO]]></text>
-								<box padding="0">
-									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-							</element>
-						</columnHeader>
-						<detailCell height="32">
-							<element kind="textField" uuid="49858cf3-a834-4e56-8840-c5d48907c81e" mode="Opaque" x="0" y="0" width="103" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
-								<expression><![CDATA[$F{pesoMaximo} == null ? "Não informado" : new java.text.DecimalFormat("0.##").format($F{pesoMaximo}) + " kg"]]></expression>
-								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
-									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
-								</box>
-							</element>
-						</detailCell>
-						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-					</column>
-					<column kind="single" uuid="81fb49e8-c95d-441b-9f6d-7478edfb14e5" width="90">
-						<columnHeader height="24" rowSpan="1">
-							<element kind="staticText" uuid="7ccd0e2f-edc7-4629-b37b-70c38e7a20b2" mode="Opaque" x="0" y="0" width="90" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+							<element kind="staticText" uuid="7ccd0e2f-edc7-4629-b37b-70c38e7a20b2" mode="Opaque" x="0" y="0" width="183" height="24" forecolor="#FFFFFF" backcolor="#063767" fontSize="8.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
 								<text><![CDATA[QUANTIDADE]]></text>
 								<box padding="0">
 									<pen lineWidth="0.0" lineColor="#FFFFFF"/>
@@ -653,7 +563,7 @@
 							</element>
 						</columnHeader>
 						<detailCell height="32">
-							<element kind="textField" uuid="4445465c-6f0b-4539-a088-07b928a24d00" mode="Opaque" x="0" y="0" width="90" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
+							<element kind="textField" uuid="4445465c-6f0b-4539-a088-07b928a24d00" mode="Opaque" x="0" y="0" width="183" height="32" forecolor="#063767" backcolor="#F3F6F9" fontSize="9.0" textAdjust="StretchHeight" bold="false" vTextAlign="Middle">
 								<expression><![CDATA[$F{quantidade} == null ? 0 : $F{quantidade}]]></expression>
 								<box topPadding="4" leftPadding="6" bottomPadding="4" rightPadding="4">
 									<bottomPen lineWidth="0.5" lineColor="#D5DFE7"/>
@@ -726,7 +636,7 @@
  <dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{hospedagens})]]></dataSourceExpression>
  <expression><![CDATA[$P{RELATORIO_HOSPEDAGENS}]]></expression>
  </element></band>
-        
+
 		<band height="380" splitType="Stretch">
 			<printWhenExpression><![CDATA[$F{transfer} != null]]></printWhenExpression>
 			<element kind="staticText" uuid="9697310c-d24e-45a5-b36b-58f86efc7b3c" positionType="Float" x="0" y="0" width="523" height="28" forecolor="#CCAA55" fontName="DejaVu Sans" fontSize="16" bold="true" vTextAlign="Middle" key="TITULO_TRANSFER" hTextAlign="Center">

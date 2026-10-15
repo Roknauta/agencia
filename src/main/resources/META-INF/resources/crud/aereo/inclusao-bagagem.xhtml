@@ -1,0 +1,27 @@
+<ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:m="jakarta.faces.composite/resources/components"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core" xmlns:h="jakarta.faces.html">
+    <p:dialog id="bagagemDialog" widgetVar="bagagemDialogWidget" modal="true"
+              header="#{msg['bagagem.aerea']}" width="520">
+        <h:form id="bagagemDialogForm">
+            <p:panelGrid columns="2" layout="grid" styleClass="form-grid"
+                         rendered="#{trajetoAereoController.bagagemForm != null}">
+                <m:selectOneMenu id="tipoBagagem" label="#{msg['tipo.bagagem']}"
+                                 value="#{trajetoAereoController.bagagemForm.tipoBagagem}" required="true">
+                    <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
+                    <f:selectItems value="#{trajetoAereoController.tiposBagagem}" var="tipo"
+                                   itemValue="#{tipo}" itemLabel="#{tipo.label}"/>
+                </m:selectOneMenu>
+                <m:inputNumber id="quantidade" label="#{msg['quantidade.inclusa']}"
+                               value="#{trajetoAereoController.bagagemForm.quantidade}" minValue="1"
+                               decimalPlaces="0" required="true"/>
+            </p:panelGrid>
+            <p:outputPanel styleClass="crud-footer">
+                <p:commandButton value="#{msg['confirmar']}" icon="pi pi-check"
+                                 action="#{trajetoAereoController.confirmarBagagem}" process="@form"
+                                 update="@form, :trajetoAereoEditForm:bagagens, :trajetoAereoEditForm:adicionarBagagem"/>
+                <p:commandButton value="#{msg['cancelar']}" type="button" icon="pi pi-times"
+                                 onclick="PF('bagagemDialogWidget').hide()"/>
+            </p:outputPanel>
+        </h:form>
+    </p:dialog>
+</ui:composition>
