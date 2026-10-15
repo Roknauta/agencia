@@ -63,8 +63,8 @@ public final class JasperUtils {
             throw new IllegalArgumentException("Os dados do contrato são obrigatórios.");
         }
         Map<String, Object> parametrosContrato = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
-        parametrosContrato.putIfAbsent("RELATORIO_BLOCOS", compilar("contrato-blocos-JBD.jrxml"));
-        return gerarPdf("contrato-JBD.jrxml", new JRBeanCollectionDataSource(List.of(contrato)), parametrosContrato);
+        parametrosContrato.putIfAbsent("RELATORIO_BLOCOS", compilar("contrato-blocos.jrxml"));
+        return gerarPdf("contrato.jrxml", new JRBeanCollectionDataSource(List.of(contrato)), parametrosContrato);
     }
 
     public static byte[] gerarOrcamentoPdf(OrcamentoRelatorioDTO orcamento, Map<String, Object> parametros)
@@ -73,21 +73,22 @@ public final class JasperUtils {
             throw new IllegalArgumentException("Os dados do orçamento são obrigatórios.");
         }
         Map<String, Object> parametrosOrcamento = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
-        parametrosOrcamento.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("hospedagens-JBD.jrxml"));
-        parametrosOrcamento.putIfAbsent("RELATORIO_TRAJETO_AEREO", compilar("servico-trajeto-aereo-JBD.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("servicos/servico-hospedagens.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_TRAJETO_AEREO", compilar("servicos/servico-trajeto-aereo.jrxml"));
         parametrosOrcamento.putIfAbsent("RELATORIO_TRAJETO_RODOVIARIO",
-            compilar("servico-trajeto-rodoviario-JBD.jrxml"));
-        parametrosOrcamento.putIfAbsent("RELATORIO_TRANSFER", compilar("servico-transfer-JBD.jrxml"));
-        parametrosOrcamento.putIfAbsent("RELATORIO_ALUGUEL_VEICULO", compilar("servico-aluguel-veiculo-JBD.jrxml"));
-        parametrosOrcamento.putIfAbsent("RELATORIO_SEGURO_VIAGEM", compilar("servico-seguro-viagem-JBD.jrxml"));
-        parametrosOrcamento.putIfAbsent("RELATORIO_ESIM", compilar("servico-e-sim-JBD.jrxml"));
+            compilar("servicos/servico-trajeto-rodoviario.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_TRANSFER", compilar("servicos/servico-transfer.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_ALUGUEL_VEICULO",
+            compilar("servicos/servico-aluguel-veiculo.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_SEGURO_VIAGEM", compilar("servicos/servico-seguro-viagem.jrxml"));
+        parametrosOrcamento.putIfAbsent("RELATORIO_ESIM", compilar("servicos/servico-e-sim.jrxml"));
         if (!parametrosOrcamento.containsKey("LOGO")) {
             try (InputStream recurso = abrirRecurso("logo-jbd.png")) {
                 Image logo = ImageIO.read(recurso);
                 parametrosOrcamento.put("LOGO", logo);
             }
         }
-        return gerarPdf("orcamento-passagem-hospedagem-JBD.jrxml", orcamento, parametrosOrcamento);
+        return gerarPdf("orcamento.jrxml", orcamento, parametrosOrcamento);
     }
 
     public static byte[] gerarEmissaoPdf(EmissaoRelatorioDTO emissao, Map<String, Object> parametros)
@@ -96,14 +97,14 @@ public final class JasperUtils {
             throw new IllegalArgumentException("Os dados da emissão são obrigatórios.");
         }
         Map<String, Object> parametrosEmissao = parametros == null ? new HashMap<>() : new HashMap<>(parametros);
-        parametrosEmissao.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("hospedagens-JBD.jrxml"));
+        parametrosEmissao.putIfAbsent("RELATORIO_HOSPEDAGENS", compilar("servicos/servico-hospedagens.jrxml"));
         if (!parametrosEmissao.containsKey("LOGO")) {
             try (InputStream recurso = abrirRecurso("logo-jbd.png")) {
                 Image logo = ImageIO.read(recurso);
                 parametrosEmissao.put("LOGO", logo);
             }
         }
-        return gerarPdf("emissao-passagem-JBD.jrxml", emissao, parametrosEmissao);
+        return gerarPdf("emissao.jrxml", emissao, parametrosEmissao);
     }
 
     public static InputStream abrirRecurso(String nomeArquivo) {

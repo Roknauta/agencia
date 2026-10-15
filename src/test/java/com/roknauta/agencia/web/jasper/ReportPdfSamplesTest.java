@@ -68,8 +68,7 @@ class ReportPdfSamplesTest {
         bilheteVolta.setNumeroBilhete("0479876543210");
         bilheteVolta.setAssento("14C");
         emissao.setBilhetesAereos(java.util.List.of(bilheteIda, bilheteVolta));
-        byte[] pdfEmissao =
-            JasperUtils.gerarPdf("emissao-passagem-JBD.jrxml", new EmissaoRelatorioDTO(emissao), parametros);
+        byte[] pdfEmissao = JasperUtils.gerarPdf("emissao.jrxml", new EmissaoRelatorioDTO(emissao), parametros);
         gravar(diretorio.resolve("emissao-teste.pdf"), pdfEmissao);
 
         ContratoDTO contrato = new ContratoDTO();
