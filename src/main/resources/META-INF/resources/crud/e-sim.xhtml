@@ -5,29 +5,16 @@
     <ui:param name="formId" value="eSim"/>
     <ui:define name="searchField">
         <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
-                        value="#{eSimController.orcamentoSelecionado}"
+                        value="#{eSimController.orcamento}"
                         completeMethod="#{eSimController.completeOrcamento}"
                         var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                         converter="#{orcamentoConverter}" required="false" minQueryLength="0">
-            <p:ajax event="itemSelect" listener="#{eSimController.selecionarOrcamento}"
+            <p:ajax event="itemSelect" listener="#{eSimController.orcamentoSelect}"
                     process="@this" update=":crudContent"/>
         </m:autoComplete>
     </ui:define>
     <ui:define name="resultados">
         <m:crudDataTable>
-            <!--<p:column headerText="#{msg['interface.opcoes']}" styleClass="coluna-opcoes">
-                <p:menuButton id="optionsESim" icon="pi pi-ellipsis-v" title="#{msg['interface.opcoes']}"
-                              ariaLabel="#{msg['interface.opcoes']}" buttonStyleClass="ui-button-sm">
-                    <p:menuitem id="editESim" value="#{msg['editar']}" icon="pi pi-pencil"
-                                action="#{eSimController.editarESim(item.id)}" process="@this"
-                                update=":crudContent" resetValues="true"/>
-                    <p:menuitem id="removeESim" value="#{msg['excluir']}" icon="pi pi-trash"
-                                action="#{eSimController.delete(item.id)}" process="@this" update=":crudContent">
-                        <p:confirm header="#{msg['interface.excluir.registro']}"
-                                   message="#{msg['interface.confirma.esta.acao']}"/>
-                    </p:menuitem>
-                </p:menuButton>
-            </p:column>-->
             <t:column headerText="#{msg['operadora']}" value="#{item.operadora}"/>
             <t:column headerText="#{msg['plano']}" value="#{item.plano}"/>
             <t:column headerText="#{msg['franquia.dados']}" value="#{item.franquiaDados}"/>
@@ -39,7 +26,7 @@
     <ui:define name="editField">
         <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
             <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
-                            value="#{eSimController.orcamentoSelecionado}"
+                            value="#{eSimController.orcamento}"
                             completeMethod="#{eSimController.completeOrcamento}"
                             var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                             converter="#{orcamentoConverter}" required="true" minQueryLength="0">

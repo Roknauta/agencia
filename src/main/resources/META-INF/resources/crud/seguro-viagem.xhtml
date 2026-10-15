@@ -5,11 +5,11 @@
     <ui:param name="formId" value="seguroViagem"/>
     <ui:define name="searchField">
         <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
-                        value="#{seguroViagemController.orcamentoSelecionado}"
+                        value="#{seguroViagemController.orcamento}"
                         completeMethod="#{seguroViagemController.completeOrcamento}"
                         var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                         converter="#{orcamentoConverter}" required="false" minQueryLength="0">
-            <p:ajax event="itemSelect" listener="#{seguroViagemController.selecionarOrcamento}"
+            <p:ajax event="itemSelect" listener="#{seguroViagemController.orcamentoSelect}"
                     process="@this" update=":crudContent"/>
         </m:autoComplete>
     </ui:define>
@@ -42,11 +42,11 @@
     <ui:define name="editField">
         <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
             <m:autoComplete id="orcamento" label="#{msg['orcamento']}"
-                            value="#{seguroViagemController.orcamentoSelecionado}"
+                            value="#{seguroViagemController.orcamento}"
                             completeMethod="#{seguroViagemController.completeOrcamento}"
                             var="orcamento" itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                             converter="#{orcamentoConverter}" required="true" minQueryLength="0">
-                <p:ajax event="itemSelect" listener="#{seguroViagemController.selecionarOrcamento}"
+                <p:ajax event="itemSelect" listener="#{seguroViagemController.orcamentoSelect}"
                         process="@this" update=":seguroViagemEditForm:viajantesCobertos :seguroViagemEditForm:viajantesTabela"/>
             </m:autoComplete>
             <m:inputText id="seguradora" label="#{msg['seguradora']}"

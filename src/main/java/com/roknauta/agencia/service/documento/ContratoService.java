@@ -26,6 +26,7 @@ import com.roknauta.agencia.service.mapper.ContratoMapper;
 import com.roknauta.agencia.web.jasper.JasperUtils;
 import com.roknauta.agencia.web.jasper.documento.contrato.ContratoRelatorioDTO;
 import net.sf.jasperreports.engine.JRException;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang3.StringUtils;
@@ -273,5 +274,9 @@ public class ContratoService implements CrudService<ContratoDTO> {
         return contrato.getViajantes().stream().filter(viajante -> viajanteDTO.getId().equals(viajante.getId()))
             .findFirst().orElseThrow(() -> new IllegalArgumentException(
                 "Os viajantes cobertos pelo seguro devem estar incluídos no contrato."));
+    }
+
+    public List<ContratoDTO> findByNumero(String numero){
+        return repository.findByNumero(numero).stream().map(mapper::toDTO).toList();
     }
 }

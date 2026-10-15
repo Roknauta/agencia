@@ -1,8 +1,5 @@
 package com.roknauta.agencia.web.crud;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import com.roknauta.agencia.domain.documento.Moeda;
 import com.roknauta.agencia.dto.documento.OrcamentoDTO;
 import com.roknauta.agencia.dto.documento.ServicoDTO;
@@ -13,6 +10,8 @@ import jakarta.faces.view.ViewScoped;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /** Comportamento comum aos cadastros de serviços associados a um orçamento. */
 @ViewScoped
 public abstract class ServicoControllerBase<T extends ServicoDTO, S extends CrudService<T>>
@@ -22,34 +21,32 @@ public abstract class ServicoControllerBase<T extends ServicoDTO, S extends Crud
 
     @Getter
     @Setter
+    protected TaxaDTO taxaForm;
+
+    @Getter
+    @Setter
     protected Long idOrcamento;
 
     @Getter
     @Setter
-    protected OrcamentoDTO orcamentoSelecionado;
-
-    private int indiceTaxaEmEdicao = -1;
+    protected OrcamentoDTO orcamento;
 
     protected ServicoControllerBase(S service, OrcamentoService orcamentoService) {
         super(service);
         this.orcamentoService = orcamentoService;
-        taxaForm = new TaxaDTO();
     }
 
     @Override
     public void novo() {
         super.novo();
-        taxaForm = new TaxaDTO();
     }
 
     public List<OrcamentoDTO> completeOrcamento(String texto) {
         return orcamentoService.findByTexto(texto);
     }
 
-    public void selecionarOrcamento() {
-        idOrcamento = orcamentoSelecionado == null ? null : orcamentoSelecionado.getId();
+    public void orcamentoSelect() {
         aoSelecionarOrcamento();
-        atualizarResultados();
     }
 
     protected void aoSelecionarOrcamento() {}
@@ -69,7 +66,7 @@ public abstract class ServicoControllerBase<T extends ServicoDTO, S extends Crud
         super.edit(id);
         taxaForm = new TaxaDTO();
         idOrcamento = localizarOrcamento(id);
-        orcamentoSelecionado = idOrcamento == null ? null : orcamentoService.findById(idOrcamento);
+        orcamento = idOrcamento == null ? null : orcamentoService.findById(idOrcamento);
     }
 
     @Override
@@ -100,53 +97,30 @@ public abstract class ServicoControllerBase<T extends ServicoDTO, S extends Crud
     @Override
     public void voltarPesquisa() {
         super.voltarPesquisa();
-        orcamentoSelecionado = null;
+        orcamento = null;
         idOrcamento = null;
     }
 
     public void novaTaxa() {
         taxaForm = new TaxaDTO();
-        if (editForm != null) {
-            taxaForm.setMoeda(editForm.getMoeda());
-        }
-        indiceTaxaEmEdicao = -1;
+        taxaForm.setMoeda(editForm.getMoeda());
     }
 
-    public void editarTaxa(int indice) {
-        if (editForm == null || indice < 0 || indice >= editForm.getTaxas().size()) {
-            return;
-        }
-        TaxaDTO taxa = editForm.getTaxas().get(indice);
-        taxaForm = new TaxaDTO();
-        taxaForm.setId(taxa.getId());
-        taxaForm.setTipoTaxa(taxa.getTipoTaxa());
-        taxaForm.setValor(taxa.getValor() == null ? BigDecimal.ZERO : taxa.getValor());
-        taxaForm.setMoeda(taxa.getMoeda());
-        indiceTaxaEmEdicao = indice;
+    public void editarTaxa(TaxaDTO taxa) {
+        this.taxaForm = taxa;
     }
 
     public void confirmarTaxa() {
-        if (editForm == null || taxaForm == null) {
-            return;
-        }
-        if (indiceTaxaEmEdicao >= 0 && indiceTaxaEmEdicao < editForm.getTaxas().size()) {
-            editForm.getTaxas().set(indiceTaxaEmEdicao, taxaForm);
-        } else {
-            editForm.getTaxas().add(taxaForm);
-        }
-        taxaForm = new TaxaDTO();
-        indiceTaxaEmEdicao = -1;
+        editForm.getTaxas().add(taxaForm);
+        taxaForm = null;
     }
 
     public void cancelarTaxa() {
-        taxaForm = new TaxaDTO();
-        indiceTaxaEmEdicao = -1;
+        taxaForm = null;
     }
 
-    public void removerTaxa(int indice) {
-        if (editForm != null && indice >= 0 && indice < editForm.getTaxas().size()) {
-            editForm.getTaxas().remove(indice);
-        }
+    public void removerTaxa(TaxaDTO taxa) {
+        editForm.getTaxas().remove(taxa);
     }
 
     public Moeda[] getMoedas() {

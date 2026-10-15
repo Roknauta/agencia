@@ -64,6 +64,10 @@ public class ContratoController extends CrudControllerBase<ContratoDTO, Contrato
         viajanteForm = new ViajanteDTO();
     }
 
+    public List<ContratoDTO> completeContratos(String texto) {
+        return service.findByNumero(texto);
+    }
+
     public void selecionarOrcamento() {
         if (orcamentoSelecionado == null) {
             return;

@@ -3,7 +3,6 @@ package com.roknauta.agencia.web.crud;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.roknauta.agencia.dto.documento.OrcamentoDTO;
 import com.roknauta.agencia.dto.documento.SeguroViagemDTO;
 import com.roknauta.agencia.dto.documento.ViajanteDTO;
 import com.roknauta.agencia.service.documento.OrcamentoService;
@@ -29,9 +28,9 @@ public class SeguroViagemController extends ServicoControllerBase<SeguroViagemDT
     public void novo() {
         super.novo();
         if (idOrcamento == null) {
-            orcamentoSelecionado = null;
+            orcamento = null;
         } else {
-            orcamentoSelecionado = orcamentoService.findById(idOrcamento);
+            orcamento = orcamentoService.findById(idOrcamento);
         }
     }
 

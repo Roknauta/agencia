@@ -1,7 +1,6 @@
 package com.roknauta.agencia.web.crud;
 
 import com.roknauta.agencia.dto.documento.ESimDTO;
-import com.roknauta.agencia.dto.documento.OrcamentoDTO;
 import com.roknauta.agencia.service.documento.ESimService;
 import com.roknauta.agencia.service.documento.OrcamentoService;
 import com.roknauta.agencia.web.Msg;
@@ -28,7 +27,7 @@ public class ESimController extends ServicoControllerBase<ESimDTO, ESimService> 
         super.novo();
         editForm = new ESimDTO();
         if (idOrcamento != null) {
-            orcamentoSelecionado = orcamentoService.findById(idOrcamento);
+            orcamento = orcamentoService.findById(idOrcamento);
         }
     }
 
@@ -57,7 +56,7 @@ public class ESimController extends ServicoControllerBase<ESimDTO, ESimService> 
     }
 
     public void selecionarOrcamentoNoForm() {
-        selecionarOrcamento();
+        orcamentoSelect();
     }
 
     public List<String> completeCodigoAtivacao(String texto) {

@@ -49,7 +49,7 @@ public class TrajetoAereoController extends ServicoControllerBase<TrajetoAereoDT
     @Override
     public void novo() {
         super.novo();
-        orcamentoSelecionado = null;
+        orcamento = null;
         idOrcamento = null;
         trechoForm = new TrechoAereoDTO();
         bagagemForm = null;

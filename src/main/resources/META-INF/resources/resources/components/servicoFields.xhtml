@@ -2,15 +2,18 @@
                 xmlns:f="jakarta.faces.core" xmlns:m="jakarta.faces.composite/resources/components"
                 xmlns:t="http://agencia.com/jsf">
 
+    <!--@elvariable id="servico" type="com.roknauta.agencia.dto.documento.ServicoDTO"-->
+    <!--@elvariable id="controller" type="com.roknauta.agencia.web.crud.ServicoControllerBase"-->
+
     <p:spacer height="20"/>
     <p:panel header="Valores">
         <p:panelGrid columns="2" layout="grid" styleClass="form-grid">
             <m:inputTextarea id="regrasAlteracao" label="#{msg['regras.alteracao']}"
-                             value="#{servico.regrasAlteracao}" maxlength="3000" />
+                             value="#{servico.regrasAlteracao}" maxlength="3000"/>
             <m:inputTextarea id="regrasCancelamento" label="#{msg['regras.cancelamento']}"
-                             value="#{servico.regrasCancelamento}" maxlength="3000" />
+                             value="#{servico.regrasCancelamento}" maxlength="3000"/>
             <m:inputTextarea id="observacoes" label="#{msg['observacoes']}"
-                             value="#{servico.observacoes}" maxlength="3000" />
+                             value="#{servico.observacoes}" maxlength="3000"/>
             <m:inputNumber id="valor" label="#{msg['valor']}" value="#{servico.valor}"
                            minValue="0" decimalPlaces="2"/>
             <m:inputNumber id="desconto" label="#{msg['desconto']}" value="#{servico.desconto}"
@@ -23,16 +26,13 @@
 
         <p:commandButton id="adicionarTaxa" value="#{msg['adicionar.taxa']}" icon="pi pi-plus"
                          action="#{controller.novaTaxa}" process="@this"
-                         update=":taxaForm:taxaCampos" oncomplete="PF('taxaDialogWidget').show()"/>
+                         update=":taxaForm" oncomplete="PF('taxaDialogWidget').show()"/>
         <p:dataTable id="taxasTabela" value="#{servico.taxas}" var="taxa" rowIndexVar="indiceTaxa"
                      emptyMessage="#{msg['nenhuma.taxa.adicionada']}" style="margin-top: 10px" showGridlines="true">
             <p:column headerText="#{msg['interface.acoes']}" style="width: 85px">
-                <p:commandButton icon="pi pi-pencil" title="#{msg['editar']}"
-                                 action="#{controller.editarTaxa(indiceTaxa)}" process="@this"
-                                 update=":taxaForm:taxaCampos" oncomplete="PF('taxaDialogWidget').show()"/>
-                <p:commandButton icon="pi pi-trash" title="#{msg['excluir']}"
-                                 action="#{controller.removerTaxa(indiceTaxa)}" process="@this"
-                                 update="taxasTabela"/>
+                <p:commandButton icon="pi pi-pencil" title="#{msg['editar']}" action="#{controller.editarTaxa(taxa)}" process="@this" update=":taxaForm"
+                                 oncomplete="PF('taxaDialogWidget').show()"/>
+                <p:commandButton icon="pi pi-trash" title="#{msg['excluir']}" action="#{controller.removerTaxa(taxa)}" process="@this" update="taxasTabela"/>
             </p:column>
             <t:column headerText="#{msg['tipo.taxa']}" value="#{taxa.tipoTaxa.nome}"/>
             <t:column headerText="#{msg['valor']}" value="#{taxa.moeda.simbolo} #{taxa.valor}"/>

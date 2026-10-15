@@ -6,11 +6,11 @@
     <ui:param name="formId" value="trajetoAereo"/>
     <ui:define name="searchField">
         <m:autoComplete id="orcamentoPesquisa" label="#{msg['orcamento']}"
-                        value="#{trajetoAereoController.orcamentoSelecionado}"
+                        value="#{trajetoAereoController.orcamento}"
                         completeMethod="#{trajetoAereoController.completeOrcamento}"
                         var="orcamento" itemLabel="#{orcamento.numero} #{orcamento.cliente}" itemValue="#{orcamento}"
                         converter="#{orcamentoConverter}" required="true" minQueryLength="0">
-            <p:ajax event="itemSelect" listener="#{trajetoAereoController.selecionarOrcamento}" process="@this" update=":crudContent"/>
+            <p:ajax event="itemSelect" listener="#{trajetoAereoController.orcamentoSelect}" process="@this" update=":crudContent"/>
         </m:autoComplete>
     </ui:define>
     <ui:define name="resultados">
@@ -22,11 +22,11 @@
     </ui:define>
     <ui:define name="editField">
         <p:panelGrid columns="3" layout="grid" styleClass="form-grid">
-            <m:autoComplete id="orcamento" label="#{msg['orcamento']}" value="#{trajetoAereoController.orcamentoSelecionado}"
+            <m:autoComplete id="orcamento" label="#{msg['orcamento']}" value="#{trajetoAereoController.orcamento}"
                             completeMethod="#{trajetoAereoController.completeOrcamento}" var="orcamento"
                             itemLabel="#{orcamento.autoCompleteLabel()}" itemValue="#{orcamento}"
                             converter="#{orcamentoConverter}" required="true" minQueryLength="0">
-                <p:ajax event="itemSelect" listener="#{trajetoAereoController.selecionarOrcamento}" process="@this" update=":trajetoAereoEditForm:adicionarVoo"/>
+                <p:ajax event="itemSelect" listener="#{trajetoAereoController.orcamentoSelect}" process="@this" update=":trajetoAereoEditForm:adicionarVoo"/>
             </m:autoComplete>
             <m:selectOneMenu id="sentido" label="#{msg['sentido']}" value="#{trajetoAereoController.editForm.sentido}" required="true">
                 <f:selectItem itemLabel="#{msg['selecione']}" noSelectionOption="true"/>
@@ -36,7 +36,7 @@
         </p:panelGrid>
         <p:commandButton id="adicionarVoo" value="#{msg['adicionar.voo']}" icon="pi pi-plus" action="#{trajetoAereoController.novoTrecho}"
                          process="@this" update=":trechoForm" resetValues="true"
-                         disabled="#{empty trajetoAereoController.idOrcamento or empty trajetoAereoController.editForm.sentido}"/>
+                         disabled="#{empty trajetoAereoController.orcamento or empty trajetoAereoController.editForm.sentido}"/>
         <p:dataTable id="trechos" value="#{trajetoAereoController.editForm.trechos}" var="trecho" emptyMessage="#{msg['nenhum.registro.encontrado']}"
                      style="margin-top: 10px" showGridlines="true">
             <p:column headerText="#{msg['interface.acoes']}" style="width: 85px">

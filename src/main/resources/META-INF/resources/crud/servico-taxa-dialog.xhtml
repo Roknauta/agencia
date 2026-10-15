@@ -1,20 +1,19 @@
 <ui:composition xmlns:ui="jakarta.faces.facelets" xmlns:h="jakarta.faces.html"
                 xmlns:p="http://primefaces.org/ui" xmlns:f="jakarta.faces.core"
                 xmlns:m="jakarta.faces.composite/resources/components">
+    <!--@elvariable id="controller" type="com.roknauta.agencia.web.crud.ServicoControllerBase"-->
     <h:form id="taxaForm">
         <p:dialog id="taxaDialog" widgetVar="taxaDialogWidget" modal="true" resizable="false"
                   closable="false" appendTo="@form" header="#{msg['adicionar.taxa']}" width="600">
-            <p:panelGrid id="taxaCampos" columns="2" layout="grid" styleClass="form-grid">
+            <p:panelGrid id="taxaCampos" columns="2" layout="grid" styleClass="form-grid" rendered="#{controller.taxaForm!=null}">
                 <m:autoComplete id="tipoTaxa" label="#{msg['tipo.taxa']}" value="#{controller.taxaForm.tipoTaxa}"
                                 completeMethod="#{tipoTaxaController.completeTipoTaxa}"
                                 var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo}"
                                 converter="#{tipoTaxaConverter}" required="true" minQueryLength="0"/>
                 <m:inputNumber id="valorTaxa" label="#{msg['valor']}" value="#{controller.taxaForm.valor}"
                                minValue="0" decimalPlaces="2" required="true"/>
-                <m:selectOneMenu id="moedaTaxa" label="#{msg['moeda']}" value="#{controller.taxaForm.moeda}"
-                                 required="true">
-                    <f:selectItems value="#{controller.moedas}" var="moeda"
-                                   itemValue="#{moeda}" itemLabel="#{moeda.descricao}"/>
+                <m:selectOneMenu id="moedaTaxa" label="#{msg['moeda']}" value="#{controller.taxaForm.moeda}" required="true">
+                    <f:selectItems value="#{controller.moedas}" var="moeda" itemValue="#{moeda}" itemLabel="#{moeda.descricao}"/>
                 </m:selectOneMenu>
             </p:panelGrid>
             <p:outputPanel styleClass="crud-footer">

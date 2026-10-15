@@ -1,7 +1,11 @@
 package com.roknauta.agencia.web.jasper.documento.comum;
 
 import java.time.Duration;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.Instant;
 import com.roknauta.agencia.dto.AeroportoDTO;
 import com.roknauta.agencia.dto.documento.TrechoAereoDTO;
 import lombok.Getter;
@@ -21,6 +25,8 @@ public class VooRelatorioDTO {
     private LocalDateTime chegada;
     private String duracaoFormatada;
     private String conexaoFormatada;
+    private Instant saidaInstant;
+    private Instant chegadaInstant;
     private Boolean direto;
     private String localizador;
     private String cabine;
@@ -41,12 +47,14 @@ public class VooRelatorioDTO {
         tarifa = trecho.getTarifaAerea();
         if (trecho.getDataPartida() != null && voo.getPartida() != null) {
             saida = trecho.getDataPartida().atTime(voo.getPartida());
+            saidaInstant = saida.atZone(obterFuso(voo.getOrigem())).toInstant();
         }
         if (trecho.getDataChegada() != null && voo.getChegada() != null) {
             chegada = trecho.getDataChegada().atTime(voo.getChegada());
+            chegadaInstant = chegada.atZone(obterFuso(voo.getDestino())).toInstant();
         }
-        if (saida != null && chegada != null) {
-            duracaoFormatada = formatarDuracao(Duration.between(saida, chegada));
+        if (saidaInstant != null && chegadaInstant != null) {
+            duracaoFormatada = formatarDuracao(Duration.between(saidaInstant, chegadaInstant));
         }
     }
 
@@ -56,11 +64,26 @@ public class VooRelatorioDTO {
     }
 
     public void calcularConexaoPara(VooRelatorioDTO proximoVoo) {
-        if (proximoVoo == null || chegada == null || proximoVoo.getSaida() == null) {
+        if (proximoVoo == null || chegadaInstant == null || proximoVoo.getSaidaInstant() == null) {
             conexaoFormatada = "";
             return;
         }
-        conexaoFormatada = formatarDuracao(Duration.between(chegada, proximoVoo.getSaida()));
+        conexaoFormatada = formatarDuracao(Duration.between(chegadaInstant, proximoVoo.getSaidaInstant()));
+    }
+
+    private static ZoneId obterFuso(AeroportoDTO aeroporto) {
+        String fusoHorario = aeroporto == null || aeroporto.getCidadeAtendida() == null ? null
+            : aeroporto.getCidadeAtendida().getFusoHorario();
+        if (fusoHorario == null || fusoHorario.isBlank()) {
+            return ZoneOffset.UTC;
+        }
+        try {
+            return ZoneId.of(fusoHorario);
+        } catch (DateTimeException exception) {
+            String cidade = aeroporto.getCidadeAtendida().getNome();
+            throw new IllegalArgumentException("Fuso horário inválido para a cidade " + cidade + ": " + fusoHorario,
+                exception);
+        }
     }
 
     private static String formatarAeroporto(AeroportoDTO aeroporto) {
